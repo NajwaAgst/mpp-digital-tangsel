@@ -1,0 +1,153 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pengajuan Layanan - MPP Digital Kota Tangerang Selatan</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(15,143,122,0.12),_transparent_35%),linear-gradient(135deg,_#f8fffc_0%,_#f5f7ff_100%)] text-slate-800">
+  <nav class="sticky top-0 z-40 border-b border-white/70 bg-white/80 backdrop-blur-xl">
+    <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
+      <a href="index.html" class="flex shrink-0 items-center gap-3">
+        <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-violet-600 text-lg font-semibold text-white shadow-lg">MPP</div>
+        <div>
+          <p class="text-sm font-semibold text-slate-900">MPP Digital</p>
+          <p class="text-xs text-slate-500">Kota Tangerang Selatan</p>
+        </div>
+      </a>
+      <div class="hidden items-center gap-6 lg:flex">
+        <a href="index.html" class="text-sm font-medium text-slate-600 hover:text-emerald-600">Beranda</a>
+        <a href="services.html" class="text-sm font-medium text-slate-600 hover:text-emerald-600">Layanan</a>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="login.html" class="rounded-full bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-emerald-600/30 transition hover:bg-emerald-700">Login</a>
+        <a href="register.html" class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50">Daftar</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+    <div class="mb-6 flex flex-wrap items-center gap-2 text-sm text-slate-500">
+      <a href="index.html" class="hover:text-emerald-600">Beranda</a>
+      <span>/</span>
+      <a href="services.html" class="hover:text-emerald-600">Layanan</a>
+      <span>/</span>
+      <span class="font-medium text-slate-700">Pengajuan</span>
+    </div>
+
+    <div class="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+      <aside class="rounded-[2rem] bg-slate-950 p-8 text-white shadow-2xl shadow-slate-300/30">
+        <p class="text-sm font-semibold uppercase tracking-[0.28em] text-emerald-300">Form pengajuan</p>
+        <h1 id="serviceTitle" class="mt-4 text-3xl font-semibold leading-tight sm:text-4xl">Pengajuan Layanan MPP</h1>
+        <p id="serviceDescription" class="mt-4 text-sm leading-7 text-slate-300">Lengkapi data pemohon dan dokumen awal untuk memulai proses layanan.</p>
+
+        <div class="mt-8 rounded-2xl border border-white/10 bg-white/5 p-5">
+          <p class="text-sm font-semibold text-emerald-300">Status akun</p>
+          <p id="accountStatus" class="mt-2 text-sm leading-7 text-slate-300">Memeriksa sesi login...</p>
+        </div>
+
+        <div class="mt-6 rounded-2xl border border-white/10 bg-white/5 p-5">
+          <p class="text-sm font-semibold text-emerald-300">Catatan</p>
+          <p class="mt-2 text-sm leading-7 text-slate-300">Data ini masih demo frontend. Nanti bisa disambungkan ke backend Laravel atau API MPP.</p>
+        </div>
+      </aside>
+
+      <section class="rounded-[2rem] border border-white/70 bg-white/90 p-6 shadow-xl shadow-slate-200/50 sm:p-8">
+        <form id="serviceApplicationForm" class="space-y-5">
+          <div class="grid gap-5 md:grid-cols-2">
+            <div>
+              <label for="applicantName" class="mb-2 block text-sm font-semibold text-slate-700">Nama Lengkap</label>
+              <input id="applicantName" class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" placeholder="Nama pemohon" />
+            </div>
+            <div>
+              <label for="applicantNik" class="mb-2 block text-sm font-semibold text-slate-700">NIK</label>
+              <input id="applicantNik" inputmode="numeric" class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" placeholder="16 digit NIK" />
+            </div>
+          </div>
+
+          <div class="grid gap-5 md:grid-cols-2">
+            <div>
+              <label for="applicantEmail" class="mb-2 block text-sm font-semibold text-slate-700">Email</label>
+              <input id="applicantEmail" class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" placeholder="email aktif" />
+            </div>
+            <div>
+              <label for="applicantPhone" class="mb-2 block text-sm font-semibold text-slate-700">Nomor HP</label>
+              <input id="applicantPhone" class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" placeholder="nomor yang bisa dihubungi" />
+            </div>
+          </div>
+
+          <div>
+            <label for="applicantAddress" class="mb-2 block text-sm font-semibold text-slate-700">Alamat</label>
+            <textarea id="applicantAddress" rows="4" class="w-full resize-none rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" placeholder="Alamat domisili pemohon"></textarea>
+          </div>
+
+          <div>
+            <label for="applicationNote" class="mb-2 block text-sm font-semibold text-slate-700">Keterangan Pengajuan</label>
+            <textarea id="applicationNote" rows="4" class="w-full resize-none rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" placeholder="Tuliskan kebutuhan layanan secara singkat"></textarea>
+          </div>
+
+          <div id="formNotice" class="hidden rounded-2xl border px-4 py-3 text-sm"></div>
+
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <a href="services.html" class="inline-flex justify-center rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">Kembali</a>
+            <button type="submit" class="inline-flex justify-center rounded-full bg-emerald-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-600/20 transition hover:bg-emerald-700">Kirim Pengajuan</button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const serviceMap = {
+      adminduk: 'Administrasi Kependudukan',
+      'perizinan-berusaha': 'Perizinan Berusaha dan Non-Berusaha',
+      perpajakan: 'Perpajakan',
+      'ketenagakerjaan-jaminan-sosial': 'Ketenagakerjaan dan Jaminan Sosial',
+      pertanahan: 'Pertanahan (ATR/BPN)',
+      'kepolisian-hukum': 'Kepolisian dan Hukum',
+      'imigrasi-pmi': 'Imigrasi dan Ketenagakerjaan Luar Negeri',
+      'perbankan-keuangan': 'Perbankan dan Jasa Keuangan'
+    };
+
+    const authKey = 'mppDemoAuth';
+    const params = new URLSearchParams(window.location.search);
+    const serviceKey = params.get('service') || 'adminduk';
+    const currentUrl = `register-service.html?service=${encodeURIComponent(serviceKey)}`;
+    const title = serviceMap[serviceKey] || 'Layanan MPP Digital';
+    const storedUser = JSON.parse(localStorage.getItem(authKey) || 'null');
+
+    document.title = `Pengajuan ${title} - MPP Digital Kota Tangerang Selatan`;
+    document.getElementById('serviceTitle').textContent = `Pengajuan ${title}`;
+    document.getElementById('serviceDescription').textContent = 'Lengkapi data awal untuk mengajukan layanan ini melalui portal MPP Digital.';
+
+    if (!storedUser) {
+      window.location.href = `login.html?redirect=${encodeURIComponent(currentUrl)}`;
+    } else {
+      document.getElementById('accountStatus').textContent = `Login sebagai ${storedUser.name || storedUser.email || 'Pengguna MPP'}.`;
+      document.getElementById('applicantName').value = storedUser.name || '';
+      document.getElementById('applicantNik').value = storedUser.nik || '';
+      document.getElementById('applicantEmail').value = storedUser.email || '';
+    }
+
+    document.getElementById('serviceApplicationForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      const name = document.getElementById('applicantName').value.trim();
+      const nik = document.getElementById('applicantNik').value.trim();
+      const email = document.getElementById('applicantEmail').value.trim();
+      const notice = document.getElementById('formNotice');
+
+      if (!name || !nik || !email) {
+        notice.className = 'rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800';
+        notice.textContent = 'Nama, NIK, dan email wajib diisi.';
+        return;
+      }
+
+      notice.className = 'rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800';
+      notice.textContent = 'Pengajuan berhasil dikirim. Petugas akan melakukan verifikasi data.';
+    });
+  </script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+#!/usr/bin/env php
+<?php
+
+printf("Laravel-style prototype ready. Run the project through public/index.php in a PHP-enabled environment.\n");

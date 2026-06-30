@@ -1,0 +1,27 @@
+# macOS
+.DS_Store
+
+# Laravel
+/vendor
+/node_modules
+/public/storage
+/storage/*.key
+
+# Environment
+.env
+.env.*
+
+# Log
+*.log
+server.log
+
+# SQLite
+database/*.sqlite
+
+# IDE
+.vscode/
+.idea/
+
+# Temporary
+test_output.txt
+tmp_test.php

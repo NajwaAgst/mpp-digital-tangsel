@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - MPP Digital Kota Tangerang Selatan</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(15,143,122,0.14),_transparent_34%),linear-gradient(135deg,_#f8fffc_0%,_#f5f7ff_100%)] text-slate-800">
+  <main class="grid min-h-screen lg:grid-cols-[1fr_0.9fr]">
+    <section class="hidden bg-slate-950 text-white lg:flex lg:flex-col lg:justify-between lg:p-12">
+      <a href="index.html" class="flex items-center gap-3">
+        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-violet-600 text-lg font-semibold shadow-lg">MPP</div>
+        <div>
+          <p class="font-semibold">MPP Digital</p>
+          <p class="text-sm text-slate-400">Kota Tangerang Selatan</p>
+        </div>
+      </a>
+
+      <div class="max-w-xl">
+        <p class="text-sm font-semibold uppercase tracking-[0.28em] text-emerald-300">Akses warga</p>
+        <h1 class="mt-5 text-5xl font-semibold leading-tight">Masuk untuk melanjutkan layanan publik digital.</h1>
+        <p class="mt-5 text-lg leading-8 text-slate-300">Pantau pengajuan, lengkapi dokumen, dan lanjutkan proses layanan MPP dari satu akun.</p>
+      </div>
+
+      <div class="grid gap-4 sm:grid-cols-3">
+        <div class="rounded-2xl border border-white/10 bg-white/5 p-4"><p class="text-2xl font-semibold">8</p><p class="text-sm text-slate-400">Kategori layanan</p></div>
+        <div class="rounded-2xl border border-white/10 bg-white/5 p-4"><p class="text-2xl font-semibold">24/7</p><p class="text-sm text-slate-400">Akses portal</p></div>
+        <div class="rounded-2xl border border-white/10 bg-white/5 p-4"><p class="text-2xl font-semibold">1</p><p class="text-sm text-slate-400">Akun terpadu</p></div>
+      </div>
+    </section>
+
+    <section class="flex items-center justify-center px-5 py-10 sm:px-8">
+      <div class="w-full max-w-md">
+        <a href="index.html" class="mb-10 inline-flex items-center gap-3 lg:hidden">
+          <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-violet-600 font-semibold text-white">MPP</div>
+          <div><p class="text-sm font-semibold text-slate-900">MPP Digital</p><p class="text-xs text-slate-500">Kota Tangerang Selatan</p></div>
+        </a>
+
+        <div class="rounded-[1.75rem] border border-white/70 bg-white/90 p-7 shadow-2xl shadow-slate-200/70 backdrop-blur sm:p-8">
+          <p class="text-sm font-semibold uppercase tracking-[0.28em] text-emerald-600">Login akun</p>
+          <h2 class="mt-3 text-3xl font-semibold text-slate-900">Selamat datang kembali</h2>
+          <p class="mt-2 text-sm leading-6 text-slate-500">Masuk menggunakan email atau username yang sudah terdaftar.</p>
+
+          <div id="authNotice" class="mt-5 hidden rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800"></div>
+
+          <form id="loginForm" class="mt-7 space-y-4">
+            <div>
+              <label for="loginEmail" class="mb-2 block text-sm font-semibold text-slate-700">Email / Username</label>
+              <input id="loginEmail" class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" placeholder="nama@email.com" />
+            </div>
+            <div>
+              <label for="loginPassword" class="mb-2 block text-sm font-semibold text-slate-700">Password</label>
+              <input id="loginPassword" type="password" class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" placeholder="Masukkan password" />
+            </div>
+            <button type="submit" class="w-full rounded-2xl bg-emerald-600 px-4 py-3 font-semibold text-white shadow-lg shadow-emerald-600/20 transition hover:bg-emerald-700">Masuk</button>
+          </form>
+
+          <p class="mt-6 text-center text-sm text-slate-500">Belum punya akun? <a href="register.html" id="registerLink" class="font-semibold text-emerald-600 hover:text-emerald-700">Daftar akun</a></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const redirect = new URLSearchParams(window.location.search).get('redirect');
+    if (redirect) document.getElementById('registerLink').href = `register.html?redirect=${encodeURIComponent(redirect)}`;
+  </script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

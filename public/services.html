@@ -1,0 +1,340 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Layanan MPP Digital Kota Tangerang Selatan</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(15,143,122,0.12),_transparent_35%),linear-gradient(135deg,_#f8fffc_0%,_#f5f7ff_100%)] text-slate-800">
+
+  <!-- NAVBAR -->
+  <nav class="sticky top-0 z-40 border-b border-white/70 bg-white/80 backdrop-blur-xl">
+    <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
+      <!-- Logo -->
+      <a href="index.html" class="flex items-center gap-3 shrink-0">
+        <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-violet-600 text-lg font-semibold text-white shadow-lg">
+          MPP
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-slate-900">Mal Pelayanan Publik (MPP)</p>
+          <p class="text-xs text-slate-500">Kota Tangerang Selatan</p>
+        </div>
+      </a>
+
+      <!-- Menu -->
+      <div class="hidden items-center gap-6 lg:flex">
+        <a href="index.html" class="text-sm font-medium text-slate-600 hover:text-emerald-600">Beranda</a>
+        <a href="services.html" class="text-sm font-medium text-emerald-600">Layanan</a>
+        <a href="index.html#telemetry" class="text-sm font-medium text-slate-600 hover:text-emerald-600">Telemetry</a>
+      </div>
+
+      <!-- Search + Login -->
+      <div class="flex items-center gap-3">
+        <div class="hidden md:flex items-center rounded-full border border-slate-200 bg-white px-3 py-2 shadow-sm focus-within:border-emerald-500 focus-within:ring-2 focus-within:ring-emerald-100">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M10.8 18a7.2 7.2 0 100-14.4 7.2 7.2 0 000 14.4z" />
+          </svg>
+          <input
+            id="serviceSearch"
+            type="text"
+            placeholder="Cari layanan..."
+            class="w-44 bg-transparent px-2 text-sm text-slate-700 outline-none lg:w-56"
+          />
+        </div>
+
+        <a href="login.html" class="rounded-full bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-emerald-600/30 transition hover:bg-emerald-700">Login</a><a href="register.html" class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50">Daftar</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <!-- HERO / HEADER -->
+    <section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <div class="rounded-[2rem] border border-white/70 bg-white/80 p-8 shadow-xl shadow-slate-200/40 backdrop-blur lg:p-10">
+        <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-[0.28em] text-emerald-600">
+              Katalog layanan
+            </p>
+            <h1 class="mt-3 text-3xl font-semibold text-slate-900 sm:text-4xl">
+              8 Layanan MPP Digital Kota Tangerang Selatan
+            </h1>
+            <p class="mt-4 max-w-3xl text-lg leading-8 text-slate-600">
+              Portal MPP Digital menyatukan layanan administrasi kependudukan, perizinan, perpajakan, ketenagakerjaan, pertanahan, kepolisian, imigrasi, dan perbankan dalam satu pengalaman layanan publik yang modern, cepat, dan terintegrasi.
+            </p>
+
+            <div class="mt-6 flex flex-wrap gap-3">
+              <span class="rounded-full bg-emerald-50 px-4 py-2 text-sm font-medium text-emerald-700">8 kategori layanan</span>
+              <span class="rounded-full bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700">Terintegrasi lintas instansi</span>
+              <span class="rounded-full bg-violet-50 px-4 py-2 text-sm font-medium text-violet-700">Akses digital terpadu</span>
+            </div>
+          </div>
+
+          <div class="rounded-[1.75rem] bg-gradient-to-br from-emerald-500 via-teal-500 to-violet-600 p-6 text-white shadow-xl">
+            <p class="text-sm font-semibold uppercase tracking-[0.24em] text-emerald-100">
+              Ringkasan layanan
+            </p>
+
+            <div class="mt-6 grid gap-4 sm:grid-cols-2">
+              <div class="rounded-2xl border border-white/20 bg-white/10 p-4">
+                <p class="text-sm text-emerald-50">Administrasi & Perizinan</p>
+                <p class="mt-2 text-2xl font-semibold">4+</p>
+                <p class="mt-1 text-sm text-emerald-100">Kelompok layanan utama</p>
+              </div>
+              <div class="rounded-2xl border border-white/20 bg-white/10 p-4">
+                <p class="text-sm text-emerald-50">Instansi terhubung</p>
+                <p class="mt-2 text-2xl font-semibold">8</p>
+                <p class="mt-1 text-sm text-emerald-100">Layanan terintegrasi</p>
+              </div>
+              <div class="rounded-2xl border border-white/20 bg-white/10 p-4">
+                <p class="text-sm text-emerald-50">Mode layanan</p>
+                <p class="mt-2 text-xl font-semibold">Online</p>
+                <p class="mt-1 text-sm text-emerald-100">Akses mandiri melalui portal</p>
+              </div>
+              <div class="rounded-2xl border border-white/20 bg-white/10 p-4">
+                <p class="text-sm text-emerald-50">Pengajuan cepat</p>
+                <p class="mt-2 text-xl font-semibold">1 pintu</p>
+                <p class="mt-1 text-sm text-emerald-100">Form dan verifikasi terpusat</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICE GRID -->
+    <section class="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
+      <div class="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-[0.28em] text-emerald-600">Daftar layanan</p>
+          <h2 class="mt-2 text-3xl font-semibold text-slate-900">Pilih layanan yang ingin diajukan</h2>
+        </div>
+
+        <div class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm text-slate-500 shadow-sm">
+          Gunakan kolom pencarian untuk memfilter layanan
+        </div>
+      </div>
+
+      <div id="serviceGrid" class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+
+        <!-- 1 -->
+        <article
+          data-service="administrasi kependudukan adminduk e-ktp ktp kk kia akta kelahiran akta kematian surat pindah dokumen kependudukan"
+          class="flex flex-col rounded-[1.75rem] border border-white/70 bg-white/80 p-6 shadow-lg shadow-slate-200/40 backdrop-blur transition hover:-translate-y-1 hover:shadow-xl"
+        >
+          <div class="flex items-center justify-between">
+            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Kependudukan</span>
+            <span class="h-10 w-10 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600"></span>
+          </div>
+          <h2 class="mt-5 text-xl font-semibold text-slate-900">Administrasi Kependudukan</h2>
+          <p class="mt-3 flex-1 text-sm leading-6 text-slate-600">
+            Pembuatan e-KTP, KK, KIA, penerbitan akta kelahiran dan kematian, surat pindah, serta dokumen kependudukan lainnya.
+          </p>
+          <div class="mt-6 flex items-center justify-between">
+            <a href="service-detail.html?service=adminduk" class="text-sm font-semibold text-emerald-600 hover:text-emerald-700">Lihat Detail</a>
+            <a href="service-detail.html?service=adminduk" class="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">Ajukan</a>
+          </div>
+        </article>
+
+        <!-- 2 -->
+        <article
+          data-service="perizinan berusaha non berusaha nib izin operasional komersial pbg imb izin praktik tenaga medis kesehatan sip dokter"
+          class="flex flex-col rounded-[1.75rem] border border-white/70 bg-white/80 p-6 shadow-lg shadow-slate-200/40 backdrop-blur transition hover:-translate-y-1 hover:shadow-xl"
+        >
+          <div class="flex items-center justify-between">
+            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Perizinan</span>
+            <span class="h-10 w-10 rounded-2xl bg-gradient-to-br from-violet-500 to-purple-600"></span>
+          </div>
+          <h2 class="mt-5 text-xl font-semibold text-slate-900">Perizinan Berusaha dan Non-Berusaha</h2>
+          <p class="mt-3 flex-1 text-sm leading-6 text-slate-600">
+            Pengurusan NIB, izin operasional komersial, IMB/PBG, serta izin praktik tenaga medis dan tenaga kesehatan.
+          </p>
+          <div class="mt-6 flex items-center justify-between">
+            <a href="service-detail.html?service=perizinan-berusaha" class="text-sm font-semibold text-emerald-600 hover:text-emerald-700">Lihat Detail</a>
+            <a href="service-detail.html?service=perizinan-berusaha" class="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">Ajukan</a>
+          </div>
+        </article>
+
+        <!-- 3 -->
+        <article
+          data-service="perpajakan pajak daerah pbb reklame restoran npwp spt bapenda kpp"
+          class="flex flex-col rounded-[1.75rem] border border-white/70 bg-white/80 p-6 shadow-lg shadow-slate-200/40 backdrop-blur transition hover:-translate-y-1 hover:shadow-xl"
+        >
+          <div class="flex items-center justify-between">
+            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Perpajakan</span>
+            <span class="h-10 w-10 rounded-2xl bg-gradient-to-br from-sky-500 to-cyan-600"></span>
+          </div>
+          <h2 class="mt-5 text-xl font-semibold text-slate-900">Perpajakan</h2>
+          <p class="mt-3 flex-1 text-sm leading-6 text-slate-600">
+            Pelayanan pajak daerah seperti PBB, pajak reklame, pajak restoran, serta layanan NPWP dan pelaporan SPT.
+          </p>
+          <div class="mt-6 flex items-center justify-between">
+            <a href="service-detail.html?service=perpajakan" class="text-sm font-semibold text-emerald-600 hover:text-emerald-700">Lihat Detail</a>
+            <a href="service-detail.html?service=perpajakan" class="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">Ajukan</a>
+          </div>
+        </article>
+
+        <!-- 4 -->
+        <article
+          data-service="ketenagakerjaan jaminan sosial ak1 kartu kuning bpjs kesehatan bpjs ketenagakerjaan"
+          class="flex flex-col rounded-[1.75rem] border border-white/70 bg-white/80 p-6 shadow-lg shadow-slate-200/40 backdrop-blur transition hover:-translate-y-1 hover:shadow-xl"
+        >
+          <div class="flex items-center justify-between">
+            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Ketenagakerjaan</span>
+            <span class="h-10 w-10 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600"></span>
+          </div>
+          <h2 class="mt-5 text-xl font-semibold text-slate-900">Ketenagakerjaan dan Jaminan Sosial</h2>
+          <p class="mt-3 flex-1 text-sm leading-6 text-slate-600">
+            Pembuatan AK-1/Kartu Kuning, pendaftaran BPJS Kesehatan, klaim BPJS Kesehatan, dan layanan BPJS Ketenagakerjaan.
+          </p>
+          <div class="mt-6 flex items-center justify-between">
+            <a href="service-detail.html?service=ketenagakerjaan-jaminan-sosial" class="text-sm font-semibold text-emerald-600 hover:text-emerald-700">Lihat Detail</a>
+            <a href="service-detail.html?service=ketenagakerjaan-jaminan-sosial" class="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">Ajukan</a>
+          </div>
+        </article>
+
+        <!-- 5 -->
+        <article
+          data-service="pertanahan atr bpn pendaftaran tanah sertifikat tanah balik nama konsultasi pertanahan"
+          class="flex flex-col rounded-[1.75rem] border border-white/70 bg-white/80 p-6 shadow-lg shadow-slate-200/40 backdrop-blur transition hover:-translate-y-1 hover:shadow-xl"
+        >
+          <div class="flex items-center justify-between">
+            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Pertanahan</span>
+            <span class="h-10 w-10 rounded-2xl bg-gradient-to-br from-rose-500 to-pink-600"></span>
+          </div>
+          <h2 class="mt-5 text-xl font-semibold text-slate-900">Pertanahan (ATR/BPN)</h2>
+          <p class="mt-3 flex-1 text-sm leading-6 text-slate-600">
+            Pendaftaran tanah pertama kali, pengecekan sertifikat tanah, balik nama, dan layanan informasi serta konsultasi pertanahan.
+          </p>
+          <div class="mt-6 flex items-center justify-between">
+            <a href="service-detail.html?service=pertanahan" class="text-sm font-semibold text-emerald-600 hover:text-emerald-700">Lihat Detail</a>
+            <a href="service-detail.html?service=pertanahan" class="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">Ajukan</a>
+          </div>
+        </article>
+
+        <!-- 6 -->
+        <article
+          data-service="kepolisian hukum sim skck kejaksaan negeri perpanjangan sim a c"
+          class="flex flex-col rounded-[1.75rem] border border-white/70 bg-white/80 p-6 shadow-lg shadow-slate-200/40 backdrop-blur transition hover:-translate-y-1 hover:shadow-xl"
+        >
+          <div class="flex items-center justify-between">
+            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Kepolisian</span>
+            <span class="h-10 w-10 rounded-2xl bg-gradient-to-br from-indigo-500 to-blue-600"></span>
+          </div>
+          <h2 class="mt-5 text-xl font-semibold text-slate-900">Kepolisian dan Hukum</h2>
+          <p class="mt-3 flex-1 text-sm leading-6 text-slate-600">
+            Perpanjangan SIM A dan C, pembuatan SKCK, serta layanan administrasi dari Kejaksaan Negeri.
+          </p>
+          <div class="mt-6 flex items-center justify-between">
+            <a href="service-detail.html?service=kepolisian-hukum" class="text-sm font-semibold text-emerald-600 hover:text-emerald-700">Lihat Detail</a>
+            <a href="service-detail.html?service=kepolisian-hukum" class="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">Ajukan</a>
+          </div>
+        </article>
+
+        <!-- 7 -->
+        <article
+          data-service="imigrasi ketenagakerjaan luar negeri paspor keimigrasian pmi pekerja migran indonesia"
+          class="flex flex-col rounded-[1.75rem] border border-white/70 bg-white/80 p-6 shadow-lg shadow-slate-200/40 backdrop-blur transition hover:-translate-y-1 hover:shadow-xl"
+        >
+          <div class="flex items-center justify-between">
+            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Imigrasi</span>
+            <span class="h-10 w-10 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600"></span>
+          </div>
+          <h2 class="mt-5 text-xl font-semibold text-slate-900">Imigrasi dan Ketenagakerjaan Luar Negeri</h2>
+          <p class="mt-3 flex-1 text-sm leading-6 text-slate-600">
+            Pengurusan paspor, layanan keimigrasian lainnya, dan pelayanan administrasi untuk Pekerja Migran Indonesia (PMI).
+          </p>
+          <div class="mt-6 flex items-center justify-between">
+            <a href="service-detail.html?service=imigrasi-pmi" class="text-sm font-semibold text-emerald-600 hover:text-emerald-700">Lihat Detail</a>
+            <a href="service-detail.html?service=imigrasi-pmi" class="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">Ajukan</a>
+          </div>
+        </article>
+
+        <!-- 8 -->
+        <article
+          data-service="perbankan jasa keuangan bank mitra tagihan retribusi tilang samsat corner pajak kendaraan"
+          class="flex flex-col rounded-[1.75rem] border border-white/70 bg-white/80 p-6 shadow-lg shadow-slate-200/40 backdrop-blur transition hover:-translate-y-1 hover:shadow-xl"
+        >
+          <div class="flex items-center justify-between">
+            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Keuangan</span>
+            <span class="h-10 w-10 rounded-2xl bg-gradient-to-br from-yellow-500 to-amber-600"></span>
+          </div>
+          <h2 class="mt-5 text-xl font-semibold text-slate-900">Perbankan dan Jasa Keuangan</h2>
+          <p class="mt-3 flex-1 text-sm leading-6 text-slate-600">
+            Pembayaran tagihan, retribusi daerah, tilang melalui bank mitra, serta pembayaran pajak kendaraan melalui Samsat Corner.
+          </p>
+          <div class="mt-6 flex items-center justify-between">
+            <a href="service-detail.html?service=perbankan-keuangan" class="text-sm font-semibold text-emerald-600 hover:text-emerald-700">Lihat Detail</a>
+            <a href="service-detail.html?service=perbankan-keuangan" class="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">Ajukan</a>
+          </div>
+        </article>
+      </div>
+
+      <!-- EMPTY STATE -->
+      <div id="emptyState" class="mt-10 hidden rounded-[2rem] border border-dashed border-slate-300 bg-white/70 p-10 text-center shadow-sm">
+        <p class="text-lg font-semibold text-slate-800">Layanan tidak ditemukan</p>
+        <p class="mt-2 text-sm text-slate-500">
+          Coba gunakan kata kunci lain seperti
+          <span class="font-medium">KTP</span>,
+          <span class="font-medium">BPJS</span>,
+          <span class="font-medium">Paspor</span>,
+          atau
+          <span class="font-medium">Pajak</span>.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-slate-200 bg-slate-900/95 text-slate-300">
+    <div class="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-8 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+      <div>
+        <p class="text-lg font-semibold text-white">Mal Pelayanan Publik (MPP) Kota Tangerang Selatan</p>
+        <p class="text-sm">Portal layanan terpadu, aman, dan modern untuk seluruh masyarakat.</p>
+      </div>
+      <div class="flex gap-4 text-sm">
+        <a href="index.html" class="hover:text-white">Beranda</a>
+        <a href="services.html" class="hover:text-white">Layanan</a>
+        <a href="index.html#telemetry" class="hover:text-white">Telemetry</a>
+      </div>
+    </div>
+  </footer>
+  <script>
+    // =========================
+    // FILTER LAYANAN
+    // =========================
+    const searchInput = document.getElementById("serviceSearch");
+    const serviceCards = document.querySelectorAll("#serviceGrid article");
+    const emptyState = document.getElementById("emptyState");
+
+    function filterServices() {
+      const keyword = searchInput.value.toLowerCase().trim();
+      let visibleCount = 0;
+
+      serviceCards.forEach((card) => {
+        const text = card.dataset.service.toLowerCase();
+        const isMatch = text.includes(keyword);
+
+        if (keyword === "" || isMatch) {
+          card.classList.remove("hidden");
+          visibleCount++;
+        } else {
+          card.classList.add("hidden");
+        }
+      });
+
+      if (visibleCount === 0) {
+        emptyState.classList.remove("hidden");
+      } else {
+        emptyState.classList.add("hidden");
+      }
+    }
+
+    if (searchInput) {
+      searchInput.addEventListener("input", filterServices);
+    }
+  </script>
+  <script src="assets/app.js"></script>
+</body>
+</html>
