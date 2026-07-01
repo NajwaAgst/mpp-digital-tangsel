@@ -18,6 +18,7 @@ class Database
 
         $pdo = self::connect(self::DB_NAME);
 
+
         $pdo->exec(
             'CREATE TABLE IF NOT EXISTS services (
                 id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -35,6 +36,8 @@ class Database
                 accent VARCHAR(120) NOT NULL
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci'
         );
+
+        
 
         $pdo->exec(
             'CREATE TABLE IF NOT EXISTS stats (
@@ -61,6 +64,50 @@ class Database
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci'
         );
 
+        $pdo->exec(
+        'CREATE TABLE IF NOT EXISTS users (
+                id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+                nik VARCHAR(16) NOT NULL UNIQUE,
+                name VARCHAR(150) NOT NULL,
+                email VARCHAR(150) NOT NULL UNIQUE,
+                password VARCHAR(255) NOT NULL,
+                created_at DATETIME NOT NULL
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci'
+        );
+
+        $pdo->exec(
+        'CREATE TABLE IF NOT EXISTS penduduks (
+                id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+                nik VARCHAR(16) NOT NULL UNIQUE,
+                nama VARCHAR(150) NOT NULL,
+                tempat_lahir VARCHAR(100),
+                tanggal_lahir DATE,
+                alamat TEXT,
+                created_at DATETIME
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4'
+        );
+
+        $pdo->exec(
+        'CREATE TABLE IF NOT EXISTS npwps (
+                id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+                nik VARCHAR(16) NOT NULL,
+                npwp VARCHAR(30) NOT NULL,
+                status_npwp VARCHAR(50),
+                created_at DATETIME
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4'
+        );
+
+        $pdo->exec(
+        'CREATE TABLE IF NOT EXISTS nibs (
+                id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+                nik VARCHAR(16) NOT NULL,
+                nib VARCHAR(30) NOT NULL,
+                nama_usaha VARCHAR(150),
+                jenis_usaha VARCHAR(100),
+                created_at DATETIME
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4'
+        );
+
         self::seed($pdo);
 
         return $pdo;
@@ -82,6 +129,7 @@ class Database
         }
 
         $pdo = new PDO($dsn, self::DB_USER, self::DB_PASS);
+        
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
@@ -133,6 +181,39 @@ class Database
         return $stmt->fetchAll();
     }
 
+    public static function getCitizenByNik(string $nik): ?array
+{
+    $sql = "
+        SELECT
+            p.nik,
+            p.nama,
+            p.tempat_lahir,
+            p.tanggal_lahir,
+            p.alamat,
+            n.npwp,
+            n.status_npwp,
+            b.nib,
+            b.nama_usaha,
+            b.jenis_usaha
+        FROM penduduks p
+        LEFT JOIN npwps n
+            ON p.nik = n.nik
+        LEFT JOIN nibs b
+            ON p.nik = b.nik
+        WHERE p.nik = :nik
+        LIMIT 1
+    ";
+
+    $stmt = self::getConnection()->prepare($sql);
+    $stmt->execute([
+        'nik' => $nik
+    ]);
+
+    $data = $stmt->fetch();
+
+    return $data ?: null;
+}
+
     public static function saveApplication(string $slug, string $serviceName, array $data, ?array $user = null): int
     {
         $pdo = self::getConnection();
@@ -156,6 +237,118 @@ class Database
 
         return (int) $pdo->lastInsertId();
     }
+
+public static function registerUser(array $data): bool
+{
+    $pdo = self::getConnection();
+
+    $stmt = $pdo->prepare("
+        INSERT INTO users
+        (nik, name, email, password, created_at)
+        VALUES
+        (:nik, :name, :email, :password, :created_at)
+    ");
+
+    return $stmt->execute([
+        'nik' => $data['nik'],
+        'name' => $data['name'],
+        'email' => $data['email'],
+        'password' => password_hash($data['password'], PASSWORD_DEFAULT),
+        'created_at' => date('Y-m-d H:i:s')
+    ]);
+}
+
+public static function findUserByEmail(string $email): ?array
+{
+    $stmt = self::getConnection()->prepare("
+        SELECT * FROM users
+        WHERE email = :email
+        LIMIT 1
+    ");
+
+    $stmt->execute([
+        'email' => $email
+    ]);
+
+    $user = $stmt->fetch();
+
+    return $user ?: null;
+}
+
+public static function findUserByNik(string $nik): ?array
+{
+    $stmt = self::getConnection()->prepare("
+        SELECT * FROM users
+        WHERE nik = :nik
+        LIMIT 1
+    ");
+
+    $stmt->execute([
+        'nik' => $nik
+    ]);
+
+    $user = $stmt->fetch();
+
+    return $user ?: null;
+}
+
+public static function emailExists(string $email): bool
+{
+    return self::findUserByEmail($email) !== null;
+}
+
+public static function nikExists(string $nik): bool
+{
+    return self::findUserByNik($nik) !== null;
+}
+
+public static function findPendudukByNik(string $nik): ?array
+{
+    $stmt = self::getConnection()->prepare("
+        SELECT *
+        FROM penduduks
+        WHERE nik = :nik
+        LIMIT 1
+    ");
+
+    $stmt->execute([
+        'nik' => $nik
+    ]);
+
+    return $stmt->fetch() ?: null;
+}
+
+public static function findNpwpByNik(string $nik): ?array
+{
+    $stmt = self::getConnection()->prepare("
+        SELECT *
+        FROM npwps
+        WHERE nik = :nik
+        LIMIT 1
+    ");
+
+    $stmt->execute([
+        'nik' => $nik
+    ]);
+
+    return $stmt->fetch() ?: null;
+}
+
+public static function findNibByNik(string $nik): ?array
+{
+    $stmt = self::getConnection()->prepare("
+        SELECT *
+        FROM nibs
+        WHERE nik = :nik
+        LIMIT 1
+    ");
+
+    $stmt->execute([
+        'nik' => $nik
+    ]);
+
+    return $stmt->fetch() ?: null;
+}
 
     private static function seed(PDO $pdo): void
     {
