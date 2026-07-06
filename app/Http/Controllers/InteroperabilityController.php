@@ -7,8 +7,25 @@ use App\Support\Database;
 class InteroperabilityController extends Controller
 {
     /**
+     * Masking NIK
+     * Contoh:
+     * 3674011201010001
+     * menjadi
+     * 367401******0001
+     */
+    private function maskNik(?string $nik): ?string
+    {
+        if (!$nik || strlen($nik) < 16) {
+            return $nik;
+        }
+
+        return substr($nik, 0, 6)
+            . str_repeat('*', 6)
+            . substr($nik, -4);
+    }
+
+    /**
      * Halaman Interoperability
-     * GET /interoperability
      */
     public function index(): string
     {
@@ -17,7 +34,6 @@ class InteroperabilityController extends Controller
 
     /**
      * API Dukcapil
-     * GET /mock/dukcapil/{nik}
      */
     public function dukcapil(string $nik): string
     {
@@ -44,6 +60,7 @@ class InteroperabilityController extends Controller
         usleep(400000);
 
         if (!$penduduk) {
+
             http_response_code(404);
 
             return json_encode([
@@ -52,6 +69,9 @@ class InteroperabilityController extends Controller
                 "response_time_ms" => 400
             ]);
         }
+
+        // Masking NIK
+        $penduduk['nik'] = $this->maskNik($penduduk['nik']);
 
         return json_encode([
             "success" => true,
@@ -62,7 +82,6 @@ class InteroperabilityController extends Controller
 
     /**
      * API NPWP
-     * GET /mock/npwp/{nik}
      */
     public function npwp(string $nik): string
     {
@@ -86,6 +105,7 @@ class InteroperabilityController extends Controller
         usleep(700000);
 
         if (!$npwp) {
+
             http_response_code(404);
 
             return json_encode([
@@ -104,7 +124,6 @@ class InteroperabilityController extends Controller
 
     /**
      * API NIB
-     * GET /mock/nib/{nik}
      */
     public function nib(string $nik): string
     {
@@ -129,6 +148,7 @@ class InteroperabilityController extends Controller
         usleep(900000);
 
         if (!$nib) {
+
             http_response_code(404);
 
             return json_encode([
@@ -146,8 +166,7 @@ class InteroperabilityController extends Controller
     }
 
     /**
-     * Aggregator SPBE
-     * GET /mock/interoperability/{nik}
+     * Aggregator Interoperability
      */
     public function aggregate(string $nik): string
     {
@@ -155,7 +174,9 @@ class InteroperabilityController extends Controller
 
         $pdo = Database::getConnection();
 
-        // Dukcapil
+        // ==========================
+        // DUKCAPIL
+        // ==========================
         $stmt = $pdo->prepare("
             SELECT
                 nik,
@@ -167,10 +188,18 @@ class InteroperabilityController extends Controller
             WHERE nik = ?
             LIMIT 1
         ");
+
         $stmt->execute([$nik]);
+
         $dukcapil = $stmt->fetch();
 
+        if ($dukcapil) {
+            $dukcapil['nik'] = $this->maskNik($dukcapil['nik']);
+        }
+
+        // ==========================
         // NPWP
+        // ==========================
         $stmt = $pdo->prepare("
             SELECT
                 npwp,
@@ -179,10 +208,14 @@ class InteroperabilityController extends Controller
             WHERE nik = ?
             LIMIT 1
         ");
+
         $stmt->execute([$nik]);
+
         $npwp = $stmt->fetch();
 
+        // ==========================
         // NIB
+        // ==========================
         $stmt = $pdo->prepare("
             SELECT
                 nib,
@@ -192,7 +225,9 @@ class InteroperabilityController extends Controller
             WHERE nik = ?
             LIMIT 1
         ");
+
         $stmt->execute([$nik]);
+
         $nib = $stmt->fetch();
 
         usleep(1200000);
@@ -209,8 +244,7 @@ class InteroperabilityController extends Controller
     }
 
     /**
-     * API Interoperability
-     * GET /api/interoperability/{nik}
+     * API Citizen Data
      */
     public function getCitizenData(string $nik): string
     {
@@ -219,7 +253,6 @@ class InteroperabilityController extends Controller
 
     /**
      * API Penduduk
-     * GET /api/penduduk/{nik}
      */
     public function penduduk(string $nik): string
     {

@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Support\Database;
+use App\Repositories\ServiceRepository;
+use App\Repositories\ApplicationRepository;
 
 class ServiceController extends Controller
 {
@@ -12,7 +13,7 @@ class ServiceController extends Controller
     public function index(): string
     {
         return $this->view('services.index', [
-            'services' => Database::getServices()
+            'services' => ServiceRepository::all()
         ]);
     }
 
@@ -21,12 +22,14 @@ class ServiceController extends Controller
      */
     public function show(string $slug): string
     {
-        $service = Database::getService($slug);
+        $service = ServiceRepository::find($slug);
 
         if (!$service) {
             http_response_code(404);
-            return 'Layanan tidak ditemukan';
+            return "Layanan tidak ditemukan";
         }
+
+        $service['form'] = $this->parseForm($service['form'] ?? []);
 
         return $this->view('services.show', [
             'service' => $service
@@ -42,113 +45,84 @@ class ServiceController extends Controller
             session_start();
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Login Check
-        |--------------------------------------------------------------------------
-        */
         if (empty($_SESSION['logged_in'])) {
 
-            $redirect = '/services/' . urlencode($slug) . '/apply';
+            $redirect = "/services/" . $slug . "/apply";
 
-            header('Location: /login?redirect=' . urlencode($redirect));
+            header("Location: /login?redirect=" . urlencode($redirect));
 
             exit;
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Ambil Data Layanan
-        |--------------------------------------------------------------------------
-        */
-
-        $service = Database::getService($slug);
+        $service = ServiceRepository::find($slug);
 
         if (!$service) {
-
             http_response_code(404);
-
-            return 'Layanan tidak ditemukan';
+            return "Layanan tidak ditemukan";
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Default Variable
-        |--------------------------------------------------------------------------
-        */
+        $service['form'] = $this->parseForm($service['form'] ?? []);
 
         $submitted = false;
         $submittedData = [];
         $submissionId = null;
         $errorMessage = null;
 
-        /*
-        |--------------------------------------------------------------------------
-        | Submit Form
-        |--------------------------------------------------------------------------
-        */
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-            $submittedData = [
-
-                'nama'       => trim($_POST['nama'] ?? ''),
-
-                'nik'        => trim($_POST['nik'] ?? ''),
-
-                'hp'         => trim($_POST['hp'] ?? ''),
-
-                'alamat'     => trim($_POST['alamat'] ?? ''),
-
-                'keterangan' => trim($_POST['keterangan'] ?? ''),
-
-            ];
-
-            /*
-            |--------------------------------------------------------------------------
-            | Validasi
-            |--------------------------------------------------------------------------
-            */
-
-            if ($submittedData['nik'] === '') {
-
-                $errorMessage = 'NIK wajib diisi.';
+            foreach ($_POST as $key => $value) {
+                $submittedData[$key] = is_string($value)
+                    ? trim($value)
+                    : $value;
             }
 
-            elseif ($submittedData['nama'] === '') {
+            if (empty($submittedData["nik"])) {
 
-                $errorMessage = 'Nama belum terisi dari sistem interoperabilitas.';
+                $errorMessage = "NIK wajib diisi.";
+
+            } elseif (empty($submittedData["nama"])) {
+
+                $errorMessage = "Nama wajib diisi.";
+
+            } elseif (empty($submittedData["alamat"])) {
+
+                $errorMessage = "Alamat wajib diisi.";
+
             }
 
-            elseif ($submittedData['alamat'] === '') {
+            if (
+                $errorMessage === null &&
+                !empty($service["form"]["manual"])
+            ) {
 
-                $errorMessage = 'Alamat belum berhasil diambil.';
+                foreach ($service["form"]["manual"] as $field) {
+
+                    if (empty($submittedData[$field])) {
+
+                        $label = ucwords(
+                            str_replace("_", " ", $field)
+                        );
+
+                        $errorMessage = $label . " wajib diisi.";
+
+                        break;
+                    }
+                }
             }
-
-            elseif ($submittedData['hp'] === '') {
-
-                $errorMessage = 'Nomor HP wajib diisi.';
-            }
-
-            /*
-            |--------------------------------------------------------------------------
-            | Simpan Pengajuan
-            |--------------------------------------------------------------------------
-            */
 
             if ($errorMessage === null) {
 
                 try {
 
-                    $submissionId = Database::saveApplication(
+                    $submissionId = ApplicationRepository::create(
 
                         $slug,
 
-                        $service['name'],
+                        $service["name"],
 
                         $submittedData,
 
-                        $_SESSION['user'] ?? null
+                        $_SESSION["user"] ?? null
 
                     );
 
@@ -158,34 +132,98 @@ class ServiceController extends Controller
 
                 } catch (\Throwable $e) {
 
-                    $errorMessage = 'Maaf, pengajuan tidak dapat diproses saat ini.';
+                    $errorMessage = $e->getMessage();
 
                 }
-
             }
-
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | View
-        |--------------------------------------------------------------------------
-        */
+        return $this->view("services.apply", [
 
-        return $this->view('services.apply', [
+            "service" => $service,
 
-            'service'       => $service,
+            "submitted" => $submitted,
 
-            'submitted'     => $submitted,
+            "submittedData" => $submittedData,
 
-            'submittedData' => $submittedData,
+            "submissionId" => $submissionId,
 
-            'submissionId'  => $submissionId,
+            "errorMessage" => $errorMessage,
 
-            'errorMessage'  => $errorMessage,
-
-            'authUser'      => $_SESSION['user'] ?? null,
+            "authUser" => $_SESSION["user"] ?? null
 
         ]);
     }
+
+    /**
+     * Parse Form
+     */
+    private function parseForm($form): array
+    {
+        if (is_array($form)) {
+            return $form;
+        }
+
+        if (is_string($form)) {
+
+            $decoded = json_decode($form, true);
+
+            return is_array($decoded)
+                ? $decoded
+                : [];
+        }
+
+        return [];
+    }
+
+    public function history(): string
+{
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
+    if (empty($_SESSION['logged_in'])) {
+        header("Location: /login");
+        exit;
+    }
+
+    $nik = $_SESSION['user']['nik'];
+
+    return $this->view('service.history', [
+        'applications' => ApplicationRepository::historyByUser($nik),
+        'authUser' => $_SESSION['user']
+    ]);
+}
+
+public function detail(int $id): string
+{
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
+    if (empty($_SESSION['logged_in'])) {
+        header("Location: /login");
+        exit;
+    }
+
+    $nik = $_SESSION['user']['nik'];
+
+    $application = ApplicationRepository::findByUser($id, $nik);
+
+    if (!$application) {
+
+        http_response_code(404);
+
+        return "Pengajuan tidak ditemukan.";
+
+    }
+
+    return $this->view('service.detail', [
+
+        'application' => $application,
+
+        'authUser' => $_SESSION['user']
+
+    ]);
+}
 }

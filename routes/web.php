@@ -1,17 +1,20 @@
 <?php
 
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\EmergencyController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InteroperabilityController;
+use App\Http\Controllers\ServiceController;
 
 return [
 
     /*
     |--------------------------------------------------------------------------
-    | Home
+    | HOME (HALAMAN INDUK)
     |--------------------------------------------------------------------------
     */
+
     [
         'method' => 'GET',
         'uri' => '/',
@@ -19,11 +22,13 @@ return [
         'action' => 'index'
     ],
 
+
     /*
     |--------------------------------------------------------------------------
-    | Services
+    | MPP
     |--------------------------------------------------------------------------
     */
+
     [
         'method' => 'GET',
         'uri' => '/services',
@@ -53,17 +58,72 @@ return [
     ],
 
     [
-        'method' => 'GET',
-        'uri' => '/sip-doctor',
-        'controller' => ServiceController::class,
-        'action' => 'sipForm'
-    ],
+    'method' => 'GET',
+    'uri' => '/services/history',
+    'controller' => ServiceController::class,
+    'action' => 'history'
+],
+
+[
+    'method' => 'GET',
+    'uri' => '/services/history/{id}',
+    'controller' => ServiceController::class,
+    'action' => 'detail'
+],
+
 
     /*
     |--------------------------------------------------------------------------
-    | Authentication
+    | EMERGENCY 112
     |--------------------------------------------------------------------------
     */
+
+    // Landing Emergency
+    [
+        'method' => 'GET',
+        'uri' => '/emergency',
+        'controller' => EmergencyController::class,
+        'action' => 'index'
+    ],
+
+    // Form laporan
+    [
+        'method' => 'GET',
+        'uri' => '/emergency/report',
+        'controller' => EmergencyController::class,
+        'action' => 'report'
+    ],
+
+    [
+        'method' => 'POST',
+        'uri' => '/emergency/report',
+        'controller' => EmergencyController::class,
+        'action' => 'report'
+    ],
+
+    // Success
+    [
+        'method' => 'GET',
+        'uri' => '/emergency/success/{id}',
+        'controller' => EmergencyController::class,
+        'action' => 'success'
+    ],
+
+    // API
+    [
+        'method' => 'GET',
+        'uri' => '/api/emergency',
+        'controller' => EmergencyController::class,
+        'action' => 'api'
+    ],
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | AUTH MPP (SSO)
+    |--------------------------------------------------------------------------
+    */
+
     [
         'method' => 'GET',
         'uri' => '/login',
@@ -77,6 +137,34 @@ return [
         'controller' => AuthController::class,
         'action' => 'showRegister'
     ],
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | AUTH EMERGENCY (VIEW BERBEDA, DATABASE SAMA)
+    |--------------------------------------------------------------------------
+    */
+
+    [
+        'method' => 'GET',
+        'uri' => '/emergency/login',
+        'controller' => AuthController::class,
+        'action' => 'showEmergencyLogin'
+    ],
+
+    [
+        'method' => 'GET',
+        'uri' => '/emergency/register',
+        'controller' => AuthController::class,
+        'action' => 'showEmergencyRegister'
+    ],
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | AUTH PROCESS (SSO)
+    |--------------------------------------------------------------------------
+    */
 
     [
         'method' => 'POST',
@@ -106,13 +194,13 @@ return [
         'action' => 'me'
     ],
 
+
     /*
     |--------------------------------------------------------------------------
-    | Interoperability Demo
+    | INTEROPERABILITY
     |--------------------------------------------------------------------------
     */
 
-    // Halaman Demo
     [
         'method' => 'GET',
         'uri' => '/interoperability',
@@ -120,7 +208,6 @@ return [
         'action' => 'index'
     ],
 
-    // API Dukcapil
     [
         'method' => 'GET',
         'uri' => '/mock/dukcapil/{nik}',
@@ -128,7 +215,6 @@ return [
         'action' => 'dukcapil'
     ],
 
-    // API NPWP
     [
         'method' => 'GET',
         'uri' => '/mock/npwp/{nik}',
@@ -136,7 +222,6 @@ return [
         'action' => 'npwp'
     ],
 
-    // API NIB
     [
         'method' => 'GET',
         'uri' => '/mock/nib/{nik}',
@@ -144,12 +229,151 @@ return [
         'action' => 'nib'
     ],
 
-    // Aggregator SPBE
     [
         'method' => 'GET',
         'uri' => '/mock/interoperability/{nik}',
         'controller' => InteroperabilityController::class,
         'action' => 'aggregate'
     ],
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | ADMIN
+    |--------------------------------------------------------------------------
+    */
+
+    [
+        'method' => 'GET',
+        'uri' => '/admin',
+        'controller' => AdminController::class,
+        'action' => 'dashboard'
+    ],
+
+    [
+        'method' => 'GET',
+        'uri' => '/admin/dashboard',
+        'controller' => AdminController::class,
+        'action' => 'dashboard'
+    ],
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | ADMIN APPLICATION
+    |--------------------------------------------------------------------------
+    */
+
+    [
+        'method' => 'GET',
+        'uri' => '/admin/applications',
+        'controller' => AdminController::class,
+        'action' => 'applications'
+    ],
+
+    [
+        'method' => 'GET',
+        'uri' => '/admin/applications/{id}',
+        'controller' => AdminController::class,
+        'action' => 'show'
+    ],
+
+    [
+        'method' => 'POST',
+        'uri' => '/admin/applications/{id}/approve',
+        'controller' => AdminController::class,
+        'action' => 'approve'
+    ],
+
+    [
+        'method' => 'POST',
+        'uri' => '/admin/applications/{id}/reject',
+        'controller' => AdminController::class,
+        'action' => 'reject'
+    ],
+
+    [
+        'method' => 'POST',
+        'uri' => '/admin/applications/{id}/pending',
+        'controller' => AdminController::class,
+        'action' => 'pending'
+    ],
+
+    [
+        'method' => 'POST',
+        'uri' => '/admin/applications/{id}/delete',
+        'controller' => AdminController::class,
+        'action' => 'delete'
+    ],
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | ADMIN EMERGENCY
+    |--------------------------------------------------------------------------
+    */
+
+    [
+        'method' => 'GET',
+        'uri' => '/admin/emergencies',
+        'controller' => AdminController::class,
+        'action' => 'emergencies'
+    ],
+
+    [
+        'method' => 'GET',
+        'uri' => '/admin/emergencies/export/pdf',
+        'controller' => AdminController::class,
+        'action' => 'exportEmergencyPdf'
+    ],
+
+    [
+        'method' => 'GET',
+        'uri' => '/admin/emergencies/{id}',
+        'controller' => AdminController::class,
+        'action' => 'emergencyDetail'
+    ],
+
+    [
+        'method' => 'POST',
+        'uri' => '/admin/emergencies/{id}/waiting',
+        'controller' => AdminController::class,
+        'action' => 'emergencyWaiting'
+    ],
+
+    [
+        'method' => 'POST',
+        'uri' => '/admin/emergencies/{id}/process',
+        'controller' => AdminController::class,
+        'action' => 'emergencyProcess'
+    ],
+
+    [
+        'method' => 'POST',
+        'uri' => '/admin/emergencies/{id}/done',
+        'controller' => AdminController::class,
+        'action' => 'emergencyDone'
+    ],
+
+    [
+        'method' => 'POST',
+        'uri' => '/admin/emergencies/{id}/delete',
+        'controller' => AdminController::class,
+        'action' => 'deleteEmergency'
+    ],
+
+    [
+    'method'=>'GET',
+    'uri'=>'/emergency/history',
+    'controller'=>EmergencyController::class,
+    'action'=>'history'
+],
+
+[
+    'method'=>'GET',
+    'uri'=>'/emergency/history/{id}',
+    'controller'=>EmergencyController::class,
+    'action'=>'detail'
+],
 
 ];

@@ -1,57 +1,71 @@
 <?php
+
 $title = 'Ajukan ' . $service['name'];
+
 $authUser = $_SESSION['user'] ?? null;
+
+$form = $service['form'] ?? [];
+
 ob_start();
+
 ?>
 
 <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
 
-    <a href="/services/<?= htmlspecialchars($service['slug']) ?>"
-       class="mb-6 inline-flex items-center gap-2 text-sm font-semibold text-emerald-600">
-        ← Kembali ke detail layanan
+    <a
+        href="/services/<?= htmlspecialchars($service['slug']) ?>"
+        class="mb-6 inline-flex items-center gap-2 text-sm font-semibold text-emerald-600">
+
+        ← Kembali ke Detail Layanan
+
     </a>
 
     <div class="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
 
-        <!-- ========================= -->
-        <!-- Informasi Layanan -->
-        <!-- ========================= -->
+        <!-- ======================================= -->
+        <!-- INFORMASI LAYANAN -->
+        <!-- ======================================= -->
 
-        <div class="rounded-[2rem] border border-white/70 bg-white/90 p-8 shadow-xl shadow-slate-200/50">
+        <div class="rounded-[2rem] border border-white bg-white p-8 shadow-xl">
 
             <div class="inline-flex rounded-full bg-emerald-50 px-3 py-1 text-sm font-semibold text-emerald-700">
+
                 <?= htmlspecialchars($service['category']) ?>
+
             </div>
 
-            <h1 class="mt-5 text-3xl font-semibold text-slate-900">
-                Ajukan Layanan
+            <h1 class="mt-5 text-3xl font-bold text-slate-900">
+
+                <?= htmlspecialchars($service['name']) ?>
+
             </h1>
 
-            <h2 class="mt-2 text-xl font-bold text-emerald-700">
-                <?= htmlspecialchars($service['name']) ?>
-            </h2>
+            <p class="mt-4 text-slate-600">
 
-            <p class="mt-4 text-lg leading-8 text-slate-600">
-                Lengkapi data menggunakan NIK.
-                Seluruh data persyaratan akan diambil otomatis
-                melalui layanan Interoperabilitas SPBE.
+                Lengkapi formulir berikut.
+
+                Seluruh data identitas akan diambil otomatis melalui
+                layanan interoperabilitas SPBE
+                (Dukcapil, DJP/NPWP dan OSS/NIB)
+                berdasarkan NIK yang dimasukkan.
+
             </p>
 
-            <div class="mt-8 rounded-[1.5rem] border border-slate-200 bg-slate-50 p-5">
+            <div class="mt-8">
 
-                <h2 class="text-lg font-semibold text-slate-900">
-                    Persyaratan Dokumen
-                </h2>
+                <h3 class="font-semibold text-slate-900">
 
-                <ul class="mt-4 space-y-3 text-sm text-slate-600">
+                    Persyaratan
 
-                    <?php foreach ($service['documents'] as $document): ?>
+                </h3>
 
-                        <li class="flex items-start gap-3">
+                <ul class="mt-4 space-y-2 text-sm text-slate-600">
 
-                            <span class="mt-1 h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
+                    <?php foreach($service['documents'] as $doc): ?>
 
-                            <span><?= htmlspecialchars($document) ?></span>
+                        <li>
+
+                            • <?= htmlspecialchars($doc) ?>
 
                         </li>
 
@@ -61,226 +75,133 @@ ob_start();
 
             </div>
 
-            <div class="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-5">
-
-                <h3 class="font-semibold text-emerald-700">
-                    Alur Pengajuan
-                </h3>
-
-                <ol class="mt-3 space-y-2 text-sm text-slate-600">
-
-                    <?php foreach ($service['steps'] as $i => $step): ?>
-
-                        <li>
-                            <strong><?= $i + 1 ?>.</strong>
-                            <?= htmlspecialchars($step) ?>
-                        </li>
-
-                    <?php endforeach; ?>
-
-                </ol>
-
-            </div>
-
         </div>
 
-        <!-- ========================= -->
-        <!-- Form -->
-        <!-- ========================= -->
+        <!-- ======================================= -->
+        <!-- FORM -->
+        <!-- ======================================= -->
 
-        <div class="rounded-[2rem] border border-white/70 bg-slate-900 p-8 text-white shadow-xl shadow-slate-300/30">
+        <div class="rounded-[2rem] bg-slate-900 p-8 text-white shadow-xl">
 
-            <?php if (!empty($errorMessage)): ?>
+            <?php if(!empty($errorMessage)): ?>
 
-                <div class="mb-6 rounded-2xl border border-rose-400/30 bg-rose-500/10 p-4">
+                <div class="mb-5 rounded-xl border border-red-500 bg-red-500/20 p-4">
 
-                    <p class="font-semibold text-rose-200">
-                        Pengajuan gagal
-                    </p>
-
-                    <p class="mt-1 text-rose-100">
-                        <?= htmlspecialchars($errorMessage) ?>
-                    </p>
+                    <?= htmlspecialchars($errorMessage) ?>
 
                 </div>
 
             <?php endif; ?>
 
-            <?php if (!empty($submitted)): ?>
 
-                <div class="mb-6 rounded-2xl border border-emerald-400/30 bg-emerald-500/10 p-4">
+            <?php if(!empty($submitted)): ?>
 
-                    <p class="font-semibold text-emerald-300">
-                        Pengajuan berhasil
-                    </p>
+                <div class="mb-5 rounded-xl border border-emerald-500 bg-emerald-500/20 p-4">
 
-                    <p class="mt-1">
-                        Nomor Pengajuan
-                        <strong>#<?= htmlspecialchars($submissionId) ?></strong>
-                    </p>
+                    Pengajuan berhasil.
+
+                    <br><br>
+
+                    Nomor Pengajuan :
+
+                    <strong>
+
+                        #<?= htmlspecialchars($submissionId) ?>
+
+                    </strong>
 
                 </div>
 
             <?php endif; ?>
 
-<form
-method="post"
-action="/services/<?= htmlspecialchars($service['slug']) ?>/apply"
-class="space-y-6">
 
-<div class="grid gap-4 md:grid-cols-2">
+            <form
+                method="POST"
+                action="/services/<?= htmlspecialchars($service['slug']) ?>/apply"
+                class="space-y-6">
 
-    <div>
+                <!-- ============================== -->
+                <!-- NIK -->
+                <!-- ============================== -->
 
-        <label class="mb-2 block text-sm font-semibold text-slate-200">
-            NIK
-        </label>
+                <div>
 
-        <input
-            id="nik"
-            type="text"
-            name="nik"
-            maxlength="16"
-            required
-            autocomplete="off"
-            value="<?= htmlspecialchars($submittedData['nik'] ?? ($authUser['nik'] ?? '')) ?>"
-            class="w-full rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white">
+                    <label class="mb-2 block text-sm font-semibold">
 
-    </div>
+                        NIK
 
-    <div>
+                    </label>
 
-        <label class="mb-2 block text-sm font-semibold text-slate-200">
-            Nomor HP
-        </label>
+                    <input
+                        id="nik"
+                        name="nik"
+                        maxlength="16"
+                        autocomplete="off"
+                        required
+                        value="<?= htmlspecialchars($submittedData['nik'] ?? '') ?>"
+                        class="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white">
 
-        <input
-            type="text"
-            name="hp"
-            required
-            value="<?= htmlspecialchars($submittedData['hp'] ?? '') ?>"
-            class="w-full rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white">
+                    <small
+                        id="nik-mask"
+                        class="mt-2 block text-xs text-emerald-300">
 
-    </div>
+                    </small>
 
-</div>
-<!-- ========================= -->
-<!-- Data Interoperabilitas -->
-<!-- ========================= -->
+                </div>
 
-<div class="rounded-2xl border border-emerald-500 bg-emerald-500/10 p-5">
+                <!-- Loading -->
 
-    <h3 class="text-lg font-semibold text-emerald-300">
-        Data Persyaratan
-        <span class="text-white">(Terambil Otomatis melalui Interoperabilitas)</span>
-    </h3>
+                <div
+                    id="loading"
+                    class="hidden rounded-xl bg-blue-600/20 border border-blue-500 p-4 text-sm">
 
-    <p class="mt-2 text-sm text-slate-300">
-        Masukkan NIK, maka sistem akan mengambil data dari
-        Dukcapil, NPWP dan OSS secara otomatis.
-    </p>
+                    Mengambil data dari layanan interoperabilitas...
 
-    <div class="mt-6 grid gap-4">
+                </div>
 
-        <div>
+                <!-- ============================== -->
+                <!-- FORM DINAMIS -->
+                <!-- ============================== -->
 
-            <label class="mb-2 block text-sm font-semibold">
-                Nama Penduduk
-            </label>
+                <?php
 
-            <input
-                id="nama"
-                name="nama"
-                readonly
-                class="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white">
+                $formFile = __DIR__.'/forms/'.($form['code'] ?? '').'.blade.php';
 
-        </div>
+                if(file_exists($formFile))
+                {
+                    include $formFile;
+                }
 
-        <div>
+                ?>
 
-            <label class="mb-2 block text-sm font-semibold">
-                Alamat
-            </label>
+                <!-- ============================== -->
+                <!-- Keterangan -->
+                <!-- ============================== -->
 
-            <textarea
-                id="alamat"
-                name="alamat"
-                rows="3"
-                readonly
-                class="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white"></textarea>
+                <div>
 
-        </div>
+                    <label class="mb-2 block text-sm font-semibold">
 
-    </div>
+                        Keterangan Tambahan
 
-    <div class="mt-5 grid gap-4 md:grid-cols-2">
+                    </label>
 
-        <div>
+                    <textarea
+                        name="keterangan"
+                        rows="4"
+                        class="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white"><?= htmlspecialchars($submittedData['keterangan'] ?? '') ?></textarea>
 
-            <label class="mb-2 block text-sm font-semibold">
-                Nomor NPWP
-            </label>
+                </div>
 
-            <input
-                id="npwp"
-                readonly
-                class="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white">
+                <button
+                    type="submit"
+                    class="w-full rounded-xl bg-emerald-500 py-3 font-semibold transition hover:bg-emerald-600">
 
-        </div>
+                    Kirim Pengajuan
 
-        <div>
+                </button>
 
-            <label class="mb-2 block text-sm font-semibold">
-                Status NPWP
-            </label>
-
-            <input
-                id="status_npwp"
-                readonly
-                class="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white">
-
-        </div>
-
-    </div>
-
-    <div class="mt-5 grid gap-4 md:grid-cols-3">
-
-        <div>
-
-            <label class="mb-2 block text-sm font-semibold">
-                NIB
-            </label>
-
-            <input
-                id="nib"
-                readonly
-                class="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white">
-
-        </div>
-
-        <div>
-
-            <label class="mb-2 block text-sm font-semibold">
-                Nama Usaha
-            </label>
-
-            <input
-                id="nama_usaha"
-                readonly
-                class="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white">
-
-        </div>
-
-        <div>
-
-            <label class="mb-2 block text-sm font-semibold">
-                Jenis Usaha
-            </label>
-
-            <input
-                id="jenis_usaha"
-                readonly
-                class="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white">
+            </form>
 
         </div>
 
@@ -288,152 +209,238 @@ class="space-y-6">
 
 </div>
 
-<div>
-
-    <label class="mb-2 block text-sm font-semibold text-slate-200">
-        Keterangan Tambahan
-    </label>
-
-    <textarea
-        name="keterangan"
-        rows="4"
-        class="w-full rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white"><?= htmlspecialchars($submittedData['keterangan'] ?? '') ?></textarea>
-
-</div>
-
-<button
-    type="submit"
-    class="w-full rounded-2xl bg-emerald-500 py-3 text-lg font-semibold text-white hover:bg-emerald-600 transition">
-
-    Kirim Pengajuan
-
-</button>
-
-</form>
-
-</div>
-
-</div>
-
-</div>
 <script>
 
-const nikInput = document.getElementById("nik");
+document.addEventListener("DOMContentLoaded", function () {
 
-let timeout = null;
+    const nikInput = document.getElementById("nik");
+    const loading = document.getElementById("loading");
+    const nikMask = document.getElementById("nik-mask");
 
-nikInput.addEventListener("keyup", function(){
+    if (!nikInput) return;
 
-    clearTimeout(timeout);
+    let timer = null;
 
-    const nik = this.value;
+    //------------------------------------------------------
+    // MASKING NIK
+    //------------------------------------------------------
 
-    if(nik.length < 16){
+    function maskNik(nik){
 
-        document.getElementById("nama").value = "";
-        document.getElementById("alamat").value = "";
-        document.getElementById("npwp").value = "";
-        document.getElementById("status_npwp").value = "";
-        document.getElementById("nib").value = "";
-        document.getElementById("nama_usaha").value = "";
-        document.getElementById("jenis_usaha").value = "";
+        if(!nik || nik.length < 16){
 
-        return;
-    }
-
-    timeout = setTimeout(loadInteroperability,300);
-
-});
-
-async function loadInteroperability(){
-
-    const nik = document.getElementById("nik").value;
-
-    try{
-
-        const response = await fetch("/mock/interoperability/" + nik);
-
-        const json = await response.json();
-
-        if(!json.success){
-
-            alert(json.message);
+            nikMask.innerHTML="";
 
             return;
 
         }
 
-        const data = json.data;
+        const masked =
+            nik.substring(0,4) +
+            "********" +
+            nik.substring(12);
 
-        // ======================
-        // Dukcapil
-        // ======================
-
-        if(data.dukcapil){
-
-            document.getElementById("nama").value =
-                data.dukcapil.nama ?? "";
-
-            document.getElementById("alamat").value =
-                data.dukcapil.alamat ?? "";
-
-        }
-
-        // ======================
-        // NPWP
-        // ======================
-
-        if(data.npwp){
-
-            document.getElementById("npwp").value =
-                data.npwp.npwp ?? "-";
-
-            document.getElementById("status_npwp").value =
-                data.npwp.status_npwp ?? "-";
-
-        }else{
-
-            document.getElementById("npwp").value = "-";
-            document.getElementById("status_npwp").value = "-";
-
-        }
-
-        // ======================
-        // NIB
-        // ======================
-
-        if(data.nib){
-
-            document.getElementById("nib").value =
-                data.nib.nib ?? "-";
-
-            document.getElementById("nama_usaha").value =
-                data.nib.nama_usaha ?? "-";
-
-            document.getElementById("jenis_usaha").value =
-                data.nib.jenis_usaha ?? "-";
-
-        }else{
-
-            document.getElementById("nib").value = "-";
-            document.getElementById("nama_usaha").value = "-";
-            document.getElementById("jenis_usaha").value = "-";
-
-        }
-
-    }catch(e){
-
-        console.log(e);
-
-        alert("Gagal mengambil data interoperabilitas.");
+        nikMask.innerHTML =
+            "NIK terverifikasi : <b>"+masked+"</b>";
 
     }
 
-}
+    //------------------------------------------------------
+    // CLEAR FIELD
+    //------------------------------------------------------
+
+    function clearField(id){
+
+        const el=document.getElementById(id);
+
+        if(el){
+
+            el.value="";
+
+        }
+
+    }
+
+    function clearAll(){
+
+        [
+
+            "nama",
+
+            "tempat_lahir",
+
+            "tanggal_lahir",
+
+            "alamat",
+
+            "npwp",
+
+            "status_npwp",
+
+            "nib",
+
+            "nama_usaha",
+
+            "jenis_usaha"
+
+        ].forEach(clearField);
+
+    }
+
+    //------------------------------------------------------
+    // SET VALUE
+    //------------------------------------------------------
+
+    function setValue(id,value){
+
+        const el=document.getElementById(id);
+
+        if(!el) return;
+
+        el.value=value ?? "";
+
+    }
+
+    //------------------------------------------------------
+    // EVENT NIK
+    //------------------------------------------------------
+
+    nikInput.addEventListener("keyup",function(){
+
+        clearTimeout(timer);
+
+        maskNik(nikInput.value);
+
+        if(nikInput.value.length!=16){
+
+            clearAll();
+
+            return;
+
+        }
+
+        timer=setTimeout(loadData,500);
+
+    });
+
+    //------------------------------------------------------
+    // LOAD INTEROPERABILITY
+    //------------------------------------------------------
+
+    async function loadData(){
+
+        loading.classList.remove("hidden");
+
+        try{
+
+            const url="/mock/interoperability/"+nikInput.value;
+
+            console.log("====================================");
+            console.log("CALL API");
+            console.log(url);
+
+            const response=await fetch(url);
+
+            console.log("STATUS :",response.status);
+
+            const text=await response.text();
+
+            console.log(text);
+
+            const json=JSON.parse(text);
+
+            console.log(json);
+
+            loading.classList.add("hidden");
+
+            if(!json.success){
+
+                alert(json.message);
+
+                clearAll();
+
+                return;
+
+            }
+
+            //--------------------------------------------------
+            // DUKCAPIL
+            //--------------------------------------------------
+
+            if(json.data.dukcapil){
+
+                setValue("nik",
+                    json.data.dukcapil.nik);
+
+                setValue("nama",
+                    json.data.dukcapil.nama);
+
+                setValue("tempat_lahir",
+                    json.data.dukcapil.tempat_lahir);
+
+                setValue("tanggal_lahir",
+                    json.data.dukcapil.tanggal_lahir);
+
+                setValue("alamat",
+                    json.data.dukcapil.alamat);
+
+            }
+
+            //--------------------------------------------------
+            // NPWP
+            //--------------------------------------------------
+
+            if(json.data.npwp){
+
+                setValue("npwp",
+                    json.data.npwp.npwp);
+
+                setValue("status_npwp",
+                    json.data.npwp.status_npwp);
+
+            }
+
+            //--------------------------------------------------
+            // NIB
+            //--------------------------------------------------
+
+            if(json.data.nib){
+
+                setValue("nib",
+                    json.data.nib.nib);
+
+                setValue("nama_usaha",
+                    json.data.nib.nama_usaha);
+
+                setValue("jenis_usaha",
+                    json.data.nib.jenis_usaha);
+
+            }
+
+            console.log("AUTOFILL BERHASIL");
+
+        }
+
+        catch(error){
+
+            loading.classList.add("hidden");
+
+            console.error(error);
+
+            alert("Gagal mengambil data dari layanan interoperabilitas.");
+
+        }
+
+    }
+
+});
 
 </script>
 
 <?php
+
 $content = ob_get_clean();
-include __DIR__ . '/../layout.blade.php';
+
+include __DIR__.'/../layout.blade.php';
+
 ?>
