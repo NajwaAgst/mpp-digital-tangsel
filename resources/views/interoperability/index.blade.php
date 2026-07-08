@@ -174,5 +174,6 @@ async function loadData(){
 
 <?php
 $content = ob_get_clean();
-include __DIR__ . '/../layouts/app.blade.php';
+
+include __DIR__ . '/../layout.blade.php';
 ?>

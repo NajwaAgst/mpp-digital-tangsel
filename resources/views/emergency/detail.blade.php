@@ -1,6 +1,8 @@
 <?php
 
-$title="Detail Laporan Emergency";
+$title="Detail Emergency";
+
+$authUser=$_SESSION["user"] ?? null;
 
 ob_start();
 
@@ -8,339 +10,190 @@ $status=$report["status"] ?? "Menunggu";
 
 ?>
 
-<div class="max-w-6xl mx-auto px-6 py-10">
+<div class="mx-auto max-w-6xl px-6 py-10">
 
-<div class="flex justify-between items-center mb-8">
+    <div class="mb-8 flex justify-between">
 
-<div>
+        <div>
 
-<h1 class="text-3xl font-bold text-red-600">
+            <h1 class="text-3xl font-bold text-red-600">
 
-🚨 Detail Laporan
+                🚨 Detail Laporan Emergency
 
-</h1>
+            </h1>
 
-<p class="text-slate-500">
+            <p class="mt-2 text-slate-500">
 
-Laporan #<?= htmlspecialchars($report["id"]) ?>
+                ID Laporan #<?= $report["id"] ?>
 
-</p>
+            </p>
 
-</div>
+        </div>
 
-<a
-href="/emergency/history"
-class="bg-slate-700 text-white px-5 py-3 rounded-xl">
+        <a href="/emergency/history"
+           class="rounded-xl bg-slate-700 px-5 py-3 text-white">
 
-← Kembali
+            ← Kembali
 
-</a>
+        </a>
 
-</div>
+    </div>
 
-<div class="grid lg:grid-cols-2 gap-8">
+    <div class="rounded-3xl bg-white p-8 shadow">
 
-<div class="bg-white rounded-2xl shadow p-8">
+        <table class="w-full">
 
-<h2 class="text-xl font-bold mb-6">
+            <tr class="border-b">
 
-Informasi Pelapor
+                <td class="py-4 font-semibold w-52">
 
-</h2>
+                    Nama
 
-<table class="w-full">
+                </td>
 
-<tr>
+                <td>
 
-<td class="py-2 font-semibold w-44">
+                    <?= htmlspecialchars($report["nama"]) ?>
 
-Nama
+                </td>
 
-</td>
+            </tr>
 
-<td>
+            <tr class="border-b">
 
-<?= htmlspecialchars($report["nama"]) ?>
+                <td class="py-4 font-semibold">
 
-</td>
+                    NIK
 
-</tr>
+                </td>
 
-<tr>
+                <td>
 
-<td class="py-2 font-semibold">
+                    <?= htmlspecialchars($report["nik"]) ?>
 
-NIK
+                </td>
 
-</td>
+            </tr>
 
-<td>
+            <tr class="border-b">
 
-<?= htmlspecialchars($report["nik"]) ?>
+                <td class="py-4 font-semibold">
 
-</td>
+                    No HP
 
-</tr>
+                </td>
 
-<tr>
+                <td>
 
-<td class="py-2 font-semibold">
+                    <?= htmlspecialchars($report["phone"]) ?>
 
-No HP
+                </td>
 
-</td>
+            </tr>
 
-<td>
+            <tr class="border-b">
 
-<?= htmlspecialchars($report["phone"] ?? "-") ?>
+                <td class="py-4 font-semibold">
 
-</td>
+                    Kategori
 
-</tr>
+                </td>
 
-<tr>
+                <td>
 
-<td class="py-2 font-semibold">
+                    <?= htmlspecialchars($report["emergency_type"]) ?>
 
-Kategori
+                </td>
 
-</td>
+            </tr>
 
-<td>
+            <tr class="border-b">
 
-<?= htmlspecialchars($report["emergency_type"] ?? "-") ?>
+                <td class="py-4 font-semibold">
 
-</td>
+                    Lokasi
 
-</tr>
+                </td>
 
-<tr>
+                <td>
 
-<td class="py-2 font-semibold">
+                    <?= htmlspecialchars($report["location"]) ?>
 
-Status
+                </td>
 
-</td>
+            </tr>
 
-<td>
+            <tr class="border-b">
 
-<?php
+                <td class="py-4 font-semibold">
 
-$badge="bg-yellow-100 text-yellow-700";
+                    Alamat
 
-if($status=="Diproses"){
-$badge="bg-blue-100 text-blue-700";
-}
+                </td>
 
-if($status=="Selesai"){
-$badge="bg-green-100 text-green-700";
-}
+                <td>
 
-?>
+                    <?= nl2br(htmlspecialchars($report["alamat"])) ?>
 
-<span class="px-4 py-2 rounded-full <?= $badge ?>">
+                </td>
 
-<?= htmlspecialchars($status) ?>
+            </tr>
 
-</span>
+            <tr class="border-b">
 
-</td>
+                <td class="py-4 font-semibold">
 
-</tr>
+                    Deskripsi
 
-<tr>
+                </td>
 
-<td class="py-2 font-semibold">
+                <td>
 
-Tanggal
+                    <?= nl2br(htmlspecialchars($report["description"])) ?>
 
-</td>
+                </td>
 
-<td>
+            </tr>
 
-<?= date("d M Y H:i",strtotime($report["created_at"])) ?>
+            <tr class="border-b">
 
-</td>
+                <td class="py-4 font-semibold">
 
-</tr>
+                    Status
 
-</table>
+                </td>
 
-</div>
+                <td>
 
-<div class="bg-white rounded-2xl shadow p-8">
+                    <span class="rounded-full bg-red-100 px-4 py-2 text-red-700">
 
-<h2 class="text-xl font-bold mb-6">
+                        <?= htmlspecialchars($status) ?>
 
-Detail Kejadian
+                    </span>
 
-</h2>
+                </td>
 
-<div class="mb-6">
+            </tr>
 
-<div class="font-semibold mb-2">
+            <tr>
 
-Alamat
+                <td class="py-4 font-semibold">
 
-</div>
+                    Tanggal
 
-<div class="text-slate-600">
+                </td>
 
-<?= nl2br(htmlspecialchars($report["alamat"] ?? "-")) ?>
+                <td>
 
-</div>
+                    <?= date("d M Y H:i",strtotime($report["created_at"])) ?>
 
-</div>
+                </td>
 
-<div class="mb-6">
+            </tr>
 
-<div class="font-semibold mb-2">
+        </table>
 
-Lokasi
-
-</div>
-
-<div class="text-slate-600">
-
-<?= nl2br(htmlspecialchars($report["location"] ?? "-")) ?>
-
-</div>
-
-</div>
-
-<div>
-
-<div class="font-semibold mb-2">
-
-Deskripsi
-
-</div>
-
-<div class="text-slate-600 leading-7">
-
-<?= nl2br(htmlspecialchars($report["description"] ?? "-")) ?>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="bg-white rounded-2xl shadow p-8 mt-8">
-
-<h2 class="text-xl font-bold mb-6">
-
-Progress Penanganan
-
-</h2>
-
-<div class="space-y-8">
-
-<div class="flex items-center">
-
-<div class="w-10 h-10 rounded-full flex items-center justify-center <?= in_array($status,["Menunggu","Diproses","Selesai"]) ? "bg-green-600 text-white":"bg-gray-300" ?>">
-
-✓
-
-</div>
-
-<div class="ml-5">
-
-<div class="font-bold">
-
-Laporan Diterima
-
-</div>
-
-<div class="text-slate-500">
-
-Laporan berhasil dikirim.
-
-</div>
-
-</div>
-
-</div>
-
-<div class="flex items-center">
-
-<div class="w-10 h-10 rounded-full flex items-center justify-center <?= in_array($status,["Diproses","Selesai"]) ? "bg-green-600 text-white":"bg-gray-300" ?>">
-
-✓
-
-</div>
-
-<div class="ml-5">
-
-<div class="font-bold">
-
-Sedang Diproses
-
-</div>
-
-<div class="text-slate-500">
-
-Petugas sedang menangani laporan.
-
-</div>
-
-</div>
-
-</div>
-
-<div class="flex items-center">
-
-<div class="w-10 h-10 rounded-full flex items-center justify-center <?= $status=="Selesai" ? "bg-green-600 text-white":"bg-gray-300" ?>">
-
-✓
-
-</div>
-
-<div class="ml-5">
-
-<div class="font-bold">
-
-Penanganan Selesai
-
-</div>
-
-<div class="text-slate-500">
-
-Kasus telah ditutup.
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<?php if($status=="Selesai"): ?>
-
-<div class="bg-green-50 border border-green-200 rounded-2xl p-8 mt-8">
-
-<h2 class="text-2xl font-bold text-green-700">
-
-🎉 Penanganan Selesai
-
-</h2>
-
-<p class="mt-3 text-green-700">
-
-Laporan Anda telah selesai ditangani oleh petugas Emergency 112.
-
-Terima kasih atas partisipasi Anda.
-
-</p>
-
-</div>
-
-<?php endif; ?>
+    </div>
 
 </div>
 
@@ -348,6 +201,6 @@ Terima kasih atas partisipasi Anda.
 
 $content=ob_get_clean();
 
-include __DIR__."/../layout_emergency.blade.php";
+include __DIR__."/../layout.blade.php";
 
 ?>

@@ -1,215 +1,133 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 $authUser = $authUser ?? ($_SESSION['user'] ?? null);
 ?>
 
-<nav class="sticky top-0 z-40 border-b border-white/70 bg-white/80 backdrop-blur-xl">
+<nav class="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur-md shadow-sm">
 
-    <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+    <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
 
-        <!-- ===================== LOGO ===================== -->
+        <!-- ================= LOGO ================= -->
 
-        <a href="/" class="flex items-center gap-3">
+        <a href="/" class="flex items-center gap-3 shrink-0">
 
-            <div class="flex h-11 w-11 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-500 to-violet-600 shadow-lg">
+            <div class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl bg-emerald-600 shadow">
 
-                <?php
-
-                $logoCandidates = [
-                    __DIR__ . '/../../public/assets/mpp-logo.png',
-                    __DIR__ . '/../../public/assets/mpp-logo.jpg',
-                    __DIR__ . '/../../public/assets/mpp-logo.jpeg',
-                    __DIR__ . '/../../public/assets/mpp-logo.webp',
-                    __DIR__ . '/../../public/assets/mpp-logo.svg'
-                ];
-
-                $logoPath = null;
-
-                foreach ($logoCandidates as $candidate) {
-
-                    if (file_exists($candidate)) {
-                        $logoPath = $candidate;
-                        break;
-                    }
-
-                }
-
-                ?>
-
-                <?php if ($logoPath): ?>
-
-                    <img
-                        src="/assets/<?= basename($logoPath) ?>"
-                        class="h-full w-full object-cover"
-                        alt="MPP">
-
-                <?php else: ?>
-
-                    <span class="text-white font-bold">
-                        MPP
-                    </span>
-
-                <?php endif; ?>
+                <img
+                    src="/assets/logo.png"
+                    alt="MPP"
+                    class="h-full w-full object-cover"
+                    onerror="this.style.display='none';this.parentNode.innerHTML='🏛️';">
 
             </div>
 
             <div>
 
-                <div class="font-bold text-slate-800">
-                    Mall Pelayanan Publik (MPP)
-                </div>
+                <h1 class="text-lg font-bold leading-tight text-slate-800">
+                    Mall Pelayanan Publik
+                </h1>
 
-                <div class="text-xs text-slate-500">
+                <p class="text-sm text-slate-500">
                     Kota Tangerang Selatan
-                </div>
+                </p>
 
             </div>
 
         </a>
 
-        <!-- ===================== MENU ===================== -->
+        <!-- ================= MENU ================= -->
 
         <div class="hidden lg:flex items-center gap-8">
 
             <a
-                href="/"
-                class="font-medium text-slate-600 hover:text-emerald-600">
-
-                Beranda
-
-            </a>
-
-            <a
                 href="/services"
-                class="font-medium text-slate-600 hover:text-emerald-600">
+                class="font-medium text-slate-600 transition hover:text-emerald-600">
 
                 Layanan
 
             </a>
 
+            
+
             <?php if (!empty($authUser)): ?>
 
                 <a
                     href="/dashboard"
-                    class="font-medium text-slate-600 hover:text-emerald-600">
+                    class="font-medium text-slate-600 transition hover:text-emerald-600">
 
-                    Dashboard Saya
+                    Dashboard
+
+                </a>
+
+                <a
+                    href="/services/history"
+                    class="font-medium text-slate-600 transition hover:text-emerald-600">
+
+                    Riwayat
 
                 </a>
 
             <?php endif; ?>
 
-            <a
-                href="#telemetry"
-                class="font-medium text-slate-600 hover:text-emerald-600">
-
-                Telemetry
-
-            </a>
-
         </div>
 
-        <!-- ===================== RIGHT ===================== -->
+        <!-- ================= USER ================= -->
 
-        <div class="flex items-center gap-4">
-
-            <!-- Search -->
-
-            <label class="hidden md:flex h-11 items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4">
-
-                <svg
-                    class="h-4 w-4"
-                    viewBox="0 0 24 24"
-                    fill="none">
-
-                    <path
-                        d="M21 21L16.65 16.65"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round" />
-
-                    <circle
-                        cx="11"
-                        cy="11"
-                        r="6"
-                        stroke="currentColor"
-                        stroke-width="2" />
-
-                </svg>
-
-                <input
-                    class="w-28 bg-transparent outline-none"
-                    placeholder="Cari layanan">
-
-            </label>
+        <div class="flex items-center gap-6">
 
             <?php if (!empty($authUser)): ?>
 
-                <div class="flex items-center gap-3">
+                <!-- USER PROFILE -->
 
-                    <!-- USER -->
+                <div class="flex items-center gap-3 rounded-full border border-slate-200 bg-slate-50 px-3 py-2">
 
-                    <div class="flex h-11 items-center gap-3 rounded-full border border-emerald-200 bg-emerald-50 px-4 shadow-sm">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-600 font-bold text-white">
 
-                        <div class="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600 font-bold text-white">
+                        <?= strtoupper(substr($authUser['name'] ?? 'U', 0, 1)) ?>
 
-                            <?= strtoupper(substr($authUser["name"] ?? "U", 0, 1)) ?>
+                    </div>
+
+                    <div class="hidden md:block leading-tight">
+
+                        <div class="font-semibold text-slate-800">
+
+                            <?= htmlspecialchars($authUser['name']) ?>
 
                         </div>
 
-                        <div class="hidden sm:block">
+                        <div class="text-xs text-slate-500">
 
-                            <div class="font-semibold text-slate-700">
-
-                                <?= htmlspecialchars($authUser["name"] ?? "") ?>
-
-                            </div>
-
-                            <div class="text-xs text-slate-500">
-
-                                <?= htmlspecialchars($authUser["nik"] ?? "") ?>
-
-                            </div>
+                            Pengguna
 
                         </div>
 
                     </div>
 
-                    <!-- Dashboard Button -->
-
-                    <a
-                        href="/dashboard"
-                        class="flex h-11 items-center rounded-full bg-emerald-600 px-5 font-semibold text-white hover:bg-emerald-700">
-
-                        Dashboard
-
-                    </a>
-
-                    <!-- Logout -->
-
-                    <form
-                        action="/auth/logout"
-                        method="POST"
-                        class="m-0">
-
-                        <button
-                            type="submit"
-                            class="flex h-11 items-center rounded-full border border-red-300 px-5 font-semibold text-red-600 hover:bg-red-600 hover:text-white">
-
-                            Logout
-
-                        </button>
-
-                    </form>
-
                 </div>
 
+                <!-- LOGOUT -->
+
+                <form action="/auth/logout" method="POST" class="m-0">
+
+    <button
+        type="submit"
+        class="font-medium text-slate-600 hover:text-red-600 transition">
+
+        Logout
+
+    </button>
+
+</form>
             <?php else: ?>
 
                 <a
                     href="/login"
-                    class="flex h-11 items-center rounded-full bg-emerald-600 px-6 font-semibold text-white shadow hover:bg-emerald-700">
+                    class="rounded-full bg-emerald-600 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700">
 
-                    Login / Register
+                    Login
 
                 </a>
 

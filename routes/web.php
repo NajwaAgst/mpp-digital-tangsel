@@ -22,6 +22,13 @@ return [
         'action' => 'index'
     ],
 
+    [
+    'method' => 'GET',
+    'uri' => '/dashboard',
+    'controller' => ServiceController::class,
+    'action' => 'dashboard'
+],
+
 
     /*
     |--------------------------------------------------------------------------
@@ -35,6 +42,27 @@ return [
         'controller' => ServiceController::class,
         'action' => 'index'
     ],
+
+    [
+    'method' => 'GET',
+    'uri' => '/services/history',
+    'controller' => ServiceController::class,
+    'action' => 'history'
+],
+
+[
+    'method' => 'GET',
+    'uri' => '/services/history/{id}',
+    'controller' => ServiceController::class,
+    'action' => 'historyDetail'
+],
+
+[
+    'method' => 'GET',
+    'uri' => '/services/history/{id}/download',
+    'controller' => ServiceController::class,
+    'action' => 'downloadPdf'
+],
 
     [
         'method' => 'GET',
@@ -57,19 +85,7 @@ return [
         'action' => 'apply'
     ],
 
-    [
-    'method' => 'GET',
-    'uri' => '/services/history',
-    'controller' => ServiceController::class,
-    'action' => 'history'
-],
-
-[
-    'method' => 'GET',
-    'uri' => '/services/history/{id}',
-    'controller' => ServiceController::class,
-    'action' => 'detail'
-],
+    
 
 
     /*

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Support\Database;
 use PDO;
-use Dompdf\Dompdf;
 
 class AdminController extends Controller
 {
@@ -475,57 +474,90 @@ public function deleteEmergency(int $id): void
     exit;
 }
 
-public function exportEmergencyPdf(): void
+
+
+    public function approve(int $id): void
 {
     $this->checkAdmin();
 
     $pdo = Database::getConnection();
 
-    $stmt = $pdo->query("
-        SELECT *
-        FROM emergencies
-        ORDER BY created_at DESC
+    /*
+    |--------------------------------------------------------------------------
+    | Update Status
+    |--------------------------------------------------------------------------
+    */
+
+    $stmt = $pdo->prepare("
+        UPDATE applications
+        SET status='Approved'
+        WHERE id=?
     ");
 
-    $reports = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt->execute([$id]);
 
-    ob_start();
+    /*
+    |--------------------------------------------------------------------------
+    | Ambil Data Pengajuan
+    |--------------------------------------------------------------------------
+    */
 
-    include __DIR__ . "/../../../resources/views/admin/pdf-emergency.php";
+    $stmt = $pdo->prepare("
+        SELECT *
+        FROM applications
+        WHERE id=?
+        LIMIT 1
+    ");
 
-    $html = ob_get_clean();
+    $stmt->execute([$id]);
 
-    $pdf = new Dompdf();
+    $application = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $pdf->loadHtml($html);
+    /*
+|--------------------------------------------------------------------------
+| Simpan nama file saja
+|--------------------------------------------------------------------------
+*/
 
-    $pdf->setPaper("A4", "landscape");
+$filename = "LAYANAN-" . $application["id"] . ".pdf";
 
-    $pdf->render();
+$stmt = $pdo->prepare("
+    UPDATE applications
+    SET pdf_file=?
+    WHERE id=?
+");
 
-    $pdf->stream(
-        "Emergency_Report.pdf",
-        [
-            "Attachment" => true
-        ]
-    );
+$stmt->execute([
+    $filename,
+    $id
+]);
+
+    /*
+    |--------------------------------------------------------------------------
+    | Update Database
+    |--------------------------------------------------------------------------
+    */
+
+    $stmt = $pdo->prepare("
+        UPDATE applications
+        SET pdf_file=?
+        WHERE id=?
+    ");
+
+    $stmt->execute([
+
+        $filename,
+
+        $id
+
+    ]);
+
+    $_SESSION["success"] = "Pengajuan berhasil disetujui dan PDF berhasil dibuat.";
+
+    header("Location: /admin/applications/".$id);
 
     exit;
 }
-
-    /**
-     * ==========================================
-     * Approve
-     * ==========================================
-     */
-    public function approve(int $id): void
-    {
-        $this->changeStatus(
-            $id,
-            "Approved",
-            "Pengajuan berhasil disetujui."
-        );
-    }
 
 
     /**

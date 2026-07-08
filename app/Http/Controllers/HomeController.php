@@ -5,15 +5,44 @@ namespace App\Http\Controllers;
 use App\Repositories\ServiceRepository;
 use App\Repositories\StatsRepository;
 use App\Repositories\EmergencyRepository;
+use App\Repositories\ApplicationRepository;
 
 class HomeController extends Controller
 {
     public function index(): string
     {
-        // ==============================
-        // Data seluruh layanan MPP
-        // ==============================
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | User Login
+        |--------------------------------------------------------------------------
+        */
+
+        $authUser = $_SESSION['user'] ?? null;
+
+        /*
+        |--------------------------------------------------------------------------
+        | Riwayat Pengajuan User
+        |--------------------------------------------------------------------------
+        */
+
+        $applications = [];
+
+        if (!empty($authUser['nik'])) {
+            $applications = ApplicationRepository::byNik($authUser['nik']);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Data Layanan
+        |--------------------------------------------------------------------------
+        */
+
         $services = array_map(
+
             static function (array $service): array {
 
                 return [
@@ -27,17 +56,25 @@ class HomeController extends Controller
                 ];
 
             },
+
             ServiceRepository::all()
+
         );
 
-        // ==============================
-        // Statistik Dashboard
-        // ==============================
+        /*
+        |--------------------------------------------------------------------------
+        | Statistik MPP
+        |--------------------------------------------------------------------------
+        */
+
         $stats = StatsRepository::all();
 
-        // ==============================
-        // Statistik Emergency
-        // ==============================
+        /*
+        |--------------------------------------------------------------------------
+        | Statistik Emergency
+        |--------------------------------------------------------------------------
+        */
+
         $emergencyStats = [
 
             'total'      => EmergencyRepository::count(),
@@ -47,9 +84,12 @@ class HomeController extends Controller
 
         ];
 
-        // ==============================
-        // Portal Utama
-        // ==============================
+        /*
+        |--------------------------------------------------------------------------
+        | Portal
+        |--------------------------------------------------------------------------
+        */
+
         $portals = [
 
             [
@@ -92,15 +132,64 @@ class HomeController extends Controller
 
         ];
 
+        /*
+        |--------------------------------------------------------------------------
+        | Dashboard User
+        |--------------------------------------------------------------------------
+        */
+
+        $userStats = [
+
+            'total' => count($applications),
+
+            'pending' => count(
+                array_filter(
+                    $applications,
+                    fn($a) => ($a['status'] ?? '') === 'Menunggu'
+                )
+            ),
+
+            'processing' => count(
+                array_filter(
+                    $applications,
+                    fn($a) => ($a['status'] ?? '') === 'Diproses'
+                )
+            ),
+
+            'done' => count(
+                array_filter(
+                    $applications,
+                    fn($a) => ($a['status'] ?? '') === 'Selesai'
+                )
+            ),
+
+            'rejected' => count(
+                array_filter(
+                    $applications,
+                    fn($a) => ($a['status'] ?? '') === 'Ditolak'
+                )
+            )
+
+        ];
+
         return $this->view(
 
             'home',
 
             [
 
+                'authUser'       => $authUser,
+
+                'applications'   => $applications,
+
+                'userStats'      => $userStats,
+
                 'services'       => $services,
+
                 'stats'          => $stats,
+
                 'portals'        => $portals,
+
                 'emergencyStats' => $emergencyStats
 
             ]

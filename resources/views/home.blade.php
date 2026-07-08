@@ -1,31 +1,43 @@
 <?php
+
 $title = 'Mall Pelayanan Publik (MPP) Kota Tangerang Selatan';
+
 $authUser = $_SESSION['user'] ?? null;
+
 ob_start();
+
 ?>
+
+<!-- ===================================================== -->
+<!-- HERO -->
+<!-- ===================================================== -->
+
 <section class="relative overflow-hidden">
 
     <div class="absolute inset-0 bg-gradient-to-r from-blue-700 via-blue-600 to-cyan-600"></div>
 
-    <div class="absolute inset-0 opacity-10"
-        style="background-image:
-        radial-gradient(circle,#ffffff 1px,transparent 1px);
-        background-size:30px 30px;"></div>
+    <div
+        class="absolute inset-0 opacity-10"
+        style="
+            background-image:
+            radial-gradient(circle,#ffffff 1px,transparent 1px);
+            background-size:30px 30px;
+        ">
+    </div>
 
-    <div class="relative mx-auto max-w-7xl px-6 py-20">
+    <div class="relative mx-auto max-w-7xl px-6 py-24">
 
         <div class="text-center text-white">
 
-            <span
-                class="inline-flex items-center rounded-full bg-white/20 px-5 py-2 text-sm font-semibold">
+            <span class="inline-flex items-center rounded-full bg-white/20 px-6 py-2 text-sm font-semibold">
 
-                🔵 Portal Pelayanan Terpadu
+                🔵 Portal Pelayanan Publik Terpadu
 
             </span>
 
-            <h1 class="mt-8 text-6xl font-extrabold">
+            <h1 class="mt-8 text-6xl font-extrabold leading-tight">
 
-                Pelayanan Publik
+                Mall Pelayanan Publik
 
                 <br>
 
@@ -39,11 +51,13 @@ ob_start();
 
             <p class="mx-auto mt-8 max-w-3xl text-xl leading-9 text-blue-100">
 
-                Temukan seluruh layanan Pemerintah Kota Tangerang Selatan
-                mulai dari administrasi, perizinan, hingga layanan
-                tanggap darurat Emergency 112 dalam satu portal digital.
+                Portal digital yang mengintegrasikan seluruh layanan
+                administrasi pemerintahan dan layanan Emergency 112
+                dalam satu sistem berbasis interoperabilitas SPBE.
 
             </p>
+
+           
 
         </div>
 
@@ -51,240 +65,202 @@ ob_start();
 
 </section>
 
+
+<!-- ===================================================== -->
+<!-- PILIH LAYANAN -->
+<!-- ===================================================== -->
+
 <section class="bg-white py-20">
 
-<div class="mx-auto max-w-7xl px-6">
+    <div class="mx-auto max-w-7xl px-6">
 
-<div class="text-center">
+        <div class="text-center">
 
-<span class="rounded-full bg-emerald-100 px-5 py-2 font-semibold text-emerald-700">
+            <span
+                class="rounded-full bg-emerald-100 px-5 py-2 font-semibold text-emerald-700">
 
-PILIH LAYANAN
+                PILIH LAYANAN
 
-</span>
+            </span>
 
-<h2 class="mt-6 text-5xl font-bold text-slate-900">
+            <h2 class="mt-6 text-5xl font-bold text-slate-900">
 
-Portal Pelayanan Publik Digital
+                Portal Pelayanan Publik Digital
 
-</h2>
+            </h2>
 
-<p class="mx-auto mt-5 max-w-3xl text-lg leading-8 text-slate-600">
+            <p class="mx-auto mt-5 max-w-3xl text-lg leading-8 text-slate-600">
 
-Portal ini terdiri dari dua layanan utama,
-yaitu Mall Pelayanan Publik Digital (MPP)
-dan Emergency 112 yang saling terintegrasi.
+                Portal ini terdiri dari dua layanan utama,
+                yaitu Mall Pelayanan Publik Digital (MPP)
+                dan Emergency 112 yang saling terintegrasi.
 
-</p>
+            </p>
+
+        </div>
+
+        <div class="mt-16 grid gap-10 lg:grid-cols-2 items-stretch">
+
+    <!-- ================= MPP ================= -->
+
+    <div class="flex flex-col overflow-hidden rounded-[32px] border bg-white shadow-xl transition hover:-translate-y-2">
+
+        <div class="bg-gradient-to-r from-emerald-700 to-emerald-500 p-10 text-white">
+
+            <div class="text-7xl">
+                🏛️
+            </div>
+
+            <h3 class="mt-6 text-4xl font-bold">
+                Mall Pelayanan Publik
+            </h3>
+
+            <p class="mt-4 text-lg text-emerald-100">
+                Seluruh layanan administrasi pemerintah
+                secara online dalam satu platform digital.
+            </p>
+
+        </div>
+
+        <div class="flex flex-1 flex-col p-8">
+
+            <div class="grid grid-cols-2 gap-5">
+
+                <div class="rounded-xl bg-emerald-50 p-5">
+
+                    <div class="text-3xl font-bold text-emerald-700">
+                        <?= count($services) ?>
+                    </div>
+
+                    <div class="mt-2 text-slate-600">
+                        Jenis Layanan
+                    </div>
+
+                </div>
+
+                <div class="rounded-xl bg-cyan-50 p-5">
+
+                    <div class="text-3xl font-bold text-cyan-700">
+                        18+
+                    </div>
+
+                    <div class="mt-2 text-slate-600">
+                        Instansi
+                    </div>
+
+                </div>
+
+            </div>
+
+            <ul class="mt-8 space-y-3 text-slate-700">
+
+                <li>✔ Dukcapil</li>
+                <li>✔ Perizinan</li>
+                <li>✔ Pajak Daerah</li>
+                <li>✔ BPJS</li>
+                <li>✔ Kepolisian</li>
+
+            </ul>
+
+            <a
+                href="/services"
+                class="mt-auto rounded-xl bg-emerald-600 py-4 text-center text-lg font-bold text-white transition hover:bg-emerald-700">
+
+                Masuk ke MPP
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- ================= EMERGENCY ================= -->
+
+    <div class="flex flex-col overflow-hidden rounded-[32px] border bg-white shadow-xl transition hover:-translate-y-2">
+
+        <div class="bg-gradient-to-r from-red-600 to-red-500 p-10 text-white">
+
+            <div class="text-7xl">
+                🚨
+            </div>
+
+            <h3 class="mt-6 text-4xl font-bold">
+                Emergency 112
+            </h3>
+
+            <p class="mt-4 text-lg text-red-100">
+                Layanan tanggap darurat terpadu
+                selama 24 jam untuk seluruh masyarakat.
+            </p>
+
+        </div>
+
+        <div class="flex flex-1 flex-col p-8">
+
+            <div class="grid grid-cols-3 gap-4">
+
+                <div class="rounded-xl bg-red-50 p-5 text-center">
+
+                    <div class="text-4xl">
+                        🚒
+                    </div>
+
+                    <div class="mt-3">
+                        Damkar
+                    </div>
+
+                </div>
+
+                <div class="rounded-xl bg-red-50 p-5 text-center">
+
+                    <div class="text-4xl">
+                        🚑
+                    </div>
+
+                    <div class="mt-3">
+                        Ambulans
+                    </div>
+
+                </div>
+
+                <div class="rounded-xl bg-red-50 p-5 text-center">
+
+                    <div class="text-4xl">
+                        👮
+                    </div>
+
+                    <div class="mt-3">
+                        Polisi
+                    </div>
+
+                </div>
+
+            </div>
+
+            <p class="mt-8 leading-8 text-slate-600">
+                Digunakan untuk melaporkan kebakaran,
+                kecelakaan, kriminalitas, bencana alam,
+                maupun kondisi darurat lainnya.
+            </p>
+
+            <a
+                href="/emergency"
+                class="mt-auto rounded-xl bg-red-600 py-4 text-center text-lg font-bold text-white transition hover:bg-red-700">
+
+                Masuk Emergency 112
+
+            </a>
+
+        </div>
+
+    </div>
 
 </div>
 
-<div class="mt-16 grid gap-10 lg:grid-cols-2">
 
-<!-- ================= MPP ================= -->
-
-<div
-class="overflow-hidden rounded-[32px] bg-white shadow-xl border hover:-translate-y-2 transition">
-
-<div
-class="bg-gradient-to-r from-emerald-700 to-emerald-500 p-10 text-white">
-
-<div class="text-7xl">
-
-🏛️
-
-</div>
-
-<h3 class="mt-6 text-4xl font-bold">
-
-Mall Pelayanan Publik
-
-</h3>
-
-<p class="mt-4 text-lg text-emerald-100">
-
-Seluruh layanan administrasi pemerintah
-secara online dalam satu platform.
-
-</p>
-
-</div>
-
-<div class="p-8">
-
-<div class="grid grid-cols-2 gap-5">
-
-<div class="rounded-xl bg-emerald-50 p-5">
-
-<div class="text-3xl font-bold text-emerald-700">
-
-<?= count($services) ?>
-
-</div>
-
-<div class="mt-2 text-slate-600">
-
-Jenis Layanan
-
-</div>
-
-</div>
-
-<div class="rounded-xl bg-cyan-50 p-5">
-
-<div class="text-3xl font-bold text-cyan-700">
-
-18+
-
-</div>
-
-<div class="mt-2 text-slate-600">
-
-Instansi
-
-</div>
-
-</div>
-
-</div>
-
-<ul class="mt-8 space-y-3 text-slate-700">
-
-<li>✔ Dukcapil</li>
-
-<li>✔ Perizinan</li>
-
-<li>✔ Pajak Daerah</li>
-
-<li>✔ BPJS</li>
-
-<li>✔ Kepolisian</li>
-
-</ul>
-
-<a
-href="/services"
-class="mt-10 block rounded-xl bg-emerald-600 py-4 text-center text-lg font-bold text-white hover:bg-emerald-700">
-
-Masuk ke MPP
-
-</a>
-
-</div>
-
-</div>
-
-<!-- ================= EMERGENCY ================= -->
-
-<div
-class="overflow-hidden rounded-[32px] bg-white shadow-xl border hover:-translate-y-2 transition">
-
-<div
-class="bg-gradient-to-r from-red-600 to-red-500 p-10 text-white">
-
-<div class="text-7xl">
-
-🚨
-
-</div>
-
-<h3 class="mt-6 text-4xl font-bold">
-
-Emergency 112
-
-</h3>
-
-<p class="mt-4 text-lg text-red-100">
-
-Layanan tanggap darurat terpadu
-24 jam untuk masyarakat.
-
-</p>
-
-</div>
-
-<div class="p-8">
-
-<div class="grid grid-cols-3 gap-4">
-
-<div class="rounded-xl bg-red-50 p-5 text-center">
-
-<div class="text-4xl">
-
-🚒
-
-</div>
-
-<div class="mt-3">
-
-Damkar
-
-</div>
-
-</div>
-
-<div class="rounded-xl bg-red-50 p-5 text-center">
-
-<div class="text-4xl">
-
-🚑
-
-</div>
-
-<div class="mt-3">
-
-Ambulans
-
-</div>
-
-</div>
-
-<div class="rounded-xl bg-red-50 p-5 text-center">
-
-<div class="text-4xl">
-
-👮
-
-</div>
-
-<div class="mt-3">
-
-Polisi
-
-</div>
-
-</div>
-
-</div>
-
-<p class="mt-8 leading-8 text-slate-600">
-
-Digunakan untuk melaporkan kebakaran,
-kecelakaan, kriminalitas,
-bencana alam,
-dan kondisi darurat lainnya.
-
-</p>
-
-<a
-href="/emergency"
-class="mt-10 block rounded-xl bg-red-600 py-4 text-center text-lg font-bold text-white hover:bg-red-700">
-
-Masuk Emergency 112
-
-</a>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-
+<!-- ===================================================== -->
+<!-- DASHBOARD -->
+<!-- ===================================================== -->
 
 <section class="bg-slate-100 py-20">
 
@@ -292,13 +268,14 @@ Masuk Emergency 112
 
         <div class="text-center">
 
-            <span class="rounded-full bg-indigo-100 px-5 py-2 text-indigo-700 font-semibold">
+            <span
+                class="rounded-full bg-indigo-100 px-5 py-2 font-semibold text-indigo-700">
 
                 DASHBOARD
 
             </span>
 
-            <h2 class="mt-5 text-4xl font-bold">
+            <h2 class="mt-6 text-4xl font-bold text-slate-900">
 
                 Statistik Pelayanan Publik
 
@@ -306,15 +283,15 @@ Masuk Emergency 112
 
             <p class="mt-4 text-slate-600">
 
-                Monitoring layanan publik secara real-time.
+                Monitoring pelayanan publik secara realtime.
 
             </p>
 
         </div>
 
-        <div class="mt-14 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+        <div class="mt-14 grid gap-8 md:grid-cols-2 xl:grid-cols-4">
 
-            <div class="rounded-3xl bg-white shadow-lg p-8">
+            <div class="rounded-3xl bg-white p-8 shadow-lg">
 
                 <div class="text-5xl">
 
@@ -336,7 +313,7 @@ Masuk Emergency 112
 
             </div>
 
-            <div class="rounded-3xl bg-white shadow-lg p-8">
+            <div class="rounded-3xl bg-white p-8 shadow-lg">
 
                 <div class="text-5xl">
 
@@ -346,7 +323,7 @@ Masuk Emergency 112
 
                 <div class="mt-5 text-5xl font-bold text-blue-600">
 
-                    <?= $stats[0]['value'] ?? '0' ?>
+                    <?= $stats[0]['value'] ?? 0 ?>
 
                 </div>
 
@@ -358,7 +335,7 @@ Masuk Emergency 112
 
             </div>
 
-            <div class="rounded-3xl bg-white shadow-lg p-8">
+            <div class="rounded-3xl bg-white p-8 shadow-lg">
 
                 <div class="text-5xl">
 
@@ -368,7 +345,7 @@ Masuk Emergency 112
 
                 <div class="mt-5 text-5xl font-bold text-violet-600">
 
-                    <?= $stats[1]['value'] ?? '0' ?>
+                    <?= $stats[1]['value'] ?? 0 ?>
 
                 </div>
 
@@ -380,7 +357,7 @@ Masuk Emergency 112
 
             </div>
 
-            <div class="rounded-3xl bg-white shadow-lg p-8">
+            <div class="rounded-3xl bg-white p-8 shadow-lg">
 
                 <div class="text-5xl">
 
@@ -408,377 +385,567 @@ Masuk Emergency 112
 
 </section>
 
-<section class="bg-slate-50 py-20">
+<!-- ===================================================== -->
+<!-- DASHBOARD USER -->
+<!-- ===================================================== -->
 
-<div class="mx-auto max-w-7xl px-6">
+<?php if (!empty($authUser)): ?>
 
-<div class="flex justify-between items-center">
+<section class="bg-white py-20">
 
-<div>
+    <div class="mx-auto max-w-7xl px-6">
 
-<span class="rounded-full bg-yellow-100 px-4 py-2 font-semibold text-yellow-700">
+        <div class="rounded-[32px] bg-gradient-to-r from-emerald-600 to-cyan-600 p-10 text-white shadow-2xl">
 
-PENGUMUMAN
+            <div class="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
 
-</span>
+                <div>
 
-<h2 class="mt-5 text-4xl font-bold">
+                    <span class="rounded-full bg-white/20 px-4 py-2 text-sm font-semibold">
 
-Informasi Pemerintah
+                        DASHBOARD USER
 
-</h2>
+                    </span>
 
-</div>
+                    <h2 class="mt-6 text-4xl font-bold">
 
-<a href="#"
-class="text-blue-600 font-semibold">
+                        Halo,
 
-Lihat Semua →
+                        <?= htmlspecialchars($authUser['name']) ?>
 
-</a>
+                        👋
 
-</div>
+                    </h2>
 
-<div class="mt-10 grid md:grid-cols-3 gap-8">
+                    <p class="mt-5 max-w-2xl text-lg text-emerald-100">
 
-<div class="bg-white rounded-3xl shadow-lg p-8">
+                        Selamat datang kembali di Portal Mall Pelayanan Publik
+                        Kota Tangerang Selatan.
 
-<div class="text-5xl">
+                    </p>
 
-📢
+                </div>
 
-</div>
+                <div class="flex flex-wrap gap-4">
 
-<h3 class="mt-5 text-2xl font-bold">
+                    <a
+                        href="/dashboard"
+                        class="rounded-xl bg-white px-8 py-4 font-bold text-emerald-700 hover:bg-slate-100">
 
-Pelayanan Libur Nasional
+                        Dashboard Saya
 
-</h3>
+                    </a>
 
-<p class="mt-4 text-slate-600">
+                    <a
+                        href="/services/history"
+                        class="rounded-xl border border-white px-8 py-4 font-bold text-white hover:bg-white hover:text-emerald-700">
 
-Seluruh pelayanan MPP tutup pada tanggal merah.
+                        Riwayat Pengajuan
 
-</p>
+                    </a>
 
-</div>
+                </div>
 
-<div class="bg-white rounded-3xl shadow-lg p-8">
+            </div>
 
-<div class="text-5xl">
+        </div>
 
-🏥
-
-</div>
-
-<h3 class="mt-5 text-2xl font-bold">
-
-Emergency Tetap Aktif
-
-</h3>
-
-<p class="mt-4 text-slate-600">
-
-Layanan 112 tetap beroperasi selama 24 jam.
-
-</p>
-
-</div>
-
-<div class="bg-white rounded-3xl shadow-lg p-8">
-
-<div class="text-5xl">
-
-🌐
-
-</div>
-
-<h3 class="mt-5 text-2xl font-bold">
-
-Integrasi Data
-
-</h3>
-
-<p class="mt-4 text-slate-600">
-
-Seluruh data telah terhubung melalui SPBE.
-
-</p>
-
-</div>
-
-</div>
-
-</div>
+    </div>
 
 </section>
+
+<?php endif; ?>
+
+
+<!-- ===================================================== -->
+<!-- PENGUMUMAN -->
+<!-- ===================================================== -->
 
 <section class="bg-slate-50 py-20">
 
-<div class="mx-auto max-w-7xl px-6">
+    <div class="mx-auto max-w-7xl px-6">
 
-<div class="text-center">
+        <div class="flex items-center justify-between">
 
-<span class="rounded-full bg-blue-100 px-5 py-2 font-semibold text-blue-700">
+            <div>
 
-SMART CITY DASHBOARD
+                <span
+                    class="rounded-full bg-yellow-100 px-4 py-2 font-semibold text-yellow-700">
 
-</span>
+                    PENGUMUMAN
 
-<h2 class="mt-6 text-5xl font-bold text-slate-900">
+                </span>
 
-Monitoring Pelayanan Publik
+                <h2 class="mt-6 text-4xl font-bold">
 
-</h2>
+                    Informasi Pemerintah
 
-<p class="mt-5 text-lg text-slate-600">
+                </h2>
 
-Monitoring pelayanan publik Kota Tangerang Selatan
-secara real-time melalui interoperabilitas data.
+            </div>
 
-</p>
+            <a
+                href="#"
+                class="font-semibold text-blue-600">
 
-</div>
+                Lihat Semua →
 
+            </a>
 
+        </div>
 
-<div class="mt-16 grid lg:grid-cols-3 gap-8">
+        <div class="mt-12 grid gap-8 md:grid-cols-3">
 
+            <div class="rounded-3xl bg-white p-8 shadow-lg">
 
+                <div class="text-5xl">
 
-<!-- STATUS SERVER -->
+                    📢
 
-<div class="rounded-3xl bg-white shadow-xl p-8">
+                </div>
 
-<h3 class="text-2xl font-bold">
+                <h3 class="mt-6 text-2xl font-bold">
 
-🟢 Status Sistem
+                    Pelayanan Libur Nasional
 
-</h3>
+                </h3>
 
-<div class="mt-8 space-y-4">
+                <p class="mt-4 leading-8 text-slate-600">
 
-<div class="flex justify-between">
+                    Seluruh pelayanan MPP mengikuti
+                    kalender hari libur nasional.
 
-<span>Dukcapil</span>
+                </p>
 
-<span class="text-green-600 font-bold">
+            </div>
 
-ONLINE
+            <div class="rounded-3xl bg-white p-8 shadow-lg">
 
-</span>
+                <div class="text-5xl">
 
-</div>
+                    🏥
 
-<div class="flex justify-between">
+                </div>
 
-<span>OSS / NIB</span>
+                <h3 class="mt-6 text-2xl font-bold">
 
-<span class="text-green-600 font-bold">
+                    Emergency Tetap Aktif
 
-ONLINE
+                </h3>
 
-</span>
+                <p class="mt-4 leading-8 text-slate-600">
 
-</div>
+                    Emergency 112 tetap beroperasi
+                    selama 24 jam.
 
-<div class="flex justify-between">
+                </p>
 
-<span>Emergency 112</span>
+            </div>
 
-<span class="text-green-600 font-bold">
+            <div class="rounded-3xl bg-white p-8 shadow-lg">
 
-ONLINE
+                <div class="text-5xl">
 
-</span>
+                    🌐
 
-</div>
+                </div>
 
-<div class="flex justify-between">
+                <h3 class="mt-6 text-2xl font-bold">
 
-<span>Database MPP</span>
+                    Integrasi Data SPBE
 
-<span class="text-green-600 font-bold">
+                </h3>
 
-NORMAL
+                <p class="mt-4 leading-8 text-slate-600">
 
-</span>
+                    Seluruh data pelayanan
+                    telah terhubung melalui
+                    interoperabilitas SPBE.
 
-</div>
+                </p>
 
-<div class="flex justify-between">
+            </div>
 
-<span>Gateway API</span>
+        </div>
 
-<span class="text-yellow-500 font-bold">
-
-WARNING
-
-</span>
-
-</div>
-
-</div>
-
-</div>
-
-
-
-<!-- RESPONSE -->
-
-<div class="rounded-3xl bg-white shadow-xl p-8">
-
-<h3 class="text-2xl font-bold">
-
-⚡ Response Time
-
-</h3>
-
-<div class="mt-8 space-y-6">
-
-<div>
-
-<div class="flex justify-between">
-
-<span>Dukcapil</span>
-
-<span>0.8 s</span>
-
-</div>
-
-<div class="mt-2 h-3 rounded-full bg-slate-200">
-
-<div class="h-3 rounded-full bg-green-500 w-[90%]">
-
-</div>
-
-</div>
-
-</div>
-
-<div>
-
-<div class="flex justify-between">
-
-<span>OSS</span>
-
-<span>1.1 s</span>
-
-</div>
-
-<div class="mt-2 h-3 rounded-full bg-slate-200">
-
-<div class="h-3 rounded-full bg-blue-500 w-[85%]">
-
-</div>
-
-</div>
-
-</div>
-
-<div>
-
-<div class="flex justify-between">
-
-<span>Emergency</span>
-
-<span>0.4 s</span>
-
-</div>
-
-<div class="mt-2 h-3 rounded-full bg-slate-200">
-
-<div class="h-3 rounded-full bg-red-500 w-[95%]">
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-
-
-<!-- NOTIFICATION -->
-
-<div class="rounded-3xl bg-white shadow-xl p-8">
-
-<h3 class="text-2xl font-bold">
-
-🔔 Notifikasi
-
-</h3>
-
-<div class="mt-8 space-y-5">
-
-<div class="rounded-xl bg-green-50 p-4">
-
-✅ Dukcapil berhasil sinkron
-
-</div>
-
-<div class="rounded-xl bg-blue-50 p-4">
-
-📄 Pengajuan izin baru diterima
-
-</div>
-
-<div class="rounded-xl bg-red-50 p-4">
-
-🚨 Emergency baru masuk
-
-</div>
-
-<div class="rounded-xl bg-yellow-50 p-4">
-
-⚠ API OSS mengalami latency
-
-</div>
-
-</div>
-
-</div>
-
-
-
-</div>
-
-</div>
+    </div>
 
 </section>
 
-<section id="telemetry" class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-  <div class="rounded-[2rem] border border-white/70 bg-slate-900 px-6 py-8 text-white shadow-2xl shadow-slate-800/20 md:px-8">
-    <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-      <div>
-        <p class="text-sm font-semibold uppercase tracking-[0.28em] text-emerald-400">Dashboard Telemetry SPBE</p>
-        <h2 class="mt-2 text-3xl font-semibold">Status integrasi data berjalan aman</h2>
-      </div>
-      <div class="rounded-full border border-emerald-400/30 bg-emerald-500/10 px-4 py-2 text-sm font-semibold text-emerald-300">Traffic Light System</div>
+<!-- ===================================================== -->
+<!-- SMART CITY DASHBOARD -->
+<!-- ===================================================== -->
+
+<section class="bg-white py-20">
+
+    <div class="mx-auto max-w-7xl px-6">
+
+        <div class="text-center">
+
+            <span
+                class="rounded-full bg-blue-100 px-5 py-2 font-semibold text-blue-700">
+
+                SMART CITY DASHBOARD
+
+            </span>
+
+            <h2 class="mt-6 text-5xl font-bold text-slate-900">
+
+                Monitoring Pelayanan Publik
+
+            </h2>
+
+            <p class="mx-auto mt-5 max-w-3xl text-lg leading-8 text-slate-600">
+
+                Monitoring pelayanan publik Kota Tangerang Selatan
+                secara real-time melalui interoperabilitas data.
+
+            </p>
+
+        </div>
+
+        <div class="mt-16 grid gap-8 lg:grid-cols-3">
+
+            <!-- STATUS SISTEM -->
+
+            <div class="rounded-3xl bg-white p-8 shadow-xl border">
+
+                <h3 class="text-2xl font-bold">
+
+                    🟢 Status Sistem
+
+                </h3>
+
+                <div class="mt-8 space-y-5">
+
+                    <div class="flex justify-between">
+
+                        <span>Dukcapil</span>
+
+                        <span class="font-bold text-green-600">
+
+                            ONLINE
+
+                        </span>
+
+                    </div>
+
+                    <div class="flex justify-between">
+
+                        <span>OSS / NIB</span>
+
+                        <span class="font-bold text-green-600">
+
+                            ONLINE
+
+                        </span>
+
+                    </div>
+
+                    <div class="flex justify-between">
+
+                        <span>NPWP</span>
+
+                        <span class="font-bold text-green-600">
+
+                            ONLINE
+
+                        </span>
+
+                    </div>
+
+                    <div class="flex justify-between">
+
+                        <span>Emergency 112</span>
+
+                        <span class="font-bold text-green-600">
+
+                            ONLINE
+
+                        </span>
+
+                    </div>
+
+                    <div class="flex justify-between">
+
+                        <span>Gateway API</span>
+
+                        <span class="font-bold text-yellow-500">
+
+                            WARNING
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- RESPONSE TIME -->
+
+            <div class="rounded-3xl bg-white p-8 shadow-xl border">
+
+                <h3 class="text-2xl font-bold">
+
+                    ⚡ Response Time
+
+                </h3>
+
+                <div class="mt-8 space-y-7">
+
+                    <div>
+
+                        <div class="flex justify-between">
+
+                            <span>Dukcapil</span>
+
+                            <span>0.8 s</span>
+
+                        </div>
+
+                        <div class="mt-2 h-3 rounded-full bg-slate-200">
+
+                            <div class="h-3 w-[92%] rounded-full bg-green-500"></div>
+
+                        </div>
+
+                    </div>
+
+                    <div>
+
+                        <div class="flex justify-between">
+
+                            <span>OSS</span>
+
+                            <span>1.2 s</span>
+
+                        </div>
+
+                        <div class="mt-2 h-3 rounded-full bg-slate-200">
+
+                            <div class="h-3 w-[85%] rounded-full bg-blue-500"></div>
+
+                        </div>
+
+                    </div>
+
+                    <div>
+
+                        <div class="flex justify-between">
+
+                            <span>NPWP</span>
+
+                            <span>1.0 s</span>
+
+                        </div>
+
+                        <div class="mt-2 h-3 rounded-full bg-slate-200">
+
+                            <div class="h-3 w-[90%] rounded-full bg-cyan-500"></div>
+
+                        </div>
+
+                    </div>
+
+                    <div>
+
+                        <div class="flex justify-between">
+
+                            <span>Emergency</span>
+
+                            <span>0.4 s</span>
+
+                        </div>
+
+                        <div class="mt-2 h-3 rounded-full bg-slate-200">
+
+                            <div class="h-3 w-[96%] rounded-full bg-red-500"></div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- NOTIFIKASI -->
+
+            <div class="rounded-3xl bg-white p-8 shadow-xl border">
+
+                <h3 class="text-2xl font-bold">
+
+                    🔔 Notifikasi
+
+                </h3>
+
+                <div class="mt-8 space-y-5">
+
+                    <div class="rounded-xl bg-green-50 p-4">
+
+                        ✅ Dukcapil berhasil sinkron
+
+                    </div>
+
+                    <div class="rounded-xl bg-blue-50 p-4">
+
+                        📄 Pengajuan izin baru diterima
+
+                    </div>
+
+                    <div class="rounded-xl bg-yellow-50 p-4">
+
+                        ⚠ Sinkronisasi OSS selesai
+
+                    </div>
+
+                    <div class="rounded-xl bg-red-50 p-4">
+
+                        🚨 Emergency baru masuk
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
-    <div class="mt-8 grid gap-4 md:grid-cols-3">
-      <div class="rounded-2xl border border-emerald-400/20 bg-emerald-500/10 p-5">
-        <p class="text-sm text-emerald-300">Hijau</p>
-        <p class="mt-2 text-2xl font-semibold">Normal</p>
-        <p class="mt-2 text-sm text-slate-300">Dukcapil & Kemenkes respons stabil</p>
-      </div>
-      <div class="rounded-2xl border border-amber-400/20 bg-amber-500/10 p-5">
-        <p class="text-sm text-amber-300">Kuning</p>
-        <p class="mt-2 text-2xl font-semibold">Warning</p>
-        <p class="mt-2 text-sm text-slate-300">Latensi respons 4 detik untuk simulasi lambat</p>
-      </div>
-      <div class="rounded-2xl border border-rose-400/20 bg-rose-500/10 p-5">
-        <p class="text-sm text-rose-300">Merah</p>
-        <p class="mt-2 text-2xl font-semibold">Kritis</p>
-        <p class="mt-2 text-sm text-slate-300">Data tidak ditemukan atau gateway timeout</p>
-      </div>
-    </div>
-  </div>
+
 </section>
+
+<!-- ===================================================== -->
+<!-- TELEMETRY SPBE -->
+<!-- ===================================================== -->
+
+<section id="telemetry" class="mx-auto max-w-7xl px-6 py-20">
+
+    <div class="rounded-[2rem] bg-slate-900 p-10 text-white shadow-2xl">
+
+        <div class="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+
+            <div>
+
+                <span class="rounded-full bg-emerald-500/20 px-4 py-2 text-sm font-semibold text-emerald-300">
+
+                    DASHBOARD TELEMETRY SPBE
+
+                </span>
+
+                <h2 class="mt-6 text-4xl font-bold">
+
+                    Status Integrasi Data Pemerintah
+
+                </h2>
+
+                <p class="mt-5 max-w-3xl text-slate-300">
+
+                    Monitoring konektivitas layanan Dukcapil,
+                    OSS, NPWP, Emergency 112,
+                    dan Gateway API secara realtime.
+
+                </p>
+
+            </div>
+
+            <div>
+
+                <div class="rounded-full bg-emerald-500/20 px-6 py-3 font-semibold text-emerald-300">
+
+                    ● Traffic Light Monitoring
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="mt-12 grid gap-6 lg:grid-cols-3">
+
+            <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-6">
+
+                <div class="text-lg font-semibold text-emerald-300">
+
+                    🟢 Hijau
+
+                </div>
+
+                <div class="mt-4 text-3xl font-bold">
+
+                    NORMAL
+
+                </div>
+
+                <p class="mt-4 text-slate-300">
+
+                    Seluruh layanan berjalan normal
+                    dan sinkronisasi berhasil.
+
+                </p>
+
+            </div>
+
+            <div class="rounded-2xl border border-yellow-500/30 bg-yellow-500/10 p-6">
+
+                <div class="text-lg font-semibold text-yellow-300">
+
+                    🟡 Warning
+
+                </div>
+
+                <div class="mt-4 text-3xl font-bold">
+
+                    LATENCY
+
+                </div>
+
+                <p class="mt-4 text-slate-300">
+
+                    Gateway OSS mengalami
+                    keterlambatan respon.
+
+                </p>
+
+            </div>
+
+            <div class="rounded-2xl border border-red-500/30 bg-red-500/10 p-6">
+
+                <div class="text-lg font-semibold text-red-300">
+
+                    🔴 Critical
+
+                </div>
+
+                <div class="mt-4 text-3xl font-bold">
+
+                    OFFLINE
+
+                </div>
+
+                <p class="mt-4 text-slate-300">
+
+                    Tidak ada layanan yang sedang
+                    mengalami gangguan.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+
 <?php
+
 $content = ob_get_clean();
-include __DIR__.'/home_layout.blade.php';
+
+include __DIR__ . '/home_layout.blade.php';
+
 ?>

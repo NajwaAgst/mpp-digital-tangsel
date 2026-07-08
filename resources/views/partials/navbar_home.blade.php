@@ -84,13 +84,7 @@ Masuk Portal
 
 <?php else: ?>
 
-<a
-href="/login"
-class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl">
 
-Login
-
-</a>
 
 <?php endif; ?>
 

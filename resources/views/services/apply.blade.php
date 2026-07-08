@@ -1,5 +1,9 @@
 <?php
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 $title = 'Ajukan ' . $service['name'];
 
 $authUser = $_SESSION['user'] ?? null;
@@ -12,19 +16,35 @@ ob_start();
 
 <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
 
-    <a
-        href="/services/<?= htmlspecialchars($service['slug']) ?>"
-        class="mb-6 inline-flex items-center gap-2 text-sm font-semibold text-emerald-600">
+    <div class="mb-8 flex items-center justify-between">
 
-        ← Kembali ke Detail Layanan
+        <a
+            href="/services/<?= htmlspecialchars($service['slug']) ?>"
+            class="inline-flex items-center gap-2 text-sm font-semibold text-emerald-600 hover:text-emerald-700">
 
-    </a>
+            ← Kembali ke Detail Layanan
+
+        </a>
+
+        <?php if ($authUser): ?>
+
+            <a
+                href="/dashboard"
+                class="rounded-xl bg-emerald-600 px-5 py-2 font-semibold text-white hover:bg-emerald-700">
+
+                Dashboard Saya
+
+            </a>
+
+        <?php endif; ?>
+
+    </div>
 
     <div class="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
 
-        <!-- ======================================= -->
+        <!-- ========================= -->
         <!-- INFORMASI LAYANAN -->
-        <!-- ======================================= -->
+        <!-- ========================= -->
 
         <div class="rounded-[2rem] border border-white bg-white p-8 shadow-xl">
 
@@ -64,9 +84,7 @@ ob_start();
                     <?php foreach($service['documents'] as $doc): ?>
 
                         <li>
-
                             • <?= htmlspecialchars($doc) ?>
-
                         </li>
 
                     <?php endforeach; ?>
@@ -77,11 +95,23 @@ ob_start();
 
         </div>
 
-        <!-- ======================================= -->
+        <!-- ========================= -->
         <!-- FORM -->
-        <!-- ======================================= -->
+        <!-- ========================= -->
 
         <div class="rounded-[2rem] bg-slate-900 p-8 text-white shadow-xl">
+
+            <?php if (!empty($_SESSION['flash_success'])): ?>
+
+                <div class="mb-6 rounded-xl border border-emerald-500 bg-emerald-500/20 p-4">
+
+                    <?= htmlspecialchars($_SESSION['flash_success']) ?>
+
+                </div>
+
+                <?php unset($_SESSION['flash_success']); ?>
+
+            <?php endif; ?>
 
             <?php if(!empty($errorMessage)): ?>
 
@@ -93,34 +123,54 @@ ob_start();
 
             <?php endif; ?>
 
-
             <?php if(!empty($submitted)): ?>
 
-                <div class="mb-5 rounded-xl border border-emerald-500 bg-emerald-500/20 p-4">
+                <div class="mb-6 rounded-xl border border-emerald-500 bg-emerald-500/20 p-5">
 
-                    Pengajuan berhasil.
+                    <h2 class="text-xl font-bold">
 
-                    <br><br>
+                        ✅ Pengajuan Berhasil
 
-                    Nomor Pengajuan :
+                    </h2>
 
-                    <strong>
+                    <p class="mt-2">
 
-                        #<?= htmlspecialchars($submissionId) ?>
+                        Nomor Pengajuan :
 
-                    </strong>
+                        <strong>#<?= htmlspecialchars($submissionId) ?></strong>
+
+                    </p>
+
+                    <div class="mt-5 flex gap-3">
+
+                        <a
+                            href="/dashboard"
+                            class="rounded-lg bg-emerald-500 px-5 py-2 font-semibold">
+
+                            Dashboard
+
+                        </a>
+
+                        <a
+                            href="/services/history"
+                            class="rounded-lg bg-white px-5 py-2 font-semibold text-slate-900">
+
+                            Riwayat
+
+                        </a>
+
+                    </div>
 
                 </div>
 
             <?php endif; ?>
-
 
             <form
                 method="POST"
                 action="/services/<?= htmlspecialchars($service['slug']) ?>/apply"
                 class="space-y-6">
 
-                <!-- ============================== -->
+                                <!-- ============================== -->
                 <!-- NIK -->
                 <!-- ============================== -->
 
@@ -138,7 +188,10 @@ ob_start();
                         maxlength="16"
                         autocomplete="off"
                         required
-                        value="<?= htmlspecialchars($submittedData['nik'] ?? '') ?>"
+                        value="<?= htmlspecialchars(
+                            $submittedData['nik']
+                            ?? ($_SESSION['user']['nik'] ?? '')
+                        ) ?>"
                         class="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white">
 
                     <small
@@ -153,7 +206,7 @@ ob_start();
 
                 <div
                     id="loading"
-                    class="hidden rounded-xl bg-blue-600/20 border border-blue-500 p-4 text-sm">
+                    class="hidden rounded-xl border border-blue-500 bg-blue-600/20 p-4 text-sm">
 
                     Mengambil data dari layanan interoperabilitas...
 
@@ -165,11 +218,12 @@ ob_start();
 
                 <?php
 
-                $formFile = __DIR__.'/forms/'.($form['code'] ?? '').'.blade.php';
+                $formFile = __DIR__ . '/forms/' . ($form['code'] ?? '') . '.blade.php';
 
-                if(file_exists($formFile))
-                {
+                if (file_exists($formFile)) {
+
                     include $formFile;
+
                 }
 
                 ?>
@@ -193,13 +247,25 @@ ob_start();
 
                 </div>
 
-                <button
-                    type="submit"
-                    class="w-full rounded-xl bg-emerald-500 py-3 font-semibold transition hover:bg-emerald-600">
+                <div class="flex gap-4">
 
-                    Kirim Pengajuan
+                    <a
+                        href="/dashboard"
+                        class="flex-1 rounded-xl border border-slate-600 py-3 text-center font-semibold hover:bg-slate-700">
 
-                </button>
+                        Batal
+
+                    </a>
+
+                    <button
+                        type="submit"
+                        class="flex-1 rounded-xl bg-emerald-500 py-3 font-semibold transition hover:bg-emerald-600">
+
+                        Kirim Pengajuan
+
+                    </button>
+
+                </div>
 
             </form>
 
@@ -211,7 +277,7 @@ ob_start();
 
 <script>
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
 
     const nikInput = document.getElementById("nik");
     const loading = document.getElementById("loading");
@@ -222,214 +288,174 @@ document.addEventListener("DOMContentLoaded", function () {
     let timer = null;
 
     //------------------------------------------------------
-    // MASKING NIK
+    // Masking NIK
     //------------------------------------------------------
 
-    function maskNik(nik){
+    function maskNik(nik) {
 
-        if(!nik || nik.length < 16){
-
-            nikMask.innerHTML="";
-
+        if (nik.length !== 16) {
+            nikMask.innerHTML = "";
             return;
-
         }
-
-        const masked =
-            nik.substring(0,4) +
-            "********" +
-            nik.substring(12);
 
         nikMask.innerHTML =
-            "NIK terverifikasi : <b>"+masked+"</b>";
+            "NIK Terverifikasi : <b>" +
+            nik.substring(0, 4) +
+            "********" +
+            nik.substring(12) +
+            "</b>";
 
     }
 
     //------------------------------------------------------
-    // CLEAR FIELD
+    // Helper
     //------------------------------------------------------
 
-    function clearField(id){
+    function setValue(id, value) {
 
-        const el=document.getElementById(id);
+        const el = document.getElementById(id);
 
-        if(el){
+        if (el) {
 
-            el.value="";
+            el.value = value ?? "";
 
         }
 
     }
 
-    function clearAll(){
+    function clearFields() {
 
         [
 
             "nama",
-
             "tempat_lahir",
-
             "tanggal_lahir",
-
             "alamat",
-
+            "hp",
             "npwp",
-
             "status_npwp",
-
             "nib",
-
             "nama_usaha",
-
             "jenis_usaha"
 
-        ].forEach(clearField);
+        ].forEach(id => setValue(id, ""));
 
     }
 
     //------------------------------------------------------
-    // SET VALUE
+    // Event
     //------------------------------------------------------
 
-    function setValue(id,value){
-
-        const el=document.getElementById(id);
-
-        if(!el) return;
-
-        el.value=value ?? "";
-
-    }
-
-    //------------------------------------------------------
-    // EVENT NIK
-    //------------------------------------------------------
-
-    nikInput.addEventListener("keyup",function(){
+    nikInput.addEventListener("keyup", () => {
 
         clearTimeout(timer);
 
         maskNik(nikInput.value);
 
-        if(nikInput.value.length!=16){
+        if (nikInput.value.length !== 16) {
 
-            clearAll();
+            clearFields();
 
             return;
 
         }
 
-        timer=setTimeout(loadData,500);
+        timer = setTimeout(loadInteroperability, 500);
 
     });
 
     //------------------------------------------------------
-    // LOAD INTEROPERABILITY
+    // API
     //------------------------------------------------------
 
-    async function loadData(){
+    async function loadInteroperability() {
 
         loading.classList.remove("hidden");
 
-        try{
+        try {
 
-            const url="/mock/interoperability/"+nikInput.value;
+            const response = await fetch(
+                "/mock/interoperability/" + nikInput.value
+            );
 
-            console.log("====================================");
-            console.log("CALL API");
-            console.log(url);
-
-            const response=await fetch(url);
-
-            console.log("STATUS :",response.status);
-
-            const text=await response.text();
-
-            console.log(text);
-
-            const json=JSON.parse(text);
-
-            console.log(json);
+            const json = await response.json();
 
             loading.classList.add("hidden");
 
-            if(!json.success){
+            if (!json.success) {
 
-                alert(json.message);
+                alert(json.message ?? "Data tidak ditemukan");
 
-                clearAll();
+                clearFields();
 
                 return;
 
             }
 
-            //--------------------------------------------------
-            // DUKCAPIL
-            //--------------------------------------------------
+            //--------------------------------------------
+            // Dukcapil
+            //--------------------------------------------
 
-            if(json.data.dukcapil){
+            if (json.data.dukcapil) {
 
-                setValue("nik",
-                    json.data.dukcapil.nik);
+                const d = json.data.dukcapil;
 
-                setValue("nama",
-                    json.data.dukcapil.nama);
-
-                setValue("tempat_lahir",
-                    json.data.dukcapil.tempat_lahir);
-
-                setValue("tanggal_lahir",
-                    json.data.dukcapil.tanggal_lahir);
-
-                setValue("alamat",
-                    json.data.dukcapil.alamat);
+                setValue("nik", d.nik);
+                setValue("nama", d.nama);
+                setValue("tempat_lahir", d.tempat_lahir);
+                setValue("tanggal_lahir", d.tanggal_lahir);
+                setValue("alamat", d.alamat);
 
             }
 
-            //--------------------------------------------------
+            //--------------------------------------------
             // NPWP
-            //--------------------------------------------------
+            //--------------------------------------------
 
-            if(json.data.npwp){
+            if (json.data.npwp) {
 
-                setValue("npwp",
-                    json.data.npwp.npwp);
+                const p = json.data.npwp;
 
-                setValue("status_npwp",
-                    json.data.npwp.status_npwp);
+                setValue("npwp", p.npwp);
+                setValue("status_npwp", p.status_npwp);
 
             }
 
-            //--------------------------------------------------
+            //--------------------------------------------
             // NIB
-            //--------------------------------------------------
+            //--------------------------------------------
 
-            if(json.data.nib){
+            if (json.data.nib) {
 
-                setValue("nib",
-                    json.data.nib.nib);
+                const b = json.data.nib;
 
-                setValue("nama_usaha",
-                    json.data.nib.nama_usaha);
-
-                setValue("jenis_usaha",
-                    json.data.nib.jenis_usaha);
+                setValue("nib", b.nib);
+                setValue("nama_usaha", b.nama_usaha);
+                setValue("jenis_usaha", b.jenis_usaha);
 
             }
 
-            console.log("AUTOFILL BERHASIL");
-
-        }
-
-        catch(error){
+        } catch (err) {
 
             loading.classList.add("hidden");
 
-            console.error(error);
+            console.error(err);
 
-            alert("Gagal mengambil data dari layanan interoperabilitas.");
+            alert("Gagal mengambil data dari server.");
 
         }
+
+    }
+
+    //------------------------------------------------------
+    // Autofill jika user login
+    //------------------------------------------------------
+
+    if (nikInput.value.length === 16) {
+
+        maskNik(nikInput.value);
+
+        loadInteroperability();
 
     }
 
@@ -441,6 +467,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 $content = ob_get_clean();
 
-include __DIR__.'/../layout.blade.php';
+include __DIR__ . '/../layout.blade.php';
 
 ?>
