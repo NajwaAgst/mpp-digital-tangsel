@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Repositories\ApplicationRepository;
 use App\Repositories\ServiceRepository;
+use App\Repositories\RatingRepository;
 use App\Support\Database;
-use Dompdf\Dompdf;
 use PDO;
 
 class ServiceController extends Controller
@@ -21,10 +21,13 @@ class ServiceController extends Controller
             session_start();
         }
 
-        return $this->view('services.index', [
-            'services' => ServiceRepository::all(),
-            'authUser' => $_SESSION['user'] ?? null
-        ]);
+        return $this->view(
+            'services.index',
+            [
+                'services' => ServiceRepository::all(),
+                'authUser' => $_SESSION['user'] ?? null
+            ]
+        );
     }
 
     /**
@@ -39,13 +42,20 @@ class ServiceController extends Controller
         }
 
         if (empty($_SESSION['logged_in'])) {
-            header("Location: /login");
+            header("Location:/login");
             exit;
         }
 
         $nik = $_SESSION['user']['nik'];
 
         $applications = ApplicationRepository::byNik($nik);
+
+        foreach ($applications as &$app) {
+
+            $app['rating'] = RatingRepository::findByApplication(
+                $app['id']
+            );
+        }
 
         $stats = [
             'total' => count($applications),
@@ -55,9 +65,9 @@ class ServiceController extends Controller
             'rejected' => 0
         ];
 
-        foreach ($applications as $app) {
+        foreach ($applications as $item) {
 
-            switch ($app['status']) {
+            switch ($item['status']) {
 
                 case 'Pending':
                 case 'Menunggu':
@@ -123,7 +133,7 @@ class ServiceController extends Controller
         );
     }
 
-        /**
+    /**
      * ==========================================
      * Form Pengajuan
      * ==========================================
@@ -139,7 +149,7 @@ class ServiceController extends Controller
             $redirect = "/services/" . $slug . "/apply";
 
             header(
-                "Location: /login?redirect=" .
+                "Location:/login?redirect=" .
                 urlencode($redirect)
             );
 
@@ -155,16 +165,15 @@ class ServiceController extends Controller
             return "Layanan tidak ditemukan.";
         }
 
-        $service["form"] = $this->parseForm(
-            $service["form"] ?? []
+        $service['form'] = $this->parseForm(
+            $service['form'] ?? []
         );
 
         $submitted = false;
         $submittedData = [];
         $submissionId = null;
         $errorMessage = null;
-
-        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+                if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             foreach ($_POST as $key => $value) {
 
@@ -175,7 +184,7 @@ class ServiceController extends Controller
 
             /*
             |--------------------------------------------------------------------------
-            | Ambil data akun login
+            | Ambil data user login
             |--------------------------------------------------------------------------
             */
 
@@ -220,7 +229,7 @@ class ServiceController extends Controller
 
             /*
             |--------------------------------------------------------------------------
-            | Validasi form dinamis
+            | Validasi Form Dinamis
             |--------------------------------------------------------------------------
             */
 
@@ -275,24 +284,17 @@ class ServiceController extends Controller
         return $this->view(
             "services.apply",
             [
-
                 "service" => $service,
-
                 "submitted" => $submitted,
-
                 "submittedData" => $submittedData,
-
                 "submissionId" => $submissionId,
-
                 "errorMessage" => $errorMessage,
-
                 "authUser" => $_SESSION["user"] ?? null
-
             ]
         );
     }
 
-        /**
+    /**
      * ==========================================
      * Riwayat Pengajuan
      * ==========================================
@@ -312,11 +314,19 @@ class ServiceController extends Controller
             $_SESSION["user"]["nik"]
         );
 
+        foreach ($applications as &$app) {
+
+            $app["rating"] =
+                RatingRepository::findByApplication(
+                    $app["id"]
+                );
+        }
+
         return $this->view(
             "user.history",
             [
-                "applications"=>$applications,
-                "authUser"=>$_SESSION["user"]
+                "applications" => $applications,
+                "authUser" => $_SESSION["user"]
             ]
         );
     }
@@ -352,18 +362,133 @@ class ServiceController extends Controller
         return $this->view(
             "user.history-detail",
             [
-                "application"=>$application,
-                "authUser"=>$_SESSION["user"]
+                "application" => $application,
+                "authUser" => $_SESSION["user"]
             ]
         );
     }
-
-    /**
+        /**
      * ==========================================
-     * Download PDF Hasil Layanan
+     * Download Dokumen
      * ==========================================
      */
     public function downloadPdf(int $id): void
+{
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
+    if (empty($_SESSION["logged_in"])) {
+        header("Location: /login");
+        exit;
+    }
+
+    $pdo = Database::getConnection();
+
+    $stmt = $pdo->prepare("
+        SELECT *
+        FROM applications
+        WHERE id = ?
+        AND nik = ?
+        LIMIT 1
+    ");
+
+    $stmt->execute([
+        $id,
+        $_SESSION["user"]["nik"]
+    ]);
+
+    $application = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$application) {
+        exit("Data tidak ditemukan.");
+    }
+
+    if (
+        $application["status"] !== "Approved" &&
+        $application["status"] !== "Selesai"
+    ) {
+        exit("Dokumen belum tersedia.");
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Tentukan template berdasarkan SERVICE SLUG
+    |--------------------------------------------------------------------------
+    */
+
+    $slug = strtolower(trim($application["service_slug"]));
+
+    switch ($slug) {
+
+        case "adminduk":
+            $template = "kk";
+            break;
+
+        case "perizinan-berusaha":
+            $template = "nib";      // pastikan file nib.blade.php ada
+            break;
+
+        case "perpajakan":
+            $template = "pbb";
+            break;
+
+        case "ketenagakerjaan-jaminan-sosial":
+            $template = "bpjs";
+            break;
+
+        case "pertanahan":
+            $template = "tanah";
+            break;
+
+        case "kepolisian-hukum":
+            $template = "skck";
+            break;
+
+        case "imigrasi-pmi":
+            $template = "paspor";
+            break;
+
+        case "perbankan-keuangan":
+            $template = "tilang";
+            break;
+
+        default:
+            $template = "kk";
+            break;
+    }
+
+    $view =
+        dirname(__DIR__, 3)
+        . "/resources/views/pdf/"
+        . $template
+        . ".blade.php";
+
+    if (!file_exists($view)) {
+        exit("Template PDF belum tersedia: " . $template);
+    }
+
+    header("Content-Type: text/html; charset=UTF-8");
+
+    header(
+        'Content-Disposition: attachment; filename="' .
+        preg_replace('/[^A-Za-z0-9]/', '_', $application["service_name"]) .
+        '_' .
+        $application["id"] .
+        '.html"'
+    );
+
+    include $view;
+
+    exit;
+}
+
+    /**
+     * ==========================================
+     * Submit Rating
+     * ==========================================
+     */
+    public function submitRating(int $id): void
     {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
@@ -374,13 +499,23 @@ class ServiceController extends Controller
             exit;
         }
 
+        $rating = (int)($_POST["rating"] ?? 0);
+        $comment = trim($_POST["comment"] ?? "");
+
+        if ($rating < 1 || $rating > 5) {
+            $_SESSION["error"] = "Rating tidak valid.";
+            header("Location:/services/history");
+            exit;
+        }
+
         $pdo = Database::getConnection();
 
+        // Pastikan pengajuan milik user
         $stmt = $pdo->prepare("
             SELECT *
             FROM applications
-            WHERE id=?
-            AND nik=?
+            WHERE id = ?
+            AND nik = ?
             LIMIT 1
         ");
 
@@ -395,104 +530,68 @@ class ServiceController extends Controller
             exit("Data tidak ditemukan.");
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Hanya boleh download jika Approved / Selesai
-        |--------------------------------------------------------------------------
-        */
+        // Cek apakah sudah pernah memberi rating
+        $stmt = $pdo->prepare("
+            SELECT COUNT(*)
+            FROM ratings
+            WHERE application_id = ?
+        ");
 
-        if (
-            $application["status"] != "Approved"
-            &&
-            $application["status"] != "Selesai"
-        ){
-            exit("Dokumen belum tersedia.");
+        $stmt->execute([$id]);
+
+        if ($stmt->fetchColumn() > 0) {
+            $_SESSION["error"] = "Anda sudah memberi rating.";
+            header("Location:/services/history");
+            exit;
         }
 
         /*
         |--------------------------------------------------------------------------
-        | Tentukan Template PDF
+        | Simpan Rating (Sudah ditambah service_slug dan nama)
         |--------------------------------------------------------------------------
         */
-
-        $service = strtolower(trim($application["service_name"]));
-
-        $template = "kk";
-
-        if (str_contains($service,"bpjs")) {
-
-            $template="bpjs";
-
-        } elseif (str_contains($service,"paspor")) {
-
-            $template="paspor";
-
-        } elseif (str_contains($service,"skck")) {
-
-            $template="skck";
-
-        } elseif (str_contains($service,"pbb")) {
-
-            $template="pbb";
-
-        } elseif (str_contains($service,"pbg")) {
-
-            $template="pbg";
-
-        } elseif (str_contains($service,"tanah")) {
-
-            $template="tanah";
-
-        } elseif (str_contains($service,"tilang")) {
-
-            $template="tilang";
-
-        }
-
-        $view = dirname(__DIR__,3)
-            ."/resources/views/pdf/"
-            .$template
-            .".blade.php";
-
-        if (!file_exists($view)) {
-
-            exit("Template PDF belum tersedia.");
-        }
-
-        ob_start();
-
-        include $view;
-
-        $html = ob_get_clean();
-
-        $pdf = new Dompdf();
-
-        $pdf->loadHtml($html);
-
-        $pdf->setPaper("A4","portrait");
-
-        $pdf->render();
-
-        $filename =
-            preg_replace(
-                '/[^A-Za-z0-9]/',
-                '_',
-                $application["service_name"]
+        $stmt = $pdo->prepare("
+            INSERT INTO ratings
+            (
+                application_id,
+                service_name,
+                service_slug,
+                nik,
+                nama,
+                rating,
+                comment
             )
-            ."_"
-            .$application["id"]
-            .".pdf";
+            VALUES
+            (
+                ?, ?, ?, ?, ?, ?, ?
+            )
+        ");
 
-        $pdf->stream(
-            $filename,
-            [
-                "Attachment"=>true
-            ]
-        );
+        // Ambil data slug
+        $serviceSlug = $application["service_slug"] ?? $application["slug"] ?? "";
 
+        // Ambil data nama dari application atau session user
+        $namaUser = $application["nama"] 
+            ?? $application["user_name"] 
+            ?? $_SESSION["user"]["name"] 
+            ?? $_SESSION["user"]["nama"] 
+            ?? "";
+
+        $stmt->execute([
+            $id,
+            $application["service_name"],
+            $serviceSlug,
+            $_SESSION["user"]["nik"],
+            $namaUser, // <--- Data nama dimasukkan di sini
+            $rating,
+            $comment
+        ]);
+
+        $_SESSION["success"] = "Terima kasih atas penilaiannya.";
+        header("Location:/services/history");
         exit;
     }
-    /**
+        /**
      * ==========================================
      * Parse JSON Form
      * ==========================================
@@ -520,7 +619,7 @@ class ServiceController extends Controller
 
     /**
      * ==========================================
-     * Helper Status Badge
+     * Helper Status Finished
      * ==========================================
      */
     private function isFinished(string $status): bool

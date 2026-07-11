@@ -7,7 +7,11 @@ ob_start();
 $data = [];
 
 if (!empty($application['application_data'])) {
-    $decoded = json_decode($application['application_data'], true);
+
+    $decoded = json_decode(
+        $application['application_data'],
+        true
+    );
 
     if (is_array($decoded)) {
         $data = $decoded;
@@ -23,11 +27,16 @@ if (!empty($application['application_data'])) {
         <div>
 
             <h1 class="text-3xl font-bold text-slate-800">
-                Detail Pengajuan
+
+                Detail Pengajuan Layanan
+
             </h1>
 
-            <p class="text-slate-500 mt-1">
-                Nomor Pengajuan #<?= $application['id'] ?>
+            <p class="mt-2 text-slate-500">
+
+                Nomor Pengajuan
+                #<?= $application["id"] ?>
+
             </p>
 
         </div>
@@ -42,198 +51,211 @@ if (!empty($application['application_data'])) {
 
     </div>
 
+    <!-- ========================= -->
     <!-- DATA PEMOHON -->
+    <!-- ========================= -->
 
     <div class="rounded-2xl bg-white shadow">
 
         <div class="border-b px-6 py-4">
 
             <h2 class="text-xl font-bold">
-                Data Pemohon
+
+                👤 Data Pemohon
+
             </h2>
 
         </div>
 
-        <div class="grid md:grid-cols-2 gap-6 p-6">
+        <div class="grid gap-6 p-6 md:grid-cols-2">
 
             <div>
-                <label class="text-sm text-slate-500">Nama</label>
 
-                <div class="mt-1 font-semibold">
-                    <?= htmlspecialchars($application['nama']) ?>
+                <label class="text-sm text-slate-500">
+
+                    Nama
+
+                </label>
+
+                <div class="mt-2 rounded-lg bg-slate-100 px-4 py-3 font-semibold">
+
+                    <?= htmlspecialchars($application["nama"]) ?>
+
                 </div>
+
             </div>
 
             <div>
-                <label class="text-sm text-slate-500">NIK</label>
 
-                <div class="mt-1 font-semibold">
-                    <?= htmlspecialchars($application['nik']) ?>
+                <label class="text-sm text-slate-500">
+
+                    NIK
+
+                </label>
+
+                <div class="mt-2 rounded-lg bg-slate-100 px-4 py-3 font-semibold">
+
+                    <?= htmlspecialchars($application["nik"]) ?>
+
                 </div>
+
             </div>
 
             <div>
-                <label class="text-sm text-slate-500">Nomor HP</label>
 
-                <div class="mt-1 font-semibold">
-                    <?= htmlspecialchars($application['hp']) ?>
+                <label class="text-sm text-slate-500">
+
+                    Nomor HP
+
+                </label>
+
+                <div class="mt-2 rounded-lg bg-slate-100 px-4 py-3 font-semibold">
+
+                    <?= htmlspecialchars($application["hp"]) ?>
+
                 </div>
+
             </div>
 
             <div>
-                <label class="text-sm text-slate-500">Alamat</label>
 
-                <div class="mt-1 font-semibold">
-                    <?= nl2br(htmlspecialchars($application['alamat'])) ?>
+                <label class="text-sm text-slate-500">
+
+                    Alamat
+
+                </label>
+
+                <div class="mt-2 rounded-lg bg-slate-100 px-4 py-3 font-semibold">
+
+                    <?= nl2br(htmlspecialchars($application["alamat"])) ?>
+
                 </div>
+
             </div>
 
         </div>
 
     </div>
+    <!-- ========================= -->
+<!-- DETAIL PENGAJUAN -->
+<!-- ========================= -->
 
-    <!-- DATA LAYANAN -->
+<div class="rounded-2xl bg-white shadow">
 
-    <div class="rounded-2xl bg-white shadow">
+    <div class="border-b px-6 py-4">
 
-        <div class="border-b px-6 py-4">
+        <h2 class="text-xl font-bold">
 
-            <h2 class="text-xl font-bold">
-                Informasi Layanan
-            </h2>
+            📑 Detail Pengajuan
+
+        </h2>
+
+        <p class="mt-1 text-sm text-slate-500">
+
+            Data yang diisi pemohon saat mengajukan layanan.
+
+        </p>
+
+    </div>
+
+    <?php if(empty($data)): ?>
+
+        <div class="p-8 text-center text-slate-500">
+
+            Tidak ada data tambahan.
 
         </div>
 
-        <div class="grid md:grid-cols-2 gap-6 p-6">
+    <?php else: ?>
+
+        <div class="grid gap-6 p-6 md:grid-cols-2">
+
+            <?php
+
+            $hiddenFields = [
+
+                "nama",
+                "nik",
+                "alamat",
+                "hp"
+
+            ];
+
+            foreach($data as $key=>$value):
+
+                if(in_array($key,$hiddenFields)){
+                    continue;
+                }
+
+                $label = ucwords(
+                    str_replace("_"," ",$key)
+                );
+
+            ?>
 
             <div>
+
                 <label class="text-sm text-slate-500">
-                    Nama Layanan
+
+                    <?= $label ?>
+
                 </label>
 
-                <div class="mt-1 font-semibold">
-                    <?= htmlspecialchars($application['service_name']) ?>
-                </div>
-            </div>
+                <div class="mt-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 font-semibold">
 
-            <div>
-                <label class="text-sm text-slate-500">
-                    Status
-                </label>
-
-                <div class="mt-1">
-
-                    <?php
-
-                    $status = $application['status'];
-
-                    $color = "bg-yellow-100 text-yellow-700";
-
-                    if ($status == "Approved") {
-                        $color = "bg-green-100 text-green-700";
-                    }
-
-                    if ($status == "Rejected") {
-                        $color = "bg-red-100 text-red-700";
-                    }
-
+                    <?=
+                        htmlspecialchars(
+                            is_array($value)
+                            ? implode(", ",$value)
+                            : ($value==="" ? "-" : $value)
+                        )
                     ?>
 
-                    <span class="rounded-full px-3 py-1 text-sm font-semibold <?= $color ?>">
-
-                        <?= htmlspecialchars($status) ?>
-
-                    </span>
-
                 </div>
+
             </div>
 
-            <div>
-                <label class="text-sm text-slate-500">
-                    Tanggal Pengajuan
-                </label>
-
-                <div class="mt-1 font-semibold">
-                    <?= htmlspecialchars($application['created_at']) ?>
-                </div>
-            </div>
-
-            <div>
-                <label class="text-sm text-slate-500">
-                    Keterangan
-                </label>
-
-                <div class="mt-1 font-semibold">
-                    <?= htmlspecialchars($application['keterangan'] ?: '-') ?>
-                </div>
-            </div>
+            <?php endforeach; ?>
 
         </div>
+
+    <?php endif; ?>
+
+</div>
+<!-- ========================= -->
+<!-- ACTION -->
+<!-- ========================= -->
+
+<div class="rounded-2xl bg-white shadow">
+
+    <div class="border-b px-6 py-4">
+
+        <h2 class="text-xl font-bold">
+
+            ⚙ Aksi Administrator
+
+        </h2>
+
+        <p class="mt-1 text-sm text-slate-500">
+
+            Pilih tindakan terhadap pengajuan layanan ini.
+
+        </p>
 
     </div>
 
-    <!-- DATA FORM -->
+    <div class="flex flex-wrap gap-4 p-6">
 
-    <div class="rounded-2xl bg-white shadow">
+        <!-- APPROVE -->
 
-        <div class="border-b px-6 py-4">
-
-            <h2 class="text-xl font-bold">
-                Data Form Pengajuan
-            </h2>
-
-        </div>
-
-        <div class="p-6">
-
-            <?php if(empty($data)): ?>
-
-                <p class="text-slate-500">
-
-                    Tidak ada data tambahan.
-
-                </p>
-
-            <?php else: ?>
-
-                <table class="w-full">
-
-                    <?php foreach($data as $key=>$value): ?>
-
-                        <tr class="border-b">
-
-                            <td class="w-72 py-3 font-semibold">
-
-                                <?= ucwords(str_replace("_"," ",$key)) ?>
-
-                            </td>
-
-                            <td class="py-3">
-
-                                <?= htmlspecialchars(is_array($value) ? json_encode($value) : $value) ?>
-
-                            </td>
-
-                        </tr>
-
-                    <?php endforeach; ?>
-
-                </table>
-
-            <?php endif; ?>
-
-        </div>
-
-    </div>
-
-    <!-- ACTION -->
-
-    <div class="flex flex-wrap gap-3">
-
-        <form method="POST" action="/admin/applications/<?= $application['id'] ?>/approve">
+        <form
+            method="POST"
+            action="/admin/applications/<?= $application["id"] ?>/approve">
 
             <button
-                class="rounded-xl bg-green-600 px-5 py-3 font-semibold text-white hover:bg-green-700">
+                type="submit"
+                onclick="return confirm('Approve pengajuan ini?')"
+                class="rounded-xl bg-green-600 px-6 py-3 font-semibold text-white transition hover:bg-green-700">
 
                 ✔ Approve
 
@@ -241,10 +263,15 @@ if (!empty($application['application_data'])) {
 
         </form>
 
-        <form method="POST" action="/admin/applications/<?= $application['id'] ?>/pending">
+        <!-- PENDING -->
+
+        <form
+            method="POST"
+            action="/admin/applications/<?= $application["id"] ?>/pending">
 
             <button
-                class="rounded-xl bg-yellow-500 px-5 py-3 font-semibold text-white hover:bg-yellow-600">
+                type="submit"
+                class="rounded-xl bg-yellow-500 px-6 py-3 font-semibold text-white transition hover:bg-yellow-600">
 
                 ⏳ Pending
 
@@ -252,10 +279,16 @@ if (!empty($application['application_data'])) {
 
         </form>
 
-        <form method="POST" action="/admin/applications/<?= $application['id'] ?>/reject">
+        <!-- REJECT -->
+
+        <form
+            method="POST"
+            action="/admin/applications/<?= $application["id"] ?>/reject">
 
             <button
-                class="rounded-xl bg-red-600 px-5 py-3 font-semibold text-white hover:bg-red-700">
+                type="submit"
+                onclick="return confirm('Tolak pengajuan ini?')"
+                class="rounded-xl bg-red-600 px-6 py-3 font-semibold text-white transition hover:bg-red-700">
 
                 ✖ Reject
 
@@ -263,13 +296,16 @@ if (!empty($application['application_data'])) {
 
         </form>
 
+        <!-- DELETE -->
+
         <form
             method="POST"
-            action="/admin/applications/<?= $application['id'] ?>/delete"
-            onsubmit="return confirm('Hapus pengajuan ini?')">
+            action="/admin/applications/<?= $application["id"] ?>/delete"
+            onsubmit="return confirm('Hapus data ini?')">
 
             <button
-                class="rounded-xl bg-slate-700 px-5 py-3 font-semibold text-white hover:bg-slate-800">
+                type="submit"
+                class="rounded-xl bg-slate-700 px-6 py-3 font-semibold text-white transition hover:bg-slate-800">
 
                 🗑 Hapus
 

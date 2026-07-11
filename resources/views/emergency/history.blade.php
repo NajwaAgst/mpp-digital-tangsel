@@ -186,11 +186,117 @@ ob_start();
 
             <?php endforeach; ?>
 
+            <?php
+
+$showRating =
+    $row["status"]=="Selesai"
+    &&
+    empty($row["rating"]);
+
+?>
+
         </div>
 
     <?php endif; ?>
 
 </div>
+
+<?php
+
+foreach($reports as $row):
+
+if(
+    $row["status"]=="Selesai"
+    &&
+    empty($row["rating"])
+):
+
+?>
+
+<div
+id="ratingModal"
+class="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+
+<div class="w-full max-w-md rounded-3xl bg-white p-8">
+
+<h2 class="text-2xl font-bold">
+
+⭐ Beri Penilaian
+
+</h2>
+
+<p class="mt-2 text-slate-500">
+
+Bagaimana pelayanan Emergency 112?
+
+</p>
+
+<form
+action="/emergency/rating"
+method="POST"
+class="mt-6">
+
+<input
+type="hidden"
+name="report_id"
+value="<?= $row["id"] ?>">
+
+<div class="mb-5">
+
+<select
+name="rating"
+required
+class="w-full rounded-xl border p-3">
+
+<option value="">Pilih Rating</option>
+
+<option value="5">⭐⭐⭐⭐⭐ Sangat Puas</option>
+
+<option value="4">⭐⭐⭐⭐ Puas</option>
+
+<option value="3">⭐⭐⭐ Cukup</option>
+
+<option value="2">⭐⭐ Kurang</option>
+
+<option value="1">⭐ Sangat Kurang</option>
+
+</select>
+
+</div>
+
+<textarea
+name="review"
+rows="4"
+placeholder="Tulis ulasan..."
+class="w-full rounded-xl border p-3"></textarea>
+
+<div class="mt-6 flex justify-end gap-3">
+
+<button
+type="submit"
+class="rounded-xl bg-red-600 px-6 py-3 font-semibold text-white hover:bg-red-700">
+
+Kirim Penilaian
+
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+<?php
+
+break;
+
+endif;
+
+endforeach;
+
+?>
 
 <?php
 

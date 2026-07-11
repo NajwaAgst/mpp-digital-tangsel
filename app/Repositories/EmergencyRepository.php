@@ -208,4 +208,29 @@ public static function getById(int $id): ?array
 
     return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
 }
+
+public static function saveRating(
+    int $id,
+    string $nik,
+    int $rating,
+    string $review
+): bool
+{
+    $stmt = Database::getConnection()->prepare("
+        UPDATE emergencies
+        SET
+            rating = ?,
+            review = ?,
+            rated_at = NOW()
+        WHERE id = ?
+        AND nik = ?
+    ");
+
+    return $stmt->execute([
+        $rating,
+        $review,
+        $id,
+        $nik
+    ]);
+}
 }

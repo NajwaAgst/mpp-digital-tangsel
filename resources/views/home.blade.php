@@ -294,14 +294,11 @@ ob_start();
             <div class="rounded-3xl bg-white p-8 shadow-lg">
 
                 <div class="text-5xl">
-
-                    🏛️
-
-                </div>
+                    🏛️ </div>
 
                 <div class="mt-5 text-5xl font-bold text-emerald-600">
 
-                    <?= count($services) ?>
+                    <?= $stats['services'] ?? count($services) ?>
 
                 </div>
 
@@ -316,14 +313,11 @@ ob_start();
             <div class="rounded-3xl bg-white p-8 shadow-lg">
 
                 <div class="text-5xl">
-
-                    📑
-
-                </div>
+                    📑 </div>
 
                 <div class="mt-5 text-5xl font-bold text-blue-600">
 
-                    <?= $stats[0]['value'] ?? 0 ?>
+                    <?= $stats['applications'] ?? '0' ?>+
 
                 </div>
 
@@ -338,14 +332,11 @@ ob_start();
             <div class="rounded-3xl bg-white p-8 shadow-lg">
 
                 <div class="text-5xl">
-
-                    👨‍👩‍👧
-
-                </div>
+                    👨‍👩‍👧 </div>
 
                 <div class="mt-5 text-5xl font-bold text-violet-600">
 
-                    <?= $stats[1]['value'] ?? 0 ?>
+                    <?= $stats['users'] ?? '0' ?>
 
                 </div>
 
@@ -360,14 +351,11 @@ ob_start();
             <div class="rounded-3xl bg-white p-8 shadow-lg">
 
                 <div class="text-5xl">
-
-                    🚨
-
-                </div>
+                    🚨 </div>
 
                 <div class="mt-5 text-5xl font-bold text-red-600">
 
-                    24 Jam
+                    <?= $stats['emergency'] ?? '24 Jam' ?>
 
                 </div>
 
@@ -384,6 +372,73 @@ ob_start();
     </div>
 
 </section>
+
+<!-- Masukkan kode ini persis di bawah barisan 4 kotak statistik (Layanan MPP, Total Pengajuan, dll) -->
+    
+    <div class="mt-12 bg-white rounded-3xl p-8 shadow-md border border-slate-100 max-w-5xl mx-auto">
+        <div class="text-center mb-8">
+            <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">IKM</span>
+            <h3 class="text-2xl font-bold text-slate-800 mt-2">Indeks Kepuasan Masyarakat</h3>
+            <p class="text-slate-500 text-sm mt-1">Nilai kepuasan real-time berdasarkan ulasan langsung dari pengguna layanan.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+            
+            <!-- KIRI: Skor Utama -->
+            <div class="text-center md:border-r border-slate-100 py-4">
+                <div class="text-5xl font-black text-emerald-600"><?= $avgRating ?> <span class="text-lg font-normal text-slate-400">/ 5</span></div>
+                <div class="text-yellow-400 text-xl mt-2 tracking-wider">
+                    <?php 
+                    $floorRating = floor($avgRating);
+                    echo str_repeat('★', $floorRating) . ($avgRating - $floorRating >= 0.5 ? '½' : '') . str_repeat('☆', 5 - ceil($avgRating));
+                    ?>
+                </div>
+                <p class="text-xs text-slate-400 mt-2">Berdasarkan <span class="font-bold text-slate-600"><?= $totalPenilaian ?></span> Penilaian</p>
+            </div>
+
+            <!-- TENGAH: Persentase Puas -->
+            <div class="text-center md:border-r border-slate-100 py-4 px-2">
+                <div class="text-5xl font-black text-slate-800"><?= $persenPuas ?>%</div>
+                <p class="text-sm font-semibold text-slate-700 mt-2">Pengguna Puas</p>
+                <p class="text-xs text-slate-400 mt-1">merasa terbantu dengan efisiensi sistem MPP.</p>
+                <div class="w-full bg-slate-100 rounded-full h-2 mt-4 max-w-[200px] mx-auto overflow-hidden">
+                    <div class="bg-emerald-500 h-2 rounded-full" style="width: <?= $persenPuas ?>%"></div>
+                </div>
+            </div>
+
+            <!-- KANAN: Rating per Layanan (Diagram Batang Teks Keren) -->
+            <div class="space-y-3 py-2">
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Performa Layanan:</p>
+                <?php if(empty($serviceRatings)): ?>
+                    <p class="text-xs text-slate-400 italic">Belum ada data rating masuk.</p>
+                <?php else: ?>
+                    <?php 
+                    // Tampilkan maksimal 4 layanan teratas di halaman depan agar rapi
+                    $counter = 0;
+                    foreach($serviceRatings as $sr): 
+                        if($counter >= 4) break;
+                        $score = round($sr['avg_rating'], 1);
+                        $barLength = round(($score / 5) * 10);
+                        $barHtml = str_repeat('█', $barLength) . str_repeat('░', 10 - $barLength);
+                    ?>
+                        <div class="text-xs">
+                            <div class="flex justify-between text-slate-600 font-medium mb-0.5">
+                                <span><?= htmlspecialchars($sr['service_name']) ?></span>
+                                <span class="font-bold text-slate-800"><?= $score ?></span>
+                            </div>
+                            <div class="font-mono text-emerald-600 tracking-wider text-[11px] leading-none">
+                                <?= $barHtml ?>
+                            </div>
+                        </div>
+                    <?php 
+                        $counter++;
+                    endforeach; 
+                    ?>
+                <?php endif; ?>
+            </div>
+
+        </div>
+    </div>
 
 <!-- ===================================================== -->
 <!-- DASHBOARD USER -->

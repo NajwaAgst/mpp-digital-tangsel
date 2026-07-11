@@ -381,11 +381,15 @@ if (!empty($application["application_data"])) {
 
     <?php endif; ?>
 
-    <?php if($application['status']=="Approved"): ?>
+    <?php if(
+    $application['status']=="Approved" ||
+    $application['status']=="Selesai"
+): ?>
 
 <a
-href="/services/history/<?= $application['id'] ?>/download"
-class="inline-flex items-center rounded-lg bg-emerald-600 px-5 py-3 text-white hover:bg-emerald-700">
+href="/services/download/<?= $application['id'] ?>"
+target="_blank"
+class="inline-flex items-center rounded-lg bg-emerald-600 px-5 py-3 font-semibold text-white hover:bg-emerald-700">
 
 📄 Download PDF
 

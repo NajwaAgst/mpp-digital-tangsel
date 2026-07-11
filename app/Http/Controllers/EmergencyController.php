@@ -195,6 +195,49 @@ public function detail(int $id): string
         "authUser"=>$_SESSION["user"]
 
     ]);
+
+
+}
+
+/**
+ * ==========================================
+ * Submit Rating Emergency
+ * ==========================================
+ */
+public function submitRating(): void
+{
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
+    if (empty($_SESSION["logged_in"])) {
+        header("Location:/emergency/login");
+        exit;
+    }
+
+    $id = (int)($_POST["report_id"] ?? 0);
+
+    $rating = (int)($_POST["rating"] ?? 0);
+
+    $review = trim($_POST["review"] ?? "");
+
+    if ($id <= 0 || $rating < 1 || $rating > 5) {
+        $_SESSION["error"] = "Rating tidak valid.";
+        header("Location:/emergency/history");
+        exit;
+    }
+
+    EmergencyRepository::saveRating(
+        $id,
+        $_SESSION["user"]["nik"],
+        $rating,
+        $review
+    );
+
+    $_SESSION["success"] = "Terima kasih atas penilaian Anda.";
+
+    header("Location:/emergency/history");
+    exit;
 }
 
     /**

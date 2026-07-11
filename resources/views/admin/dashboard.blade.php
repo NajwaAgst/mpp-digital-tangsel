@@ -441,12 +441,20 @@ ob_start();
 </div>
 
 <!-- ===================== -->
+<!-- RATING EMERGENCY -->
+<!-- ===================== -->
+
+
+
+<!-- ===================== -->
 <!-- CHART JS -->
 <!-- ===================== -->
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
+
+    
 
 // =======================
 // BAR CHART
@@ -600,9 +608,9 @@ new Chart(document.getElementById("emergencyCategoryChart"),{
 
             <?php foreach($emergencyChart as $row): ?>
 
-            "<?= addslashes($row["category"]) ?>",
+    "<?= addslashes($row["emergency_type"]) ?>",
 
-            <?php endforeach; ?>
+<?php endforeach; ?>
 
         ],
 

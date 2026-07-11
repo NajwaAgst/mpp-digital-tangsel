@@ -23,11 +23,11 @@ return [
     ],
 
     [
-    'method' => 'GET',
-    'uri' => '/dashboard',
-    'controller' => ServiceController::class,
-    'action' => 'dashboard'
-],
+        'method' => 'GET',
+        'uri' => '/dashboard',
+        'controller' => ServiceController::class,
+        'action' => 'dashboard'
+    ],
 
 
     /*
@@ -44,25 +44,38 @@ return [
     ],
 
     [
-    'method' => 'GET',
-    'uri' => '/services/history',
-    'controller' => ServiceController::class,
-    'action' => 'history'
-],
+        'method' => 'GET',
+        'uri' => '/services/history',
+        'controller' => ServiceController::class,
+        'action' => 'history'
+    ],
 
-[
-    'method' => 'GET',
-    'uri' => '/services/history/{id}',
-    'controller' => ServiceController::class,
-    'action' => 'historyDetail'
-],
+    [
+        'method' => 'GET',
+        'uri' => '/services/history/{id}',
+        'controller' => ServiceController::class,
+        'action' => 'historyDetail'
+    ],
 
-[
+    [
+        'method' => 'GET',
+        'uri' => '/services/download/{id}', // Fixed: Removed '/history' to match your actual download link
+        'controller' => ServiceController::class,
+        'action' => 'downloadPdf'
+    ],
+    [
     'method' => 'GET',
     'uri' => '/services/history/{id}/download',
     'controller' => ServiceController::class,
     'action' => 'downloadPdf'
 ],
+
+    [
+        'method' => 'POST',
+        'uri' => '/services/rating/{id}',
+        'controller' => ServiceController::class,
+        'action' => 'submitRating'
+    ],
 
     [
         'method' => 'GET',
@@ -84,8 +97,6 @@ return [
         'controller' => ServiceController::class,
         'action' => 'apply'
     ],
-
-    
 
 
     /*
@@ -116,6 +127,13 @@ return [
         'controller' => EmergencyController::class,
         'action' => 'report'
     ],
+
+    [
+    'method' => 'POST',
+    'uri' => '/emergency/rating',
+    'controller' => EmergencyController::class,
+    'action' => 'submitRating'
+],
 
     // Success
     [
@@ -272,6 +290,12 @@ return [
         'controller' => AdminController::class,
         'action' => 'dashboard'
     ],
+    [
+    'method' => 'GET',
+    'uri' => '/admin/feedback',
+    'controller' => AdminController::class,
+    'action' => 'feedback'
+],
 
 
     /*
@@ -379,17 +403,17 @@ return [
     ],
 
     [
-    'method'=>'GET',
-    'uri'=>'/emergency/history',
-    'controller'=>EmergencyController::class,
-    'action'=>'history'
-],
+        'method' => 'GET',
+        'uri' => '/emergency/history',
+        'controller' => EmergencyController::class,
+        'action' => 'history'
+    ],
 
-[
-    'method'=>'GET',
-    'uri'=>'/emergency/history/{id}',
-    'controller'=>EmergencyController::class,
-    'action'=>'detail'
-],
+    [
+        'method' => 'GET',
+        'uri' => '/emergency/history/{id}',
+        'controller' => EmergencyController::class,
+        'action' => 'detail'
+    ],
 
 ];

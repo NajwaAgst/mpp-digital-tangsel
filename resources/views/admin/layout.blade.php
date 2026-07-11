@@ -125,6 +125,17 @@ $currentPath = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
 
             </a>
 
+            <a
+    href="/admin/feedback"
+    class="block px-8 py-4 transition duration-200
+    <?= str_contains($currentPath,"/admin/feedback")
+        ? "bg-yellow-500 text-white"
+        : "hover:bg-slate-800 text-slate-200" ?>">
+
+    ⭐ Feedback Layanan
+
+</a>
+
         </nav>
 
         <!-- ========================= -->

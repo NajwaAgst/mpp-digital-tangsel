@@ -59,11 +59,15 @@ ob_start();
         </div>
 
         <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-          <p class="text-sm font-semibold text-slate-500">Estimasi Waktu</p>
-          <p class="mt-2 text-base font-semibold text-slate-800">
-            <?= htmlspecialchars($service['duration']) ?>
-          </p>
-        </div>
+  <p class="text-sm font-semibold text-slate-500">Estimasi Waktu</p>
+  <p class="mt-2 text-base font-semibold text-slate-800">
+    <?php 
+      // Membersihkan karakter aneh â€“ jika terbawa dari database/repository
+      $duration = str_replace('â€“', ' - ', $service['duration']);
+      echo htmlspecialchars($duration); 
+    ?>
+  </p>
+</div>
       </div>
 
       <div class="mt-8">

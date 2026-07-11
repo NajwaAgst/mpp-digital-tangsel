@@ -10,7 +10,7 @@
             id="nama"
             name="nama"
             readonly
-            placeholder="Nama Pemohon"
+            placeholder="Nama Lengkap"
             class="w-full rounded-lg bg-slate-800 p-3">
 
         <textarea
@@ -43,19 +43,19 @@
 
 </div>
 
-<div class="rounded-xl border border-slate-700 p-5 mt-6">
 
-    <h3 class="mb-4 text-lg font-semibold text-white">
+<div class="rounded-xl border border-slate-700 p-5">
+
+    <h3 class="mb-5 text-lg font-semibold">
         Data Pengajuan NIB
     </h3>
 
     <div class="grid gap-4">
 
         <input
-            type="text"
             name="nama_usaha"
-            placeholder="Nama Usaha"
             required
+            placeholder="Nama Usaha"
             class="w-full rounded-lg bg-slate-800 p-3">
 
         <select
@@ -63,79 +63,54 @@
             required
             class="w-full rounded-lg bg-slate-800 p-3">
 
-            <option value="">Pilih Jenis Usaha</option>
+            <option value="">
+                Pilih Jenis Usaha
+            </option>
+
             <option>Kuliner</option>
             <option>Perdagangan</option>
-            <option>Fashion</option>
-            <option>Teknologi Informasi</option>
             <option>Jasa</option>
+            <option>Fashion</option>
             <option>Pertanian</option>
-            <option>Manufaktur</option>
-            <option>Pendidikan</option>
-            <option>Kesehatan</option>
-            <option>Transportasi</option>
+            <option>Teknologi</option>
+            <option>Industri</option>
+            <option>Lainnya</option>
 
         </select>
 
         <input
             type="email"
             name="email"
-            placeholder="Email Aktif"
             required
+            placeholder="Alamat Email Aktif"
             class="w-full rounded-lg bg-slate-800 p-3">
 
         <input
-            type="text"
-            name="no_whatsapp"
+            name="whatsapp"
+            required
             placeholder="Nomor WhatsApp"
-            required
             class="w-full rounded-lg bg-slate-800 p-3">
 
-        <textarea
-            name="lokasi_usaha"
-            rows="3"
-            placeholder="Alamat Lengkap Lokasi Usaha"
-            required
-            class="w-full rounded-lg bg-slate-800 p-3"></textarea>
+        <input
+            name="modal_usaha"
+            placeholder="Modal Usaha (Rp)"
+            class="w-full rounded-lg bg-slate-800 p-3">
 
         <input
-            type="number"
-            name="modal_usaha"
-            placeholder="Modal Awal Usaha (Rp)"
-            required
+            name="lokasi_usaha"
+            placeholder="Lokasi Usaha"
             class="w-full rounded-lg bg-slate-800 p-3">
 
         <input
             type="number"
             name="jumlah_tenaga_kerja"
             placeholder="Jumlah Tenaga Kerja"
-            required
             class="w-full rounded-lg bg-slate-800 p-3">
 
-        <select
+        <input
             name="kbli"
-            required
+            placeholder="Kode KBLI"
             class="w-full rounded-lg bg-slate-800 p-3">
-
-            <option value="">Pilih KBLI</option>
-            <option>Kuliner</option>
-            <option>Perdagangan</option>
-            <option>Fashion</option>
-            <option>Teknologi Informasi</option>
-            <option>Jasa</option>
-            <option>Pertanian</option>
-            <option>Manufaktur</option>
-            <option>Pendidikan</option>
-            <option>Kesehatan</option>
-            <option>Transportasi</option>
-
-        </select>
-
-        <textarea
-            name="deskripsi_usaha"
-            rows="4"
-            placeholder="Deskripsi Singkat Kegiatan Usaha"
-            class="w-full rounded-lg bg-slate-800 p-3"></textarea>
 
     </div>
 

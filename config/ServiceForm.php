@@ -25,29 +25,34 @@ return [
 
     'perizinan-berusaha' => [
 
-        'code' => 'pbg',
+    'code' => 'nib',
 
-        'title' => 'Persetujuan Bangunan Gedung',
+    'title' => 'Nomor Induk Berusaha (NIB)',
 
-        'auto' => [
-            'nik',
-            'nama',
-            'alamat',
-            'npwp',
-            'status_npwp',
-            'nib',
-            'nama_usaha',
-            'jenis_usaha'
-        ],
+    'auto' => [
 
-        'manual' => [
-            'alamat_bangunan',
-            'luas_bangunan',
-            'jumlah_lantai',
-            'fungsi_bangunan'
-        ]
+        'nik',
+        'nama',
+        'alamat',
+        'npwp',
+        'status_npwp'
 
     ],
+
+    'manual' => [
+
+        'nama_usaha',
+        'jenis_usaha',
+        'email',
+        'whatsapp',
+        'modal_usaha',
+        'lokasi_usaha',
+        'jumlah_tenaga_kerja',
+        'kbli'
+
+    ]
+
+],
 
     'perpajakan' => [
 

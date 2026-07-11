@@ -214,34 +214,67 @@ $emergencyChart = $stmt->fetchAll(PDO::FETCH_ASSOC);
             FROM nibs
         ")->fetchColumn();
 
+        /*
+|--------------------------------------------------------------------------
+| Rating Emergency
+|--------------------------------------------------------------------------
+*/
+
+$stmt = $pdo->query("
+    SELECT
+        id,
+        nama,
+        emergency_type,
+        status,
+        rating,
+        review,
+        created_at
+    FROM emergencies
+    WHERE rating IS NOT NULL
+    ORDER BY created_at DESC
+    LIMIT 10
+");
+
+$emergencyRatings = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$avgEmergencyRating = $pdo->query("
+    SELECT ROUND(AVG(rating),1)
+    FROM emergencies
+    WHERE rating IS NOT NULL
+")->fetchColumn() ?: 0;
+
         return $this->view("admin.dashboard", [
 
-            "total" => $total,
-            "pending" => $pending,
-            "approved" => $approved,
-            "rejected" => $rejected,
+    "total" => $total,
+    "pending" => $pending,
+    "approved" => $approved,
+    "rejected" => $rejected,
 
-            "totalUsers" => $totalUsers,
-            "totalServices" => $totalServices,
+    "totalUsers" => $totalUsers,
+    "totalServices" => $totalServices,
 
-            "recentApplications" => $recentApplications,
+    "recentApplications" => $recentApplications,
 
-            "chart" => $chart,
+    "chart" => $chart,
 
-            "dukcapil" => $dukcapil,
-            "npwp" => $npwp,
-            "nib" => $nib,
+    "dukcapil" => $dukcapil,
+    "npwp" => $npwp,
+    "nib" => $nib,
 
-            "newEmergency" => $newEmergency,
-            "totalEmergency" => $totalEmergency,
-            "waitingEmergency" => $waitingEmergency,
-            "processEmergency" => $processEmergency,
-            "doneEmergency" => $doneEmergency,
+    "newEmergency" => $newEmergency,
+    "totalEmergency" => $totalEmergency,
+    "waitingEmergency" => $waitingEmergency,
+    "processEmergency" => $processEmergency,
+    "doneEmergency" => $doneEmergency,
 
-            "emergencyChart" => $emergencyChart,
-            "emergencyStatusChart" => $emergencyStatusChart
+    "emergencyChart" => $emergencyChart,
+    "emergencyStatusChart" => $emergencyStatusChart,
 
-        ]);
+    // Tambahan
+    "emergencyRatings" => $emergencyRatings,
+    "avgEmergencyRating" => $avgEmergencyRating
+
+]);
     }    /**
      * ==========================================
      * Semua Pengajuan
@@ -320,7 +353,16 @@ public function emergencies(): string
     $pdo = Database::getConnection();
 
     $stmt = $pdo->query("
-        SELECT *
+        SELECT
+            id,
+            nama,
+            nik,
+            phone,
+            emergency_type,
+            status,
+            rating,
+            review,
+            created_at
         FROM emergencies
         ORDER BY created_at DESC
     ");
@@ -644,4 +686,84 @@ $stmt->execute([
         header("Location: /admin/applications/" . $id);
         exit;
     }
+
+    /**
+     * ==========================================
+     * Menu Baru: Feedback Layanan (Daftar Semua Ulasan)
+     * ==========================================
+     */
+    public function feedback(): string
+{
+    $this->checkAdmin();
+
+    $pdo = Database::getConnection();
+
+    /*
+    |--------------------------------------------------------------------------
+    | Feedback MPP
+    |--------------------------------------------------------------------------
+    */
+    $stmt = $pdo->query("
+        SELECT
+            service_name,
+            nama,
+            rating,
+            comment,
+            created_at
+        FROM ratings
+        ORDER BY created_at DESC
+    ");
+
+    $mppFeedback = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    /*
+    |--------------------------------------------------------------------------
+    | Feedback Emergency
+    |--------------------------------------------------------------------------
+    */
+    $stmt = $pdo->query("
+        SELECT
+            nama,
+            emergency_type,
+            status,
+            rating,
+            review,
+            created_at
+        FROM emergencies
+        WHERE rating IS NOT NULL
+        ORDER BY created_at DESC
+    ");
+
+    $emergencyFeedback = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    return $this->view("admin.feedback", [
+        "mppFeedback" => $mppFeedback,
+        "emergencyFeedback" => $emergencyFeedback
+    ]);
+}
+public function exportEmergencyPdf(): void
+{
+    $this->checkAdmin();
+
+    $pdo = Database::getConnection();
+
+    $stmt = $pdo->query("
+        SELECT
+            id,
+            nama,
+            nik,
+            phone,
+            emergency_type,
+            status,
+            rating,
+            review,
+            created_at
+        FROM emergencies
+        ORDER BY created_at DESC
+    ");
+
+    $reports = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    require __DIR__ . '/../../../resources/views/admin/pdf-emergency.php';
+}
 }

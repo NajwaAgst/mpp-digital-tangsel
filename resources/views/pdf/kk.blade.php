@@ -1,85 +1,86 @@
+<?php
+$data = json_decode($application["application_data"] ?? "{}", true);
+
+$nomorKK = "3175" . str_pad($application["id"], 12, "0", STR_PAD_LEFT);
+
+header("Content-Type: text/html; charset=UTF-8");
+?>
+
 <!DOCTYPE html>
-<html>
-
+<html lang="id">
 <head>
-
 <meta charset="UTF-8">
+
+<title>Kartu Keluarga</title>
 
 <style>
 
 body{
-
-    font-family: DejaVu Sans, sans-serif;
-    font-size:13px;
+    font-family:Arial,Helvetica,sans-serif;
     margin:40px;
+    color:#000;
+}
 
+.watermark{
+    position:fixed;
+    top:35%;
+    left:15%;
+    font-size:120px;
+    color:#d9d9d9;
+    transform:rotate(-30deg);
+    z-index:-1;
+    opacity:.35;
+    font-weight:bold;
 }
 
 .header{
-
     text-align:center;
-    border-bottom:2px solid #000;
-    padding-bottom:15px;
-    margin-bottom:25px;
-
+    margin-bottom:20px;
 }
 
-.title{
-
-    font-size:22px;
-    font-weight:bold;
-
+.header h2{
+    margin:0;
+    font-size:24px;
 }
 
-.subtitle{
-
-    font-size:14px;
-
+.header h3{
+    margin:4px 0;
 }
 
 table{
-
     width:100%;
     border-collapse:collapse;
-
 }
 
+th,
 td{
-
+    border:1px solid #000;
     padding:8px;
-
+    font-size:13px;
 }
 
-.box{
-
-    border:1px solid #000;
-    padding:20px;
-    margin-top:20px;
-
+.info td{
+    border:none;
+    padding:4px;
 }
 
 .footer{
-
-    margin-top:70px;
+    margin-top:50px;
     text-align:right;
-
 }
 
-.signature{
-
-    margin-top:70px;
-
+.qr{
+    width:90px;
+    height:90px;
+    border:1px solid #000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:11px;
 }
 
-.badge{
-
-    display:inline-block;
-    padding:8px 18px;
-    background:#16a34a;
-    color:white;
-    border-radius:5px;
-    font-weight:bold;
-
+.small{
+    font-size:12px;
 }
 
 </style>
@@ -88,227 +89,127 @@ td{
 
 <body>
 
+<div class="watermark">
+SIMULASI
+</div>
+
 <div class="header">
 
-<div class="title">
+<h2>PEMERINTAH REPUBLIK INDONESIA</h2>
 
-PEMERINTAH KOTA TANGERANG SELATAN
+<h3>KARTU KELUARGA</h3>
 
-</div>
-
-<div class="subtitle">
-
-Mall Pelayanan Publik Digital (SPBE)
+<p><strong>No. <?= $nomorKK ?></strong></p>
 
 </div>
 
-<div class="subtitle">
-
-Dokumen Elektronik Resmi
-
-</div>
-
-</div>
-
-
-<h2 style="text-align:center">
-
-SURAT KETERANGAN PENGAJUAN
-KARTU KELUARGA
-
-</h2>
-
-<br>
-
-<table>
+<table class="info">
 
 <tr>
 
-<td width="180">
+<td width="200">Nama Kepala Keluarga</td>
 
-Nomor Dokumen
+<td width="10">:</td>
 
-</td>
-
-<td>
-
-:
-
-</td>
-
-<td>
-
-KK-<?= date("Y") ?>-<?= str_pad($application["id"],5,"0",STR_PAD_LEFT) ?>
-
-</td>
+<td><?= htmlspecialchars($data["nama"] ?? "") ?></td>
 
 </tr>
 
 <tr>
 
-<td>
+<td>Alamat</td>
 
-Nama
+<td>:</td>
 
-</td>
-
-<td>
-
-:
-
-</td>
-
-<td>
-
-<?= htmlspecialchars($application["nama"]) ?>
-
-</td>
+<td><?= htmlspecialchars($data["alamat"] ?? "") ?></td>
 
 </tr>
 
 <tr>
 
-<td>
+<td>No. HP</td>
 
-NIK
+<td>:</td>
 
-</td>
-
-<td>
-
-:
-
-</td>
-
-<td>
-
-<?= htmlspecialchars($application["nik"]) ?>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-Alamat
-
-</td>
-
-<td>
-
-:
-
-</td>
-
-<td>
-
-<?= htmlspecialchars($application["alamat"]) ?>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-Jenis Layanan
-
-</td>
-
-<td>
-
-:
-
-</td>
-
-<td>
-
-<?= htmlspecialchars($application["service_name"]) ?>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-Tanggal Pengajuan
-
-</td>
-
-<td>
-
-:
-
-</td>
-
-<td>
-
-<?= date("d F Y",strtotime($application["created_at"])) ?>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-Status
-
-</td>
-
-<td>
-
-:
-
-</td>
-
-<td>
-
-<span class="badge">
-
-DISETUJUI
-
-</span>
-
-</td>
+<td><?= htmlspecialchars($data["hp"] ?? "-") ?></td>
 
 </tr>
 
 </table>
 
-<div class="box">
+<br>
 
-Dokumen ini diterbitkan secara elektronik melalui Sistem Pelayanan Publik Berbasis Elektronik (SPBE).
+<table>
 
-Pemohon telah memenuhi seluruh persyaratan administrasi untuk layanan Kartu Keluarga.
+<thead>
 
-Dokumen ini sah tanpa tanda tangan basah.
+<tr>
 
-</div>
+<th>No</th>
+
+<th>Nama Lengkap</th>
+
+<th>NIK</th>
+
+<th>Tempat Lahir</th>
+
+<th>Tanggal Lahir</th>
+
+<th>Status</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td align="center">1</td>
+
+<td><?= htmlspecialchars($data["nama"] ?? "") ?></td>
+
+<td><?= htmlspecialchars($data["nik"] ?? "") ?></td>
+
+<td><?= htmlspecialchars($data["tempat_lahir"] ?? "-") ?></td>
+
+<td><?= htmlspecialchars($data["tanggal_lahir"] ?? "-") ?></td>
+
+<td><?= htmlspecialchars($data["status_perkawinan"] ?? "-") ?></td>
+
+</tr>
+
+</tbody>
+
+</table>
 
 <div class="footer">
 
-Tangerang Selatan,
+<p>Jakarta, <?= date("d F Y") ?></p>
 
-<?= date("d F Y") ?>
+<p>Kepala Dinas Kependudukan</p>
 
-<br><br><br><br>
+<br><br><br>
 
-<b>
+<strong>______________________</strong>
 
-Kepala Dinas Kependudukan
-dan Pencatatan Sipil
+<div style="float:left">
 
-</b>
+<div class="qr">
+
+QR CODE
+
+</div>
+
+<p class="small">
+
+Verifikasi Digital
+
+</p>
+
+</div>
 
 </div>
 
 </body>
-
 </html>

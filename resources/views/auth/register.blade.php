@@ -1,5 +1,6 @@
 <?php
 $title = 'Register MPP Digital';
+
 $authUser = $authUser ?? null;
 $redirect = $redirect ?? '/services';
 $error = $_GET['error'] ?? '';
@@ -7,132 +8,367 @@ $error = $_GET['error'] ?? '';
 ob_start();
 ?>
 
-<div class="mx-auto flex min-h-[70vh] max-w-6xl items-center justify-center px-4 py-16 sm:px-6 lg:px-8">
+<style>
+body{
+    margin:0;
+    min-height:100vh;
+    background:
+        radial-gradient(circle at top left,#d1fae5 0%,transparent 45%),
+        radial-gradient(circle at bottom right,#dbeafe 0%,transparent 40%),
+        linear-gradient(135deg,#ecfeff,#f8fafc,#eff6ff);
+    font-family:Inter,sans-serif;
+}
 
-    <div class="grid w-full overflow-hidden rounded-[2rem] border border-white/70 bg-white/90 shadow-2xl shadow-slate-200/60 lg:grid-cols-2">
+.register-bg{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:40px;
+}
 
-        <div class="bg-gradient-to-br from-violet-600 to-emerald-600 p-8 text-white">
+.register-card{
+    width:100%;
+    max-width:1180px;
+    display:grid;
+    grid-template-columns:1fr 470px;
+    background:white;
+    border-radius:34px;
+    overflow:hidden;
+    box-shadow:0 25px 60px rgba(15,23,42,.15);
+}
 
-            <p class="text-sm font-semibold uppercase tracking-[0.28em] text-violet-100">
-                Buat akun
-            </p>
+.left-panel{
+    background:linear-gradient(135deg,#0891b2,#2563eb,#10b981);
+    color:white;
+    padding:70px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    position:relative;
+    overflow:hidden;
+}
 
-            <h1 class="mt-4 text-3xl font-semibold">
-                Daftar untuk mulai mengajukan layanan
-            </h1>
+.left-panel::before{
+    content:"";
+    position:absolute;
+    width:380px;
+    height:380px;
+    border-radius:50%;
+    background:rgba(255,255,255,.08);
+    right:-120px;
+    top:-100px;
+}
 
-            <p class="mt-4 max-w-md text-sm leading-7 text-violet-50">
-                Daftarkan akun Anda untuk mengakses layanan MPP Digital dan mengajukan dokumen secara online.
-            </p>
+.left-panel::after{
+    content:"";
+    position:absolute;
+    width:250px;
+    height:250px;
+    border-radius:50%;
+    background:rgba(255,255,255,.06);
+    left:-60px;
+    bottom:-60px;
+}
 
-        </div>
+.logo-icon{
+    font-size:70px;
+    margin-bottom:25px;
+}
 
-        <div class="p-8 sm:p-10">
+.left-panel h1{
+    font-size:44px;
+    font-weight:700;
+    line-height:1.2;
+    margin-bottom:18px;
+}
 
-            <h2 class="text-2xl font-semibold text-slate-900">
-                Register
-            </h2>
+.left-panel p{
+    font-size:18px;
+    line-height:1.8;
+    color:rgba(255,255,255,.92);
+    max-width:430px;
+}
 
-            <p class="mt-2 text-sm text-slate-600">
-                Sudah punya akun?
-                <a href="/login?redirect=<?= urlencode($redirect) ?>"
-                    class="font-semibold text-emerald-600">
-                    Masuk di sini
-                </a>
-            </p>
+.badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:rgba(255,255,255,.18);
+    backdrop-filter:blur(10px);
+    border-radius:999px;
+    padding:12px 24px;
+    margin-top:40px;
+    width:max-content;
+    font-size:15px;
+}
 
-            <?php if ($error): ?>
-                <div class="mt-5 rounded-xl bg-red-100 border border-red-300 p-3 text-red-700 text-sm">
-                    <?= htmlspecialchars($error) ?>
-                </div>
-            <?php endif; ?>
+.right-panel{
+    padding:55px;
+    display:flex;
+    align-items:center;
+}
 
-            <form action="/auth/register" method="POST" class="mt-8 space-y-4">
+.form-wrapper{
+    width:100%;
+}
 
-                <input
-                    type="hidden"
-                    name="redirect"
-                    value="<?= htmlspecialchars($redirect) ?>">
+.icon{
+    font-size:48px;
+    text-align:center;
+    margin-bottom:10px;
+}
 
-                <div>
+.form-wrapper h2{
+    text-align:center;
+    font-size:36px;
+    font-weight:700;
+    color:#0f172a;
+}
 
-                    <label class="mb-2 block text-sm font-semibold text-slate-700">
-                        NIK
-                    </label>
+.subtitle{
+    text-align:center;
+    color:#64748b;
+    margin-top:8px;
+    margin-bottom:30px;
+}
 
-                    <input
-                        type="text"
-                        name="nik"
-                        maxlength="16"
-                        minlength="16"
-                        required
-                        class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-emerald-500"
-                        placeholder="16 digit NIK">
+.input-group{
+    margin-bottom:18px;
+}
 
-                </div>
+.input-group label{
+    display:block;
+    font-weight:600;
+    margin-bottom:8px;
+    color:#334155;
+}
 
-                <div>
+.input-group input{
+    width:100%;
+    padding:15px 18px;
+    border:1px solid #cbd5e1;
+    border-radius:14px;
+    font-size:15px;
+    transition:.2s;
+}
 
-                    <label class="mb-2 block text-sm font-semibold text-slate-700">
-                        Nama Lengkap
-                    </label>
+.input-group input:focus{
+    outline:none;
+    border-color:#0ea5e9;
+    box-shadow:0 0 0 4px rgba(14,165,233,.15);
+}
 
-                    <input
-                        type="text"
-                        name="name"
-                        required
-                        class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-emerald-500"
-                        placeholder="Nama Lengkap">
+button{
+    width:100%;
+    padding:16px;
+    border:none;
+    border-radius:14px;
+    background:#0ea5e9;
+    color:white;
+    font-weight:700;
+    cursor:pointer;
+    transition:.25s;
+}
 
-                </div>
+button:hover{
+    background:#0284c7;
+}
 
-                <div>
+.login-link{
+    margin-top:22px;
+    text-align:center;
+    color:#64748b;
+}
 
-                    <label class="mb-2 block text-sm font-semibold text-slate-700">
-                        Email
-                    </label>
+.login-link a{
+    color:#0891b2;
+    font-weight:700;
+    text-decoration:none;
+}
 
-                    <input
-                        type="email"
-                        name="email"
-                        required
-                        class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-emerald-500"
-                        placeholder="nama@email.com">
+.back{
+    margin-top:25px;
+    text-align:center;
+}
 
-                </div>
+.back a{
+    color:#64748b;
+    text-decoration:none;
+}
 
-                <div>
+.error-box{
+    background:#fee2e2;
+    color:#b91c1c;
+    border:1px solid #fecaca;
+    border-radius:12px;
+    padding:14px;
+    margin-bottom:20px;
+}
 
-                    <label class="mb-2 block text-sm font-semibold text-slate-700">
-                        Password
-                    </label>
+@media(max-width:960px){
 
-                    <input
-                        type="password"
-                        name="password"
-                        required
-                        class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-emerald-500"
-                        placeholder="Minimal 6 karakter">
+.register-card{
+grid-template-columns:1fr;
+}
 
-                </div>
+.left-panel{
+display:none;
+}
 
-                <button
-                    type="submit"
-                    class="w-full rounded-2xl bg-violet-600 px-4 py-3 font-semibold text-white hover:bg-violet-700">
+.right-panel{
+padding:35px;
+}
 
-                    Daftar
+}
+</style>
 
-                </button>
+<div class="register-bg">
 
-            </form>
+<div class="register-card">
 
-        </div>
+<div class="left-panel">
 
-    </div>
+<div class="logo-icon">
+📝
+</div>
+
+<h1>
+Bergabung dengan
+MPP Digital
+</h1>
+
+<p>
+
+Daftarkan akun Anda untuk menikmati seluruh layanan Mall Pelayanan Publik secara online.
+
+Ajukan dokumen, pantau proses, dan unduh hasil layanan kapan saja.
+
+</p>
+
+<div class="badge">
+🟢 Pendaftaran Gratis
+</div>
+
+</div>
+
+<div class="right-panel">
+
+<div class="form-wrapper">
+
+<div class="icon">
+🏛️
+</div>
+
+<h2>Register</h2>
+
+<div class="subtitle">
+
+Sudah punya akun?
+
+<a href="/login?redirect=<?= urlencode($redirect) ?>" style="color:#0891b2;font-weight:700;">
+Masuk Sekarang
+</a>
+
+</div>
+
+<?php if($error): ?>
+
+<div class="error-box">
+<?= htmlspecialchars($error) ?>
+</div>
+
+<?php endif; ?>
+
+<form action="/auth/register" method="POST">
+
+<input
+type="hidden"
+name="redirect"
+value="<?= htmlspecialchars($redirect) ?>">
+
+<div class="input-group">
+
+<label>NIK</label>
+
+<input
+type="text"
+name="nik"
+maxlength="16"
+minlength="16"
+required
+placeholder="16 Digit NIK">
+
+</div>
+
+<div class="input-group">
+
+<label>Nama Lengkap</label>
+
+<input
+type="text"
+name="name"
+required
+placeholder="Nama Lengkap">
+
+</div>
+
+<div class="input-group">
+
+<label>Email</label>
+
+<input
+type="email"
+name="email"
+required
+placeholder="nama@email.com">
+
+</div>
+
+<div class="input-group">
+
+<label>Password</label>
+
+<input
+type="password"
+name="password"
+required
+placeholder="Minimal 6 karakter">
+
+</div>
+
+<button type="submit">
+
+DAFTAR SEKARANG
+
+</button>
+
+</form>
+
+<div class="back">
+
+<a href="/">
+← Kembali ke Portal
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
 
 </div>
 
 <?php
 $content = ob_get_clean();
-include __DIR__.'/../layout.blade.php';
+
+/*
+Supaya navbar dan footer tidak tampil.
+*/
+$hideNavbar = true;
+$hideFooter = true;
+
+include __DIR__.'/layout.blade.php';
 ?>

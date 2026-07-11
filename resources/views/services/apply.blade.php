@@ -327,16 +327,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
         [
 
-            "nama",
-            "tempat_lahir",
-            "tanggal_lahir",
-            "alamat",
-            "hp",
-            "npwp",
-            "status_npwp",
-            "nib",
-            "nama_usaha",
-            "jenis_usaha"
+                    "nama",
+        "tempat_lahir",
+        "tanggal_lahir",
+        "alamat",
+        "hp",
+        "npwp",
+        "status_npwp"
+
 
         ].forEach(id => setValue(id, ""));
 
@@ -427,13 +425,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (json.data.nib) {
 
-                const b = json.data.nib;
+    // Tidak menampilkan NIB lama.
+    // User akan mengajukan NIB baru.
 
-                setValue("nib", b.nib);
-                setValue("nama_usaha", b.nama_usaha);
-                setValue("jenis_usaha", b.jenis_usaha);
-
-            }
+}
 
         } catch (err) {
 

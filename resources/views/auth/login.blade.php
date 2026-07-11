@@ -1,101 +1,207 @@
 <?php
 $title = 'Login MPP Digital';
-$authUser = $authUser ?? null;
+
 $redirect = $redirect ?? '/services';
 $error = $_GET['error'] ?? '';
 
 ob_start();
 ?>
 
-<div class="mx-auto flex min-h-[70vh] max-w-6xl items-center justify-center px-4 py-16 sm:px-6 lg:px-8">
-    <div class="grid w-full overflow-hidden rounded-[2rem] border border-white/70 bg-white/90 shadow-2xl shadow-slate-200/60 lg:grid-cols-2">
+<div class="min-h-screen bg-gradient-to-br from-emerald-50 via-cyan-50 to-blue-100 flex items-center justify-center px-6 py-10 overflow-hidden">
 
-        <div class="bg-gradient-to-br from-emerald-600 to-violet-600 p-8 text-white">
-            <p class="text-sm font-semibold uppercase tracking-[0.28em] text-emerald-100">
-                Portal MPP Digital
-            </p>
+    <!-- Background Blur -->
+    <div class="absolute inset-0 overflow-hidden">
 
-            <h1 class="mt-4 text-3xl font-semibold">
-                Masuk untuk mengajukan berkas
+        <div class="absolute -top-40 -left-32 w-96 h-96 bg-emerald-300 rounded-full blur-3xl opacity-20"></div>
+
+        <div class="absolute bottom-0 right-0 w-[500px] h-[500px] bg-cyan-300 rounded-full blur-3xl opacity-20"></div>
+
+    </div>
+
+    <div class="relative w-full max-w-6xl grid lg:grid-cols-2 bg-white rounded-[32px] shadow-2xl overflow-hidden">
+
+        <!-- LEFT -->
+
+        <div class="bg-gradient-to-br from-emerald-600 via-emerald-500 to-cyan-600 text-white p-14 flex flex-col justify-center">
+
+            <div class="text-7xl mb-8">
+                🏛️
+            </div>
+
+            <h1 class="text-5xl font-bold leading-tight">
+
+                Mall Pelayanan Publik
+
             </h1>
 
-            <p class="mt-4 max-w-md text-sm leading-7 text-emerald-50">
-                Login untuk melanjutkan pengajuan layanan,
-                memantau status dokumen,
-                dan mengakses halaman akun Anda.
+            <h2 class="text-3xl mt-2 font-semibold text-emerald-100">
+
+                Kota Tangerang Selatan
+
+            </h2>
+
+            <p class="mt-8 text-lg leading-8 text-emerald-50 max-w-md">
+
+                Portal pelayanan publik digital untuk
+                mengajukan berbagai layanan pemerintah,
+                memonitor status pengajuan,
+                dan mengunduh dokumen resmi secara online.
+
             </p>
+
+            <div class="mt-12 flex flex-wrap gap-4">
+
+                <div class="rounded-full bg-white/20 px-6 py-3 backdrop-blur">
+
+                    ✅ Cepat
+
+                </div>
+
+                <div class="rounded-full bg-white/20 px-6 py-3 backdrop-blur">
+
+                    🔐 Aman
+
+                </div>
+
+                <div class="rounded-full bg-white/20 px-6 py-3 backdrop-blur">
+
+                    🌐 Terintegrasi
+
+                </div>
+
+            </div>
 
         </div>
 
-        <div class="p-8 sm:p-10">
+        <!-- RIGHT -->
 
-            <h2 class="text-2xl font-semibold text-slate-900">
-                Login
-            </h2>
+        <div class="p-12 lg:p-16 flex items-center">
 
-            <p class="mt-2 text-sm text-slate-600">
-                Belum punya akun?
-                <a href="/register?redirect=<?= urlencode($redirect) ?>"
-                    class="font-semibold text-emerald-600">
-                    Daftar sekarang
-                </a>
-            </p>
+            <div class="w-full">
 
-            <?php if ($error): ?>
-                <div class="mt-5 rounded-xl bg-red-100 border border-red-300 p-3 text-red-700 text-sm">
-                    <?= htmlspecialchars($error) ?>
+                <div class="text-center mb-10">
+
+                    <div class="text-6xl">
+
+                        👤
+
+                    </div>
+
+                    <h2 class="text-4xl font-bold text-slate-800 mt-4">
+
+                        Login MPP
+
+                    </h2>
+
+                    <p class="text-slate-500 mt-3">
+
+                        Masuk menggunakan akun Portal MPP Digital
+
+                    </p>
+
                 </div>
-            <?php endif; ?>
 
-            <form action="/auth/login" method="POST" class="mt-8 space-y-4">
+                <?php if($error): ?>
 
-                <input
-                    type="hidden"
-                    name="redirect"
-                    value="<?= htmlspecialchars($redirect) ?>">
+                    <div class="mb-6 rounded-2xl border border-red-300 bg-red-50 p-4 text-red-700">
 
-                <div>
-                    <label class="mb-2 block text-sm font-semibold text-slate-700">
-                        Email
-                    </label>
+                        <?= htmlspecialchars($error) ?>
+
+                    </div>
+
+                <?php endif; ?>
+
+                <form action="/auth/login" method="POST" class="space-y-6">
 
                     <input
-                        type="email"
-                        name="email"
-                        required
-                        class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-emerald-500"
-                        placeholder="nama@email.com">
+                        type="hidden"
+                        name="redirect"
+                        value="<?= htmlspecialchars($redirect) ?>">
+
+                    <div>
+
+                        <label class="mb-2 block font-semibold text-slate-700">
+
+                            Email
+
+                        </label>
+
+                        <input
+                            type="email"
+                            name="email"
+                            required
+                            placeholder="nama@email.com"
+                            class="w-full rounded-2xl border border-slate-300 px-5 py-4 focus:border-emerald-500 focus:outline-none">
+
+                    </div>
+
+                    <div>
+
+                        <label class="mb-2 block font-semibold text-slate-700">
+
+                            Password
+
+                        </label>
+
+                        <input
+                            type="password"
+                            name="password"
+                            required
+                            placeholder="Masukkan password"
+                            class="w-full rounded-2xl border border-slate-300 px-5 py-4 focus:border-emerald-500 focus:outline-none">
+
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="w-full rounded-2xl bg-emerald-600 py-4 text-lg font-bold text-white transition hover:bg-emerald-700 hover:shadow-lg">
+
+                        LOGIN MPP
+
+                    </button>
+
+                </form>
+
+                <div class="mt-8 text-center">
+
+                    Belum punya akun?
+
+                    <a
+                        href="/register?redirect=<?= urlencode($redirect) ?>"
+                        class="font-bold text-emerald-600 hover:text-emerald-700">
+
+                        Daftar Sekarang
+
+                    </a>
+
                 </div>
 
-                <div>
-                    <label class="mb-2 block text-sm font-semibold text-slate-700">
-                        Password
-                    </label>
+                <hr class="my-8">
 
-                    <input
-                        type="password"
-                        name="password"
-                        required
-                        class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-emerald-500"
-                        placeholder="Password">
+                <div class="text-center">
+
+                    <a
+                        href="/"
+                        class="text-slate-500 hover:text-emerald-600">
+
+                        ← Kembali ke Beranda
+
+                    </a>
+
                 </div>
 
-                <button
-                    type="submit"
-                    class="w-full rounded-2xl bg-emerald-600 px-4 py-3 font-semibold text-white hover:bg-emerald-700">
-
-                    Masuk
-
-                </button>
-
-            </form>
+            </div>
 
         </div>
 
     </div>
+
 </div>
 
 <?php
+
 $content = ob_get_clean();
-include __DIR__.'/../layout.blade.php';
+
+include __DIR__.'/layout.blade.php';
+
 ?>
