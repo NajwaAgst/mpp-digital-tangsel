@@ -56,9 +56,7 @@ NAVBAR
             <!-- Menu -->
             <nav class="hidden md:flex items-center gap-8 text-white">
 
-                <a href="/" class="hover:text-red-200">
-                    Beranda
-                </a>
+                
 
                 <a href="/emergency" class="hover:text-red-200">
                     Dashboard

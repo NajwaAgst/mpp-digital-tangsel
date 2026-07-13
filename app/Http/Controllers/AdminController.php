@@ -67,6 +67,7 @@ class AdminController extends Controller
             FROM applications
             WHERE status='Rejected'
         ")->fetchColumn();
+        
 
         /*
         |--------------------------------------------------------------------------
@@ -340,6 +341,29 @@ $avgEmergencyRating = $pdo->query("
 
         ]);
     }
+
+    public function exportApplicationPdf(): void
+{
+    $this->checkAdmin();
+
+    $pdo = Database::getConnection();
+
+    $stmt = $pdo->query("
+        SELECT
+            id,
+            nama,
+            nik,
+            service_name,
+            status,
+            created_at
+        FROM applications
+        ORDER BY created_at DESC
+    ");
+
+    $applications = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    require __DIR__ . "/../../../resources/views/admin/pdf-application.php";
+}
 
     /**
  * ==========================================
@@ -764,6 +788,6 @@ public function exportEmergencyPdf(): void
 
     $reports = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    require __DIR__ . '/../../../resources/views/admin/pdf-emergency.php';
+    require __DIR__ . "/../../../resources/views/admin/pdf-emergency.php";
 }
 }

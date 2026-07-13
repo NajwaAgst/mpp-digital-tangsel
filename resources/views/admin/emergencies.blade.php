@@ -80,13 +80,7 @@ ob_start();
 
     </div>
 
-    <a
-        href="/admin/emergencies/export/pdf"
-        class="bg-red-600 text-white px-5 py-3 rounded-xl hover:bg-red-700">
-
-        Export PDF
-
-    </a>
+    
 
 </div>
 

@@ -312,6 +312,13 @@ return [
     ],
 
     [
+    'method' => 'GET',
+    'uri' => '/admin/applications/export/pdf',
+    'controller' => AdminController::class,
+    'action' => 'exportApplicationPdf'
+],
+
+    [
         'method' => 'GET',
         'uri' => '/admin/applications/{id}',
         'controller' => AdminController::class,

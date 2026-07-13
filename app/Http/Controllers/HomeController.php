@@ -139,50 +139,158 @@ class HomeController extends Controller
         ];
 
         /*
-        |--------------------------------------------------------------------------
-        | Statistik Rating & Kepuasan (Koneksi Database)
-        |--------------------------------------------------------------------------
-        */
+|--------------------------------------------------------------------------
+| Statistik Rating & Kepuasan (MPP + Emergency)
+|--------------------------------------------------------------------------
+*/
 
-        $pdo = Database::getConnection();
+$pdo = Database::getConnection();
 
-        // 1. Ambil Rata-rata Rating Global & Total Penilaian
-        $statsGlobal = $pdo->query("
-            SELECT 
-                COUNT(*) as total_penilaian,
-                AVG(rating) as avg_rating,
-                SUM(CASE WHEN rating >= 4 THEN 1 ELSE 0 END) as puas_count
-            FROM ratings
-        ")->fetch(PDO::FETCH_ASSOC);
+/*
+|--------------------------------------------------------------------------
+| Statistik MPP
+|--------------------------------------------------------------------------
+*/
 
-        $totalPenilaian = $statsGlobal['total_penilaian'] ?? 0;
-        $avgRating = round($statsGlobal['avg_rating'] ?? 0, 1);
-        $persenPuas = $totalPenilaian > 0 ? round(($statsGlobal['puas_count'] / $totalPenilaian) * 100) : 0;
+$mppStats = $pdo->query("
+    SELECT
+        COUNT(*) AS total,
+        AVG(rating) AS avg_rating,
+        SUM(CASE WHEN rating >= 4 THEN 1 ELSE 0 END) AS puas
+    FROM ratings
+")->fetch(PDO::FETCH_ASSOC);
 
-        // 2. Ambil Rating Per Layanan (untuk bar grafik performa)
-        $serviceRatings = $pdo->query("
-            SELECT 
-                service_name, 
-                AVG(rating) as avg_rating, 
-                COUNT(*) as total_ulasan
-            FROM ratings 
-            GROUP BY service_name 
-            ORDER BY avg_rating DESC
-        ")->fetchAll(PDO::FETCH_ASSOC);
+/*
+|--------------------------------------------------------------------------
+| Statistik Emergency
+|--------------------------------------------------------------------------
+*/
 
-        // 3. Ambil Sebaran Bintang (untuk bar grafik ulasan bintang 1-5)
-        $starDistribution = $pdo->query("
-            SELECT rating, COUNT(*) as jumlah 
-            FROM ratings 
-            GROUP BY rating
-        ")->fetchAll(PDO::FETCH_KEY_PAIR);
+$emergencyRatingStats = $pdo->query("
+    SELECT
+        COUNT(*) AS total,
+        AVG(rating) AS avg_rating,
+        SUM(CASE WHEN rating >= 4 THEN 1 ELSE 0 END) AS puas
+    FROM emergencies
+    WHERE rating IS NOT NULL
+")->fetch(PDO::FETCH_ASSOC);
 
-        // Mengisi indeks bintang 1 s.d. 5 dengan nilai default 0 jika belum ada data ulasan
-        for ($i = 1; $i <= 5; $i++) {
-            if (!isset($starDistribution[$i])) {
-                $starDistribution[$i] = 0;
-            }
-        }
+/*
+|--------------------------------------------------------------------------
+| Gabungkan Statistik
+|--------------------------------------------------------------------------
+*/
+
+$mppTotal = (int)($mppStats["total"] ?? 0);
+$emergencyTotal = (int)($emergencyRatingStats["total"] ?? 0);
+
+$totalPenilaian = $mppTotal + $emergencyTotal;
+
+$totalScore =
+    (($mppStats["avg_rating"] ?? 0) * $mppTotal)
+    +
+    (($emergencyRatingStats["avg_rating"] ?? 0) * $emergencyTotal);
+
+$avgRating = $totalPenilaian > 0
+    ? round($totalScore / $totalPenilaian, 1)
+    : 0;
+
+$totalPuas =
+    (int)($mppStats["puas"] ?? 0)
+    +
+    (int)($emergencyRatingStats["puas"] ?? 0);
+
+$persenPuas = $totalPenilaian > 0
+    ? round(($totalPuas / $totalPenilaian) * 100)
+    : 0;
+
+/*
+|--------------------------------------------------------------------------
+| Rating Per Layanan MPP
+|--------------------------------------------------------------------------
+*/
+
+$mppServices = $pdo->query("
+    SELECT
+        service_name,
+        ROUND(AVG(rating),1) AS avg_rating,
+        COUNT(*) AS total_ulasan
+    FROM ratings
+    GROUP BY service_name
+")->fetchAll(PDO::FETCH_ASSOC);
+
+/*
+|--------------------------------------------------------------------------
+| Rating Emergency (digabung jadi 1 layanan)
+|--------------------------------------------------------------------------
+*/
+
+$emergencyService = $pdo->query("
+    SELECT
+        'Emergency 112' AS service_name,
+        ROUND(AVG(rating),1) AS avg_rating,
+        COUNT(*) AS total_ulasan
+    FROM emergencies
+    WHERE rating IS NOT NULL
+")->fetch(PDO::FETCH_ASSOC);
+
+/*
+|--------------------------------------------------------------------------
+| Merge MPP + Emergency
+|--------------------------------------------------------------------------
+*/
+
+$serviceRatings = $mppServices;
+
+if (!empty($emergencyService["total_ulasan"])) {
+    $serviceRatings[] = $emergencyService;
+}
+
+usort($serviceRatings, function ($a, $b) {
+    return $b["avg_rating"] <=> $a["avg_rating"];
+});
+
+/*
+|--------------------------------------------------------------------------
+| Distribusi Bintang MPP
+|--------------------------------------------------------------------------
+*/
+
+$mppStars = $pdo->query("
+    SELECT rating, COUNT(*) jumlah
+    FROM ratings
+    GROUP BY rating
+")->fetchAll(PDO::FETCH_KEY_PAIR);
+
+/*
+|--------------------------------------------------------------------------
+| Distribusi Bintang Emergency
+|--------------------------------------------------------------------------
+*/
+
+$emergencyStars = $pdo->query("
+    SELECT rating, COUNT(*) jumlah
+    FROM emergencies
+    WHERE rating IS NOT NULL
+    GROUP BY rating
+")->fetchAll(PDO::FETCH_KEY_PAIR);
+
+/*
+|--------------------------------------------------------------------------
+| Gabungkan Distribusi
+|--------------------------------------------------------------------------
+*/
+
+$starDistribution = [];
+
+for ($i = 1; $i <= 5; $i++) {
+
+    $starDistribution[$i] =
+        ($mppStars[$i] ?? 0)
+        +
+        ($emergencyStars[$i] ?? 0);
+
+}
 
         /*
         |--------------------------------------------------------------------------

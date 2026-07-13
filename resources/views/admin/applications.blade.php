@@ -26,11 +26,11 @@ ob_start();
     <!-- Search & Filter -->
     <!-- ============================= -->
     <div class="bg-white rounded-3xl shadow-lg p-6">
-        <!-- Diubah menjadi grid-cols-5 agar semua input dan tombol sejajar rapi -->
+        <!-- Dikembalikan menjadi grid-cols-4 karena Export PDF sudah dipindah -->
         <form
             action="/admin/applications"
             method="GET"
-            class="grid grid-cols-1 md:grid-cols-5 gap-4">
+            class="grid grid-cols-1 md:grid-cols-4 gap-4">
 
             <input
                 type="text"
@@ -50,25 +50,24 @@ ob_start();
 
             <button
                 type="submit"
-                class="bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-semibold transition">
+                class="bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-semibold transition py-3">
                 Cari
             </button>
 
-            <a
-                href="/admin/applications"
-                class="bg-slate-500 hover:bg-slate-600 text-white rounded-xl flex items-center justify-center font-semibold transition">
-                Reset
-            </a>
-
-            <!-- Tombol Export PDF dipindahkan ke sini (paling kanan form) -->
-            <a
-                href="/admin/emergencies/export/pdf"
-                class="bg-red-600 hover:bg-red-700 text-white rounded-xl flex items-center justify-center font-semibold transition">
-                Export PDF
-            </a>
-
+            <!-- Cari bagian ini di file view Data Pengajuan Anda dan ubah href-nya -->
+<a
+    href="/admin/applications/export/pdf"
+    class="bg-red-600 hover:bg-red-700 text-white rounded-xl flex items-center justify-center font-semibold transition">
+    Reset
+</a>
         </form>
     </div>
+
+    <!-- ============================= -->
+    <!-- Action Buttons (Export PDF) -->
+    <!-- ============================= -->
+    <!-- Container ini memposisikan tombol tepat di kanan atas tabel sesuai gambar -->
+    
 
     <!-- ============================= -->
     <!-- Table -->

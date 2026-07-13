@@ -197,10 +197,101 @@ $status=$report["status"] ?? "Menunggu";
 
 </div>
 
+<?php if(
+    $report["status"] == "Selesai"
+    && empty($report["rating"])
+): ?>
+
+<div class="mt-8 rounded-3xl bg-white p-8 shadow">
+
+    <h2 class="text-2xl font-bold">
+        ⭐ Beri Penilaian
+    </h2>
+
+    <p class="mt-2 text-slate-500">
+        Bagaimana pelayanan Emergency 112 yang Anda terima?
+    </p>
+
+    <form
+        action="/emergency/rating"
+        method="POST"
+        class="mt-6">
+
+        <input
+            type="hidden"
+            name="report_id"
+            value="<?= $report["id"] ?>">
+
+        <div class="mb-5">
+
+            <select
+                name="rating"
+                required
+                class="w-full rounded-xl border p-3">
+
+                <option value="">Pilih Rating</option>
+                <option value="5">⭐⭐⭐⭐⭐ Sangat Puas</option>
+                <option value="4">⭐⭐⭐⭐ Puas</option>
+                <option value="3">⭐⭐⭐ Cukup</option>
+                <option value="2">⭐⭐ Kurang</option>
+                <option value="1">⭐ Sangat Kurang</option>
+
+            </select>
+
+        </div>
+
+        <textarea
+            name="review"
+            rows="4"
+            class="w-full rounded-xl border p-3"
+            placeholder="Tulis ulasan..."></textarea>
+
+        <button
+            type="submit"
+            class="mt-5 rounded-xl bg-red-600 px-6 py-3 text-white font-semibold hover:bg-red-700">
+
+            Kirim Penilaian
+
+        </button>
+
+    </form>
+
+</div>
+
+<?php elseif(!empty($report["rating"])): ?>
+
+<div class="mt-8 rounded-3xl bg-green-50 border border-green-200 p-8">
+
+    <h2 class="text-2xl font-bold text-green-700">
+
+        Terima Kasih atas Penilaian Anda
+
+    </h2>
+
+    <div class="mt-4 text-2xl">
+
+        <?php
+        for($i=1;$i<=5;$i++){
+            echo $i <= $report["rating"] ? "⭐" : "☆";
+        }
+        ?>
+
+    </div>
+
+    <p class="mt-4 text-slate-700">
+
+        <?= nl2br(htmlspecialchars($report["review"] ?? "-")) ?>
+
+    </p>
+
+</div>
+
+<?php endif; ?>
+
 <?php
 
-$content=ob_get_clean();
+$content = ob_get_clean();
 
-include __DIR__."/../layout.blade.php";
+include __DIR__ . "/../layout_emergency.blade.php";
 
 ?>

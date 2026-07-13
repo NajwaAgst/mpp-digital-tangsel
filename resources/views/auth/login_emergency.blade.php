@@ -36,11 +36,7 @@ $redirect = $_GET['redirect'] ?? '/emergency/report';
 
                 Sistem Pelaporan Darurat
 
-                <br>
-
-                Mall Pelayanan Publik Digital
-
-            </p>
+                            </p>
 
             <div class="mt-10 inline-flex items-center gap-3 bg-white/15 rounded-full px-6 py-3">
 
@@ -79,11 +75,7 @@ $redirect = $_GET['redirect'] ?? '/emergency/report';
 
                 </h2>
 
-                <p class="text-gray-500 mt-3">
-
-                    Masuk menggunakan akun Portal MPP Digital
-
-                </p>
+                
 
             </div>
 
